@@ -1,0 +1,129 @@
+/*
+ * Design tokens — the single source of truth for colour, type, spacing, radii,
+ * shadows and z-index. Components use the generated utilities (bg-brand-700,
+ * text-body, rounded-card, shadow-card, ...) or the semantic daisyUI colours
+ * mapped from these in theme.css. Never hard-code values in components.
+ *
+ * `static` forces every variable to be emitted so theme.css can reference them.
+ */
+@theme static {
+  /* ---- Fonts ---- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  /* ---- Brand (navy / blue family) ---- */
+  --color-brand-50: oklch(97% 0.014 254);
+  --color-brand-100: oklch(93% 0.032 255);
+  --color-brand-200: oklch(87% 0.06 255);
+  --color-brand-300: oklch(78% 0.1 256);
+  --color-brand-400: oklch(66% 0.15 258);
+  --color-brand-500: oklch(56% 0.18 260);
+  --color-brand-600: oklch(49% 0.18 262);
+  --color-brand-700: oklch(42% 0.16 263);
+  --color-brand-800: oklch(35% 0.12 264);
+  --color-brand-900: oklch(28% 0.09 265);
+  --color-brand-950: oklch(21% 0.06 266);
+
+  /* ---- Accent (teal, used sparingly for secondary emphasis) ---- */
+  --color-accent-100: oklch(94% 0.04 190);
+  --color-accent-500: oklch(62% 0.11 190);
+  --color-accent-700: oklch(46% 0.09 192);
+
+  /* ---- Neutrals (slightly cool greys) ---- */
+  --color-ink-0: oklch(100% 0 0);
+  --color-ink-50: oklch(98.4% 0.003 250);
+  --color-ink-100: oklch(96.6% 0.005 250);
+  --color-ink-200: oklch(92.6% 0.008 250);
+  --color-ink-300: oklch(86.8% 0.012 250);
+  --color-ink-400: oklch(70.8% 0.018 250);
+  --color-ink-500: oklch(55.4% 0.022 252);
+  --color-ink-600: oklch(44.6% 0.025 254);
+  --color-ink-700: oklch(37.2% 0.028 256);
+  --color-ink-800: oklch(27.9% 0.03 258);
+  --color-ink-900: oklch(20.8% 0.032 260);
+
+  /* ---- Semantic status ---- */
+  --color-status-success: oklch(60% 0.14 155);
+  --color-status-success-soft: oklch(95% 0.04 155);
+  --color-status-warning: oklch(76% 0.15 75);
+  --color-status-warning-soft: oklch(96% 0.05 85);
+  --color-status-error: oklch(58% 0.2 27);
+  --color-status-error-soft: oklch(95% 0.03 25);
+  --color-status-info: oklch(62% 0.13 235);
+  --color-status-info-soft: oklch(95% 0.03 235);
+
+  /* ---- Soft tones (module icon circles in the permission table) ---- */
+  --color-tone-violet: oklch(52% 0.17 295);
+  --color-tone-violet-soft: oklch(95% 0.03 295);
+  --color-tone-orange: oklch(60% 0.15 50);
+  --color-tone-orange-soft: oklch(95.5% 0.035 65);
+  --color-tone-pink: oklch(57% 0.19 350);
+  --color-tone-pink-soft: oklch(95.5% 0.03 350);
+  --color-tone-sky: oklch(57% 0.12 225);
+  --color-tone-sky-soft: oklch(95.5% 0.03 225);
+  --color-tone-green: oklch(55% 0.13 155);
+  --color-tone-green-soft: oklch(95.5% 0.035 155);
+
+  /* ---- Font-size scale (semantic, used as text-<name>) ---- */
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.125rem;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.375rem;
+  --text-lead: 1rem;
+  --text-lead--line-height: 1.5rem;
+  --text-title: 1.125rem;
+  --text-title--line-height: 1.625rem;
+  --text-heading: 1.375rem;
+  --text-heading--line-height: 1.875rem;
+  --text-display: 1.75rem;
+  --text-display--line-height: 2.25rem;
+
+  /* ---- Spacing (base unit + named layout sizes) ---- */
+  --spacing: 0.25rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-section: 2rem;
+  --spacing-sidebar: 16rem;
+  --spacing-sidebar-collapsed: 4.5rem;
+  --spacing-header: 4rem;
+  --spacing-form-field: 18rem;
+
+  /* ---- Radii ---- */
+  --radius-control: 0.5rem;
+  --radius-card: 0.75rem;
+  --radius-tile: 1rem;
+  --radius-pill: 9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-card: 0 1px 2px 0 oklch(20% 0.03 260 / 0.06), 0 1px 3px 0 oklch(20% 0.03 260 / 0.08);
+  --shadow-raised: 0 4px 12px -2px oklch(20% 0.03 260 / 0.12), 0 2px 4px -2px oklch(20% 0.03 260 / 0.08);
+  --shadow-overlay: 0 16px 40px -8px oklch(20% 0.03 260 / 0.25);
+
+  /* ---- Motion ---- */
+  /* Page content entering after navigation: short fade + small rise (used as animate-page-enter). */
+  --animate-page-enter: page-enter 220ms cubic-bezier(0.2, 0, 0, 1);
+
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+}
+
+/* z-index scale (Tailwind v4 has no z namespace; use as z-(--z-header)) */
+:root {
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-header: 20;
+  --z-sidebar: 30;
+  --z-dropdown: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+  --z-tooltip: 70;
+}

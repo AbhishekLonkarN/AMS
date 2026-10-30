@@ -1,0 +1,23 @@
+export const PERMISSION_MATRIX_LABELS = {
+  title: 'Access rights',
+  srNo: 'Sr. No.',
+  module: 'Access',
+  all: 'All',
+  notApplicable: 'Not applicable',
+  selectRow: (module: string) => `Select all rights for ${module}`,
+  selectColumn: (action: string) => `Select all ${action} rights`,
+  cell: (module: string, action: string) => `${module}: ${action}`,
+  granted: (count: number, total: number) => `${count} of ${total} rights granted`,
+  customised: (template: string) => `Customised from “${template}”`,
+  matchesTemplate: (template: string) => `Matches template “${template}”`,
+  changedFromTemplate: 'Changed from template',
+  resetToTemplate: 'Reset to template',
+  readOnly: 'Read-only',
+  // Compact table
+  modulePermission: 'Module / Permission',
+  selectAll: 'Select all',
+  selectAllRights: 'Select all rights',
+  searchPlaceholder: 'Search permissions…',
+  searchLabel: 'Search permissions',
+  noMatches: 'No modules match your search.',
+} as const;

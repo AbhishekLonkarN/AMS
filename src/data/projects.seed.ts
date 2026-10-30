@@ -1,0 +1,72 @@
+import type { Project } from '@/types';
+
+const CREATED_AT = '2026-09-05T09:00:00.000Z';
+
+export const PROJECTS_SEED: Project[] = [
+  {
+    id: 'prj-restore',
+    name: 'RESTORE',
+    cipNo: 'CSPL/PL/2023/004',
+    testProduct: 'AdvaPro',
+    description:
+      'A EU submission clinical investigation of AdvaPro Sirolimus Eluting Coronary Stent System for CE mark. ' +
+      'Total 120 patients will be recruited and for the same, approx. 10-15 sites from India will be participating ' +
+      'in this clinical investigation.',
+    sponsor: 'AMS Ltd.',
+    projectManagerId: 'usr-kbhatt',
+    croName: 'Clicebo Solutions Pvt. Ltd.',
+    croProjectManagerId: 'usr-priya',
+    croAssistantPmId: 'usr-neha',
+    enrolmentTarget: 120,
+    sitesIdentified: 50,
+    statusId: 'ms-ps-ongoing',
+    logoFileName: 'ams-logo.png',
+    createdAt: CREATED_AT,
+    createdBy: 'usr-jpatel',
+  },
+  {
+    id: 'prj-abcd',
+    name: 'ABCD',
+    cipNo: 'AMS/ABCD/2025/002',
+    testProduct: 'AdvaAce',
+    description: 'For EU-CE Mark. Pilot investigation of the AdvaAce balloon catheter.',
+    sponsor: 'AMS Ltd.',
+    projectManagerId: 'usr-akulkarni',
+    croName: 'Clicebo Solutions Pvt. Ltd.',
+    croProjectManagerId: 'usr-priya',
+    enrolmentTarget: 60,
+    sitesIdentified: 12,
+    statusId: 'ms-ps-site-selection',
+    createdAt: CREATED_AT,
+    createdBy: 'usr-jpatel',
+  },
+  {
+    id: 'prj-pqrs',
+    name: 'PQRS',
+    cipNo: 'AMS/PQRS/2025/007',
+    testProduct: 'AdvaRing',
+    description: 'For CDSCO submission. Clinical investigation of the AdvaRing annuloplasty ring.',
+    sponsor: 'AMS Ltd.',
+    projectManagerId: 'usr-kbhatt',
+    enrolmentTarget: 80,
+    sitesIdentified: 15,
+    statusId: 'ms-ps-cdsco-approved',
+    createdAt: CREATED_AT,
+    createdBy: 'usr-jpatel',
+  },
+  {
+    id: 'prj-xyz',
+    name: 'XYZ',
+    cipNo: 'NEO/XYZ/2026/001',
+    testProduct: 'NeoVal',
+    description: 'For EU-CE Mark. Clinical investigation of the NeoVal transcatheter heart valve.',
+    sponsor: 'NeoCor',
+    projectManagerId: 'usr-vpatel',
+    croName: 'CERC France',
+    enrolmentTarget: 100,
+    sitesIdentified: 20,
+    statusId: 'ms-ps-under-planning',
+    createdAt: CREATED_AT,
+    createdBy: 'usr-jpatel',
+  },
+];

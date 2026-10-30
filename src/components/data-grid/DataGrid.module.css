@@ -1,0 +1,81 @@
+@reference "@/styles/index.css";
+
+.card {
+  @apply flex min-w-0 flex-col overflow-hidden rounded-card border border-base-300 bg-base-100 shadow-card;
+}
+
+/* ---- Toolbar ---- */
+.toolbar {
+  @apply flex flex-wrap items-center gap-2 border-b border-base-300 p-3;
+}
+
+.search {
+  @apply w-full sm:w-72;
+}
+
+.selectFilter {
+  @apply w-auto min-w-40;
+}
+
+/* A dropdown with a value gets the brand outline so active filters are easy to spot. */
+.active {
+  @apply border-primary;
+}
+
+.toolbarEnd {
+  @apply ml-auto flex flex-wrap items-center gap-2;
+}
+
+/* ---- Table ---- */
+.scroll {
+  @apply overflow-x-auto;
+}
+
+.table {
+  @apply text-body;
+}
+
+.th {
+  @apply bg-base-200 text-label font-semibold whitespace-nowrap text-ink-700;
+}
+
+.groupTh {
+  @apply border-b border-base-300 text-center text-caption tracking-wide text-ink-500 uppercase;
+}
+
+.sortButton {
+  @apply inline-flex items-center gap-1.5 font-semibold hover:text-primary;
+}
+
+.sortIcon {
+  @apply size-3.5 text-ink-400;
+}
+
+.sortIconActive {
+  @apply text-primary;
+}
+
+.row {
+  @apply hover:bg-base-200;
+}
+
+.td {
+  @apply align-middle;
+}
+
+.mutedRow {
+  @apply text-ink-500;
+}
+
+.rowActions {
+  @apply flex items-center justify-end gap-0.5;
+}
+
+/* ---- Pagination ---- */
+.pagination {
+  @apply flex flex-wrap items-center justify-between gap-3 border-t border-base-300 px-4 py-3;
+}
+
+.paginationEnd {
+  @apply flex flex-wrap items-center gap-3;
+}

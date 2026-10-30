@@ -1,0 +1,49 @@
+/* Resets and typography defaults. Keep this small; component styling lives in modules. */
+@layer base {
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+
+  body {
+    @apply bg-base-200 font-sans text-body text-base-content antialiased;
+  }
+
+  h1 {
+    @apply text-heading font-semibold;
+  }
+
+  h2 {
+    @apply text-title font-semibold;
+  }
+
+  h3 {
+    @apply text-lead font-semibold;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+
+  /* daisyUI field wrappers (label.input etc.) draw their own focus ring. */
+  :where(.input, .select, .textarea) :focus-visible {
+    @apply outline-none;
+  }
+}
+
+/*
+ * Shared visual patterns. Declared as @utility so they work both as classes in
+ * JSX and inside @apply in CSS modules.
+ */
+@utility page-container {
+  @apply mx-auto flex w-full max-w-screen-2xl flex-col gap-gutter p-4 md:p-gutter;
+}
+
+@utility section-card {
+  @apply rounded-card border border-base-300 bg-base-100 p-gutter shadow-card;
+}
+
+@utility form-grid {
+  @apply grid grid-cols-1 gap-x-gutter gap-y-4 md:grid-cols-2;
+}

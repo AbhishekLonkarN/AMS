@@ -1,0 +1,33 @@
+@reference "@/styles/index.css";
+
+.header {
+  @apply sticky top-0 z-(--z-header) flex h-header shrink-0 items-center gap-3 border-b border-base-300 bg-base-100 px-4 md:px-gutter;
+}
+
+.context {
+  @apply flex min-w-0 flex-1 items-center gap-2;
+}
+
+.chip {
+  @apply flex min-w-0 items-center gap-2 rounded-pill border border-base-300 bg-base-200 px-3 py-1.5 text-label;
+}
+
+a.chip {
+  @apply transition-colors hover:border-brand-300 hover:bg-brand-50;
+}
+
+.chipLabel {
+  @apply shrink-0 font-semibold text-base-content;
+}
+
+.chipDetail {
+  @apply hidden truncate text-ink-500 md:inline;
+}
+
+.projectIcon {
+  @apply size-4 shrink-0 text-primary;
+}
+
+.siteIcon {
+  @apply size-4 shrink-0 text-accent;
+}

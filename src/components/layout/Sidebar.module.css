@@ -1,0 +1,53 @@
+@reference "@/styles/index.css";
+
+.sidebar {
+  @apply flex min-h-full w-sidebar flex-col bg-neutral text-neutral-content;
+}
+
+.brand {
+  @apply flex h-header shrink-0 items-center gap-3 border-b border-ink-0/10 px-5;
+}
+
+.brandMark {
+  @apply flex size-9 shrink-0 items-center justify-center rounded-control bg-primary text-primary-content;
+}
+
+.brandName {
+  @apply block truncate text-title font-semibold text-ink-0;
+}
+
+.brandSubtitle {
+  @apply block truncate text-caption text-ink-400;
+}
+
+.sections {
+  @apply flex flex-1 flex-col gap-4 overflow-y-auto py-4;
+}
+
+.sectionHeader {
+  @apply flex flex-col px-6 pb-1;
+}
+
+.sectionTitle {
+  @apply text-caption font-semibold tracking-wide text-ink-400 uppercase;
+}
+
+.sectionSubtitle {
+  @apply truncate text-caption text-brand-200;
+}
+
+.menu {
+  @apply w-full px-3 py-0 text-label;
+}
+
+.link {
+  @apply gap-3 text-neutral-content/80 hover:bg-ink-0/10 hover:text-ink-0;
+}
+
+.link:global(.menu-active) {
+  @apply bg-primary text-primary-content;
+}
+
+.icon {
+  @apply size-4 shrink-0;
+}

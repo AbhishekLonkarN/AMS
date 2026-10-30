@@ -1,0 +1,37 @@
+@reference "@/styles/index.css";
+
+/* Full-viewport transparent <dialog>; the backdrop and panel inside it animate. */
+/* The dialog itself takes focus on open (see useAnimatedDialog); no ring around the whole viewport. */
+.dialog {
+  @apply fixed inset-0 m-0 h-full max-h-none w-full max-w-none overflow-hidden bg-transparent p-0 outline-none;
+}
+
+.dialog::backdrop {
+  @apply bg-transparent;
+}
+
+/* Subtle grey dim, like the reference: the list stays readable behind the drawer. */
+.backdrop {
+  @apply absolute inset-0 bg-ink-900/20 opacity-0 transition-opacity duration-300 ease-out;
+}
+
+.panel {
+  @apply absolute inset-y-0 right-0 flex w-full flex-col border-l border-base-300 bg-base-100 shadow-overlay;
+  @apply translate-x-full transition-transform duration-300 ease-out motion-reduce:transition-none;
+}
+
+.shown .backdrop {
+  @apply opacity-100;
+}
+
+.shown .panel {
+  @apply translate-x-0;
+}
+
+.sizeMd {
+  @apply max-w-2xl;
+}
+
+.sizeLg {
+  @apply max-w-4xl;
+}

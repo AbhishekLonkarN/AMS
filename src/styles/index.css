@@ -1,0 +1,11 @@
+/* Import order matters: Tailwind → daisyUI → tokens → theme → base */
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: false;
+  logs: false;
+}
+
+@import "./tokens.css";
+@import "./theme.css";
+@import "./base.css";

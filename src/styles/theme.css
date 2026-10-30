@@ -1,0 +1,44 @@
+/*
+ * daisyUI "clintech" theme. Every value maps to a token in tokens.css so the
+ * palette is changed in one place. Components use the semantic names
+ * (primary, base-100, success, error, ...).
+ */
+@plugin "daisyui/theme" {
+  name: "clintech";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: var(--color-ink-0);
+  --color-base-200: var(--color-ink-50);
+  --color-base-300: var(--color-ink-200);
+  --color-base-content: var(--color-ink-900);
+
+  --color-primary: var(--color-brand-700);
+  --color-primary-content: var(--color-ink-0);
+  --color-secondary: var(--color-brand-100);
+  --color-secondary-content: var(--color-brand-800);
+  --color-accent: var(--color-accent-500);
+  --color-accent-content: var(--color-ink-0);
+  --color-neutral: var(--color-brand-950);
+  --color-neutral-content: var(--color-ink-100);
+
+  --color-info: var(--color-status-info);
+  --color-info-content: var(--color-ink-0);
+  --color-success: var(--color-status-success);
+  --color-success-content: var(--color-ink-0);
+  --color-warning: var(--color-status-warning);
+  --color-warning-content: var(--color-ink-900);
+  --color-error: var(--color-status-error);
+  --color-error-content: var(--color-ink-0);
+
+  --radius-selector: var(--radius-control);
+  --radius-field: var(--radius-control);
+  --radius-box: var(--radius-card);
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}

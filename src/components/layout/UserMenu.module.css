@@ -1,0 +1,50 @@
+@reference "@/styles/index.css";
+
+/* daisyUI component classes (btn, dropdown-content, menu) stay in JSX; only utilities here. */
+.trigger {
+  @apply h-auto gap-3 px-2 py-1.5 font-normal;
+}
+
+.avatar {
+  @apply flex size-9 items-center justify-center rounded-pill bg-secondary text-label font-semibold text-secondary-content;
+}
+
+.identity {
+  @apply hidden flex-col items-start text-left md:flex;
+}
+
+.name {
+  @apply block text-label font-semibold text-base-content;
+}
+
+.role {
+  @apply block text-caption text-ink-500;
+}
+
+.panel {
+  @apply z-(--z-dropdown) mt-2 w-72 rounded-card border border-base-300 bg-base-100 p-2 shadow-overlay;
+}
+
+.panelHeader {
+  @apply mb-2 border-b border-base-300 px-3 pt-1 pb-3;
+}
+
+.groupTitle {
+  @apply flex items-center gap-1.5 px-3 py-1 text-caption font-semibold tracking-wide text-ink-500 uppercase;
+}
+
+.demoOption {
+  @apply flex items-center justify-between gap-2;
+}
+
+.demoRole {
+  @apply text-label font-medium;
+}
+
+.demoName {
+  @apply truncate text-caption opacity-70;
+}
+
+.footer {
+  @apply mt-2 w-full border-t border-base-300 p-0 pt-2;
+}

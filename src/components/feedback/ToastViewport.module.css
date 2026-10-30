@@ -1,0 +1,9 @@
+@reference "@/styles/index.css";
+
+.viewport {
+  @apply z-(--z-toast);
+}
+
+.toast {
+  @apply w-80 max-w-full shadow-raised;
+}

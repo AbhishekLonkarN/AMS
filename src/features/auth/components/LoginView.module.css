@@ -1,0 +1,61 @@
+@reference "@/styles/index.css";
+
+.page {
+  @apply grid min-h-screen grid-cols-1 bg-base-100 lg:grid-cols-5;
+}
+
+.brandPanel {
+  @apply hidden flex-col justify-between bg-neutral p-section text-neutral-content lg:col-span-2 lg:flex;
+}
+
+.brandTop {
+  @apply flex items-center gap-3;
+}
+
+.brandMark {
+  @apply flex size-10 items-center justify-center rounded-control bg-primary text-primary-content;
+}
+
+.brandName {
+  @apply block text-title font-semibold text-ink-0;
+}
+
+.brandOwner {
+  @apply block text-caption text-ink-400;
+}
+
+.tagline {
+  @apply max-w-md text-display font-semibold text-ink-0;
+}
+
+.points {
+  @apply mt-6 flex flex-col gap-3;
+}
+
+.point {
+  @apply flex items-center gap-2 text-body text-ink-300;
+}
+
+.note {
+  @apply text-caption text-ink-400;
+}
+
+.formPanel {
+  @apply flex items-center justify-center p-gutter lg:col-span-3;
+}
+
+.formCard {
+  @apply flex w-full max-w-md flex-col gap-4;
+}
+
+.title {
+  @apply text-display font-semibold;
+}
+
+.subtitle {
+  @apply -mt-3 text-ink-500;
+}
+
+.form {
+  @apply flex flex-col gap-2;
+}

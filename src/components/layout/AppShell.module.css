@@ -1,0 +1,19 @@
+@reference "@/styles/index.css";
+
+/* daisyUI structural classes (drawer-content / drawer-side) stay in JSX; only utilities here. */
+.content {
+  @apply flex min-h-screen min-w-0 flex-col;
+}
+
+.main {
+  @apply flex-1;
+}
+
+/* Re-applied on every page change (see AppShell) to replay the enter animation. */
+.pageEnter {
+  @apply animate-page-enter motion-reduce:animate-none;
+}
+
+.side {
+  @apply z-(--z-sidebar);
+}

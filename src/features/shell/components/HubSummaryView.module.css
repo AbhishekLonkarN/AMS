@@ -1,0 +1,25 @@
+@reference "@/styles/index.css";
+
+.summary {
+  @apply section-card flex flex-col gap-5;
+}
+
+.facts {
+  @apply grid grid-cols-1 gap-x-gutter gap-y-4 sm:grid-cols-2 xl:grid-cols-3;
+}
+
+.progress {
+  @apply flex flex-col gap-1.5 border-t border-base-300 pt-4;
+}
+
+.progressHeader {
+  @apply flex items-baseline justify-between gap-2;
+}
+
+.progressLabel {
+  @apply text-caption font-medium tracking-wide text-ink-500 uppercase;
+}
+
+.progressValue {
+  @apply text-label font-semibold text-base-content;
+}

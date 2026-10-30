@@ -1,0 +1,14 @@
+@reference "@/styles/index.css";
+
+.list {
+  @apply -mb-px flex gap-6;
+}
+
+.tab {
+  @apply flex items-center gap-2 border-b-2 border-transparent py-3 text-body text-ink-500 transition-colors;
+  @apply hover:text-base-content;
+}
+
+.active {
+  @apply border-primary font-medium text-base-content;
+}

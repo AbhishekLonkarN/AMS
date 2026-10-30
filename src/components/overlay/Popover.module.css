@@ -1,0 +1,5 @@
+@reference "@/styles/index.css";
+
+.panel {
+  @apply z-(--z-dropdown) min-w-56 rounded-card border border-base-300 bg-base-100 p-3 shadow-overlay;
+}

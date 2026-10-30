@@ -1,0 +1,50 @@
+export const PROJECT_LABELS = {
+  listTitle: 'Projects',
+  listDescription: 'Clinical investigations you are affiliated to.',
+  addButton: 'Add Project',
+  createTitle: 'Add Project',
+  editTitle: 'Edit Project',
+  submitCreate: 'Add',
+  submitEdit: 'Save',
+  open: 'Open project',
+  edit: 'Edit',
+  created: (name: string) => `Project ${name} has been added. You are affiliated to it.`,
+  saved: (name: string) => `Changes to project ${name} have been saved.`,
+  searchPlaceholder: 'Search project, product, sponsor…',
+  emptyTitle: 'No projects yet',
+  emptyDescription: 'You are not affiliated to any project.',
+  sectionStudy: 'Study',
+  sectionTeam: 'Sponsor and CRO team',
+  sectionTargets: 'Targets and status',
+  noneOption: '—',
+  // Hub
+  hubEdit: 'Edit project',
+  enrolment: 'Enrolment',
+  enrolmentValue: (actual: number, target: number) => `${actual} of ${target} participants`,
+  sites: 'Sites',
+  sitesValue: (added: number, identified: number) => `${added} added · ${identified} identified`,
+  modulesTitle: 'Modules',
+  creatorDesignationFallback: 'Sponsor',
+} as const;
+
+export const PROJECT_FIELDS = {
+  name: 'Project Name',
+  cipNo: 'CIP No.',
+  testProduct: 'Test Product',
+  description: 'Project Description',
+  sponsor: 'Sponsor',
+  projectManagerId: 'Project Manager',
+  croName: 'CRO Name',
+  croProjectManagerId: 'CRO Project Manager',
+  croAssistantPmId: 'CRO Assistant Project Manager',
+  enrolmentTarget: 'Total Enrolment Target',
+  sitesIdentified: 'Sites Identified',
+  statusId: 'Project Status',
+  logo: 'Logo of Sponsor',
+} as const;
+
+export const PROJECT_VALIDATION = {
+  required: 'This field is required.',
+  nameTaken: 'This Project Name already exists.',
+  positiveNumber: 'Enter a whole number greater than 0.',
+} as const;

@@ -1,0 +1,17 @@
+@reference "@/styles/index.css";
+
+.field {
+  @apply flex min-w-0 flex-col gap-1;
+}
+
+.fullWidth {
+  @apply md:col-span-2;
+}
+
+.label {
+  @apply text-caption font-medium tracking-wide text-ink-500 uppercase;
+}
+
+.value {
+  @apply text-body whitespace-pre-line text-base-content;
+}

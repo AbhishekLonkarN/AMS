@@ -1,0 +1,22 @@
+@reference "@/styles/index.css";
+
+/* shrink-0: the drawer body is a scrolling flex column; sections must not be squashed. */
+.section {
+  @apply flex shrink-0 flex-col gap-2;
+}
+
+.heading {
+  @apply flex flex-col;
+}
+
+.title {
+  @apply text-body font-semibold text-base-content;
+}
+
+.description {
+  @apply text-label text-ink-500;
+}
+
+.box {
+  @apply rounded-card border border-base-300 bg-base-200 p-4;
+}

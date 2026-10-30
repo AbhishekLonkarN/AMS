@@ -1,0 +1,84 @@
+@reference "@/styles/index.css";
+
+.wrap {
+  @apply flex min-w-0 flex-col overflow-hidden rounded-card border border-base-300 bg-base-100;
+}
+
+.header {
+  @apply flex flex-wrap items-center justify-between gap-3 border-b border-base-300 px-4 py-3;
+}
+
+.headerText {
+  @apply flex flex-col;
+}
+
+.title {
+  @apply text-lead font-semibold;
+}
+
+.count {
+  @apply text-caption text-ink-500;
+}
+
+.headerBadges {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.scroll {
+  @apply max-h-120 overflow-auto;
+}
+
+.table {
+  @apply text-label;
+}
+
+/* Sticky header row */
+.table thead th {
+  @apply sticky top-0 z-(--z-sticky) bg-base-200;
+}
+
+.srTh {
+  @apply w-12 text-ink-500;
+}
+
+.moduleTh {
+  @apply min-w-56 text-left;
+}
+
+.actionTh {
+  @apply text-center align-bottom;
+}
+
+.actionLabel {
+  @apply mb-1 block text-caption font-semibold whitespace-nowrap text-ink-700;
+}
+
+.row {
+  @apply hover:bg-base-200;
+}
+
+.srTd {
+  @apply text-ink-500;
+}
+
+.moduleTd {
+  @apply font-medium text-base-content;
+}
+
+.cell {
+  @apply text-center;
+}
+
+/* Marks a cell that differs from the selected template (shape + colour). */
+.changedCell {
+  @apply bg-status-warning-soft outline outline-1 -outline-offset-4 outline-dashed outline-status-warning;
+}
+
+/* Read-only (View mode): keep ticks legible instead of daisyUI's faded disabled look. */
+.readOnly .cell input:disabled {
+  @apply cursor-default opacity-75;
+}
+
+.na {
+  @apply text-ink-300 select-none;
+}

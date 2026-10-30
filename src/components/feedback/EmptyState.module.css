@@ -1,0 +1,17 @@
+@reference "@/styles/index.css";
+
+.wrap {
+  @apply flex flex-col items-center gap-2 px-4 py-section text-center;
+}
+
+.icon {
+  @apply flex size-12 items-center justify-center rounded-pill bg-base-200 text-ink-500;
+}
+
+.title {
+  @apply font-semibold text-base-content;
+}
+
+.description {
+  @apply max-w-sm text-label text-ink-500;
+}

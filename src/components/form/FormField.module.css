@@ -1,0 +1,25 @@
+@reference "@/styles/index.css";
+
+.field {
+  @apply flex min-w-0 flex-col gap-1.5;
+}
+
+.fullWidth {
+  @apply md:col-span-2;
+}
+
+.label {
+  @apply text-label font-medium text-ink-700;
+}
+
+.required {
+  @apply ml-0.5 text-error;
+}
+
+.hint {
+  @apply text-caption text-ink-500;
+}
+
+.error {
+  @apply text-caption text-error;
+}

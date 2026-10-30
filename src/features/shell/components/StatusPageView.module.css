@@ -1,0 +1,17 @@
+@reference "@/styles/index.css";
+
+.card {
+  @apply section-card mx-auto mt-section flex w-full max-w-xl flex-col items-center gap-3 py-section text-center;
+}
+
+.icon {
+  @apply flex size-14 items-center justify-center rounded-pill bg-brand-50 text-primary;
+}
+
+.title {
+  @apply text-heading font-semibold;
+}
+
+.body {
+  @apply max-w-md text-ink-500;
+}
