@@ -1,0 +1,136 @@
+@reference "@/styles/index.css";
+
+/* ---------- Donut ---------- */
+.donut {
+  @apply flex flex-col items-center gap-5 sm:flex-row sm:justify-center;
+}
+
+.donutSvg {
+  @apply size-40 shrink-0;
+  transform: rotate(-90deg);
+}
+
+.donutTrack {
+  fill: none;
+  stroke: var(--color-brand-50);
+  stroke-width: 14;
+}
+
+.donutSegment {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: butt;
+}
+
+/* The svg is rotated so segments start at 12 o'clock; rotate the text back. */
+.donutTotal,
+.donutCaption {
+  text-anchor: middle;
+  transform: rotate(90deg);
+  transform-origin: 60px 60px;
+}
+
+.donutTotal {
+  font-size: 24px;
+  font-weight: 700;
+  fill: var(--color-ink-900);
+}
+
+.donutCaption {
+  font-size: 9px;
+  fill: var(--color-ink-500);
+}
+
+.legend {
+  @apply flex w-full min-w-0 flex-col gap-2.5 sm:w-auto sm:min-w-44;
+}
+
+.legendItem {
+  @apply flex items-center gap-2.5 text-label;
+}
+
+.legendDot {
+  @apply size-2.5 shrink-0 rounded-full;
+}
+
+.legendLabel {
+  @apply flex-1 text-ink-600;
+}
+
+.legendValue {
+  @apply font-semibold text-ink-900;
+}
+
+/* ---------- Day wise activity chart ---------- */
+.chart {
+  @apply h-auto w-full;
+}
+
+.grid {
+  stroke: var(--color-ink-200);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.axisY,
+.axisX {
+  font-size: 11px;
+  fill: var(--color-ink-500);
+}
+
+.axisY {
+  text-anchor: end;
+}
+
+.axisX {
+  text-anchor: middle;
+}
+
+.line {
+  fill: none;
+  stroke: var(--color-brand-600);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.dot {
+  fill: var(--color-base-100, #fff);
+  stroke: var(--color-brand-700);
+  stroke-width: 2.5;
+}
+
+.hit {
+  fill: transparent;
+}
+
+.hit:hover {
+  fill: var(--color-brand-500);
+  fill-opacity: 0.18;
+}
+
+/* ---------- Horizontal bars ---------- */
+.hbars {
+  @apply flex flex-col gap-3.5;
+}
+
+.hbarRow {
+  @apply grid grid-cols-[8.5rem_1fr_1.5rem] items-center gap-3 text-label;
+}
+
+.hbarLabel {
+  @apply truncate text-ink-600;
+}
+
+.hbarTrack {
+  @apply h-2.5 overflow-hidden rounded-pill bg-brand-50;
+}
+
+.hbarFill {
+  @apply block h-full rounded-pill;
+  background: linear-gradient(90deg, var(--color-accent-500), var(--color-brand-600));
+}
+
+.hbarValue {
+  @apply text-right font-semibold text-ink-900;
+}

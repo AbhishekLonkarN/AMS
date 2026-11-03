@@ -8,11 +8,13 @@ interface AppShellProps {
   header: ReactNode;
   /** Changes when the user moves to another page; replays the page-enter animation. */
   pageKey?: string;
+  /** `admin` switches on the branded Admin look (see the *.module.css files). */
+  variant?: 'default' | 'admin';
   children: ReactNode;
 }
 
 /** Sidebar + header + content. Below `lg` the sidebar becomes a daisyUI drawer. */
-export function AppShell({ sidebar, header, pageKey, children }: AppShellProps) {
+export function AppShell({ sidebar, header, pageKey, variant = 'default', children }: AppShellProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 
@@ -25,6 +27,7 @@ export function AppShell({ sidebar, header, pageKey, children }: AppShellProps) 
     void main.offsetWidth;
     main.classList.add(styles.pageEnter);
     window.scrollTo({ top: 0 });
+    main.scrollTo({ top: 0 }); // the Admin shell scrolls inside <main>
   }, [pageKey]);
 
   // Close the mobile drawer after following a link.
@@ -33,7 +36,7 @@ export function AppShell({ sidebar, header, pageKey, children }: AppShellProps) 
   };
 
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open" data-shell-variant={variant}>
       <input
         id={SIDEBAR_DRAWER_ID}
         type="checkbox"

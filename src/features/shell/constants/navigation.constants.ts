@@ -2,10 +2,8 @@ import {
   BarChart3,
   Building2,
   ClipboardList,
-  Cloud,
   Contact,
   Database,
-  DatabaseBackup,
   FileArchive,
   FileDown,
   FileStack,
@@ -16,6 +14,7 @@ import {
   Home,
   Hospital,
   KeyRound,
+  LayoutDashboard,
   LayoutGrid,
   Library,
   Lock,
@@ -23,7 +22,6 @@ import {
   Settings,
   ShieldCheck,
   Tags,
-  UserCog,
   UserPlus,
   Users,
   type LucideIcon,
@@ -112,12 +110,20 @@ export const MASTER_VIEW_PERMISSIONS = MASTER_ITEMS.map((i) => i.permission as P
 
 export const NAV_SECTIONS: NavSectionConfig[] = [
   // ---------------- Admin portal ----------------
+  // Sidebar: Dashboard · Company Profile · Users · Project Export · Audit Trail
   {
     key: 'admin',
     audiences: ['admin'],
     context: 'none',
     items: [
-      { key: 'admin-home', label: PAGE_TITLES.home, icon: Home, to: fixed(ROUTES.adminHome), isHubHidden: true, isEnd: true },
+      {
+        key: 'admin-dashboard',
+        label: PAGE_TITLES.dashboard,
+        icon: LayoutDashboard,
+        to: fixed(ROUTES.adminHome),
+        isHubHidden: true,
+        isEnd: true,
+      },
       {
         key: 'company-profile',
         label: PAGE_TITLES.companyProfile,
@@ -127,45 +133,21 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         permission: 'companyProfile.view',
       },
       {
-        key: 'admin-users',
-        label: PAGE_TITLES.adminUsers,
-        description: PAGE_DESCRIPTIONS.adminUsers,
-        icon: UserCog,
-        to: fixed(ROUTES.adminUsers),
-        permission: 'adminUser.view',
-      },
-      {
-        key: 'accounts',
-        label: PAGE_TITLES.accounts,
-        description: PAGE_DESCRIPTIONS.accounts,
+        key: 'users',
+        label: PAGE_TITLES.users,
+        description: PAGE_DESCRIPTIONS.users,
         icon: Users,
-        to: fixed(ROUTES.accounts),
-        permission: 'sponsorCoUser.view',
+        to: fixed(ROUTES.users),
+        // Holds both lists (Admin Users, Sponsor & CO Users); visible with either view right.
+        permission: ['adminUser.view', 'sponsorCoUser.view'],
       },
       {
-        key: 'admin-db-export',
-        label: PAGE_TITLES.databaseExport,
-        description: PAGE_DESCRIPTIONS.databaseExport,
+        key: 'admin-project-export',
+        label: PAGE_TITLES.projectExport,
+        description: PAGE_DESCRIPTIONS.projectExport,
         icon: FileDown,
-        to: fixed(ROUTES.databaseExport),
+        to: fixed(ROUTES.projectExport),
         permission: 'projectDatabase.export',
-      },
-      {
-        key: 'cloud-settings',
-        label: PAGE_TITLES.cloudSettings,
-        description: PAGE_DESCRIPTIONS.cloudSettings,
-        icon: Cloud,
-        to: fixed(ROUTES.cloudSettings),
-        permission: 'cloudSettings.view',
-      },
-      {
-        key: 'backup',
-        label: PAGE_TITLES.backup,
-        description: PAGE_DESCRIPTIONS.backup,
-        icon: DatabaseBackup,
-        to: fixed(ROUTES.backup),
-        // Not in the admin matrix; gated by Cloud Settings (prototype assumption).
-        permission: 'cloudSettings.view',
       },
       {
         key: 'admin-audit',

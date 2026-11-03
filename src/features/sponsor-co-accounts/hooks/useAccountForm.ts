@@ -1,5 +1,6 @@
 import { useId, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { AccountType, User } from '@/types';
 import { notify, useAffiliationsStore, useUsersStore } from '@/store';
@@ -22,13 +23,13 @@ interface AccountFormOptions {
   onDone: () => void;
 }
 
-const toFormValues = (user?: User): AccountFormValues => ({
+const toFormValues = (user?: User, presetType?: AccountType): AccountFormValues => ({
   prefix: user?.prefix ?? '',
   name: user?.name ?? '',
   email: user?.email ?? '',
   organization: user?.organization ?? '',
   status: user?.status ?? 'active',
-  accountType: user?.accountType ?? 'sponsor',
+  accountType: user?.accountType ?? presetType ?? 'sponsor',
   templateId: user?.globalTemplateId ?? '',
   permissions: user?.globalGrant ?? [],
 });
@@ -46,11 +47,15 @@ export function useAccountForm({ mode, userId, onDone }: AccountFormOptions) {
       [...s.sponsorAffiliations, ...s.coAffiliations].some((a) => a.userId === user.id && a.status === 'active'),
   );
   const formId = useId();
+  // The Create User menu opens this form with ?type=sponsor or ?type=co.
+  const [searchParams] = useSearchParams();
+  const typeParam = searchParams.get('type');
+  const presetType: AccountType | undefined = typeParam === 'co' || typeParam === 'sponsor' ? typeParam : undefined;
   const [selectedTab, setActiveTab] = useState<AccountFormTab>('details');
 
   const isEmailTaken = useEmailUniqueness(user?.id);
   const schema = useMemo(() => buildAccountSchema(isEmailTaken), [isEmailTaken]);
-  const form = useForm<AccountFormValues>({ resolver: zodResolver(schema), defaultValues: toFormValues(user) });
+  const form = useForm<AccountFormValues>({ resolver: zodResolver(schema), defaultValues: toFormValues(user, presetType) });
   const accessRights = useAccessRightsField({ form, userType: 'sponsor', scopeType: 'global' });
   const accountType = form.watch('accountType') as AccountType;
   const isSponsor = accountType === 'sponsor';

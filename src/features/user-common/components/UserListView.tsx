@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { ChevronDown, Plus } from 'lucide-react';
 import { PageHeader } from '@/components/layout';
 import { DataGrid, type DataGridColumn, type DataGridExport, type RowAction } from '@/components/data-grid';
 import { ConfirmDialog } from '@/components/feedback';
@@ -12,6 +12,8 @@ interface UserListViewProps<T> {
   /** Omit when the user lacks the `new` / `affiliate` right. */
   createLabel?: string;
   createTo?: string;
+  /** A "Create" button that opens a menu (e.g. one entry per user type). Used instead of `createTo`. */
+  createMenu?: { label: string; options: { key: string; label: string; to: string }[] };
   columns: DataGridColumn<T>[];
   data: T[];
   getRowId: (row: T) => string;
@@ -32,6 +34,7 @@ export function UserListView<T>({
   backTo,
   createLabel,
   createTo,
+  createMenu,
   columns,
   data,
   getRowId,
@@ -57,11 +60,32 @@ export function UserListView<T>({
         emptyTitle={emptyTitle}
         emptyDescription={emptyDescription}
         toolbarActions={
-          createLabel &&
-          createTo && (
-            <Link to={createTo} className="btn btn-primary btn-sm">
-              <Plus className="size-4" aria-hidden /> {createLabel}
-            </Link>
+          createMenu ? (
+            <div className="dropdown dropdown-end">
+              <button type="button" tabIndex={0} className="btn btn-primary btn-sm">
+                <Plus className="size-4" aria-hidden /> {createMenu.label}
+                <ChevronDown className="size-4" aria-hidden />
+              </button>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu z-(--z-dropdown) mt-1 w-44 rounded-control border border-base-300 bg-base-100 p-1 shadow-raised"
+              >
+                {createMenu.options.map((option) => (
+                  <li key={option.key}>
+                    <Link to={option.to} onClick={() => (document.activeElement as HTMLElement | null)?.blur()}>
+                      {option.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            createLabel &&
+            createTo && (
+              <Link to={createTo} className="btn btn-primary btn-sm">
+                <Plus className="size-4" aria-hidden /> {createLabel}
+              </Link>
+            )
           )
         }
       />

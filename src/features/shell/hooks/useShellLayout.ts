@@ -46,6 +46,7 @@ export function useShellLayout() {
   };
 
   return {
+    variant: user?.userType === 'admin' ? ('admin' as const) : ('default' as const),
     brand: { name: profile.softwareName, subtitle: profile.ownerDisplayName },
     sections,
     pageKey,
