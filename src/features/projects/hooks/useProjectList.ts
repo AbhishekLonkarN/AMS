@@ -32,7 +32,7 @@ export function useProjectList() {
       { key: 'open', label: L.open, icon: FolderOpen, onClick: () => navigate(paths.projectHub(project.id)) },
     ];
     if (can(principal, 'project.edit', scope)) {
-      actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => navigate(paths.projectEdit(project.id)) });
+      actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => navigate(paths.projectListEdit(project.id)) });
     }
     return actions;
   };

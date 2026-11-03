@@ -3,9 +3,14 @@ import { useMatch, useNavigate } from 'react-router-dom';
 
 export type DrawerMode = 'create' | 'view' | 'edit';
 
+/** Placeholder pattern for an unused mode (hooks must always be called). */
+const NEVER = '/__no-drawer-route__';
+
 interface RouteDrawerOptions {
-  createPath: string;
-  viewPattern: string;
+  /** Omit when the drawer has no create mode (e.g. edit over a hub page). */
+  createPath?: string;
+  /** Omit when records have a page of their own instead of a View drawer. */
+  viewPattern?: string;
   editPattern: string;
   /** Route param holding the record id, e.g. "userId". */
   paramKey: string;
@@ -25,9 +30,9 @@ interface DrawerTarget {
  */
 export function useRouteDrawer({ createPath, viewPattern, editPattern, paramKey, listPath }: RouteDrawerOptions) {
   const navigate = useNavigate();
-  const createMatch = useMatch(createPath);
+  const createMatch = useMatch(createPath ?? NEVER);
   const editMatch = useMatch(editPattern);
-  const viewMatch = useMatch(viewPattern);
+  const viewMatch = useMatch(viewPattern ?? NEVER);
 
   // "new" also matches the ":id" pattern, so create is checked first.
   const current: DrawerTarget | null = createMatch

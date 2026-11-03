@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import { DetailList, Tabs, type DetailItem } from '@/components/layout';
 import { DrawerActions, DrawerPanel, DrawerSection } from '@/components/overlay';
 import { StatusBadge, type StatusKind } from '@/components/feedback';
-import { PermissionMatrix, PermissionTable, type MatrixStyle } from '@/components/permission-matrix';
-import type { DetailMatrix } from './RecordDetailView';
+import { PermissionTable } from '@/components/permission-matrix';
+import type { DetailMatrix } from '../user-common.types';
 import { DRAWER_LABELS as L } from '../constants/drawer.constants';
 
 export interface DetailSection {
@@ -27,9 +27,7 @@ interface UserDetailDrawerViewProps {
   status?: StatusKind;
   sections: DetailSection[];
   matrix?: DetailMatrix;
-  /** `table`: compact table (module icons, search). Default: the original matrix. */
-  matrixStyle?: MatrixStyle;
-  /** Secondary actions in the toolbar row (Deactivate, Re-activate…). */
+  /** Secondary actions in the toolbar row (Deactivate, Deaffiliate…). */
   toolbarActions?: DrawerToolbarAction[];
   /** Shown as the primary footer button when the user may edit. */
   onEdit?: () => void;
@@ -47,11 +45,9 @@ export function UserDetailDrawerView({
   status,
   sections,
   matrix,
-  matrixStyle = 'grid',
   toolbarActions = [],
   onEdit,
 }: UserDetailDrawerViewProps) {
-  const Matrix = matrixStyle === 'table' ? PermissionTable : PermissionMatrix;
   const idPrefix = useId();
   const [activeTab, setActiveTab] = useState('overview');
   const showOverview = !matrix || activeTab === 'overview';
@@ -84,9 +80,9 @@ export function UserDetailDrawerView({
           </DrawerSection>
         ))
       ) : (
-        // The matrix card has its own header, so no section title above it.
+        // The table card has its own header, so no section title above it.
         <div className="shrink-0">
-          <Matrix
+          <PermissionTable
             title={matrix.title ?? L.effectiveRights}
             matrix={matrix.matrix}
             scopeTypes={matrix.scopeTypes}

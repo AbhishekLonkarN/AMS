@@ -36,7 +36,6 @@ export const USER_ACTION_LABELS = {
   edit: 'Edit',
   deactivate: 'Deactivate',
   reactivate: 'Re-activate',
-  editDetails: 'Edit',
   confirmDeactivateTitle: 'Deactivate user?',
   confirmReactivateTitle: 'Re-activate user?',
   confirmDeactivate: (name: string) => `${name} will be set to In-active and will no longer be able to log in.`,

@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 import { DrawerContext } from './drawer.context';
 import { useAnimatedDialog, useDialogEscape } from './useAnimatedDialog';
@@ -23,7 +23,9 @@ const SIZE_CLASS: Record<DrawerSize, string> = {
 export function Drawer({ isOpen, onClose, size = 'lg', children }: DrawerProps) {
   const { dialogRef, isMounted, isShown } = useAnimatedDialog(isOpen);
   const escapeHandlers = useDialogEscape(dialogRef, isOpen, onClose);
-  const context = useMemo(() => ({ close: onClose }), [onClose]);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  useEffect(() => setPortalRoot(isMounted ? dialogRef.current : null), [isMounted, dialogRef]);
+  const context = useMemo(() => ({ close: onClose, portalRoot }), [onClose, portalRoot]);
 
   return (
     <dialog ref={dialogRef} tabIndex={-1} className={clsx(styles.dialog, isShown && styles.shown)} {...escapeHandlers}>

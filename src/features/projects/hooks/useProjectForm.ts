@@ -1,12 +1,10 @@
-import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Project } from '@/types';
 import type { ProjectInput } from '@/store';
 import { notify, useAccessRightsStore, useAffiliationsStore, useProjectsStore } from '@/store';
 import { sanitizePermissions, useCurrentPrincipal } from '@/rbac';
-import { ROUTES, paths } from '@/app/router/route-paths.constants';
 import { DEFAULT_TIME_ZONE } from '@/constants/time-zone.constants';
 import { isSameText } from '@/utils/string.utils';
 import { useMasterOptions } from '@/features/masters';
@@ -15,6 +13,13 @@ import { buildProjectSchema, type ProjectFormValues } from '../schemas/project.s
 import { useAccountOptions } from './useAccountOptions';
 
 export type FormMode = 'create' | 'edit';
+
+interface ProjectFormOptions {
+  mode: FormMode;
+  projectId?: string;
+  /** Called with the saved project's id (create opens its hub; edit closes the drawer). */
+  onDone: (projectId: string) => void;
+}
 
 const toFormValues = (p?: Project) =>
   ({
@@ -41,16 +46,15 @@ const toInput = (v: ProjectFormValues): ProjectInput => ({
   croAssistantPmId: v.croAssistantPmId || undefined,
 });
 
-/** Create and Edit share this hook and one form view. */
-export function useProjectForm(mode: FormMode) {
-  const navigate = useNavigate();
-  const { projectId } = useParams();
+/** Create and Edit share this hook and one drawer form view. */
+export function useProjectForm({ mode, projectId, onDone }: ProjectFormOptions) {
   const principal = useCurrentPrincipal();
   const projects = useProjectsStore((s) => s.projects);
   const addProject = useProjectsStore((s) => s.addProject);
   const updateProject = useProjectsStore((s) => s.updateProject);
   const affiliateSponsorUser = useAffiliationsStore((s) => s.affiliateSponsorUser);
   const templates = useAccessRightsStore((s) => s.templates);
+  const formId = useId();
   const project = projects.find((p) => p.id === projectId);
 
   const schema = useMemo(
@@ -87,19 +91,20 @@ export function useProjectForm(mode: FormMode) {
       const created = addProject(input);
       affiliateCreator(created.id);
       notify.success(L.created(created.name));
-      navigate(paths.projectHub(created.id));
+      onDone(created.id);
     } else if (project) {
       updateProject(project.id, input);
       notify.success(L.saved(input.name));
-      navigate(paths.projectHub(project.id));
+      onDone(project.id);
     }
   });
 
   return {
     isNotFound: mode === 'edit' && !project,
     title: mode === 'create' ? L.createTitle : L.editTitle,
+    subtitle: mode === 'edit' ? project?.name : L.createDescription,
     submitLabel: mode === 'create' ? L.submitCreate : L.submitEdit,
-    backTo: project ? paths.projectHub(project.id) : ROUTES.projects,
+    formId,
     form,
     options,
     logoFileName: form.watch('logoFileName'),

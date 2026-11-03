@@ -13,8 +13,11 @@ export const PROJECT_LABELS = {
   searchPlaceholder: 'Search project, product, sponsor…',
   emptyTitle: 'No projects yet',
   emptyDescription: 'You are not affiliated to any project.',
+  createDescription: 'You are affiliated to the new project automatically.',
   sectionStudy: 'Study',
+  sectionStudyHint: 'The project name must be unique.',
   sectionTeam: 'Sponsor and CRO team',
+  sectionTeamHint: 'The CRO fields are optional.',
   sectionTargets: 'Targets and status',
   noneOption: '—',
   // Hub

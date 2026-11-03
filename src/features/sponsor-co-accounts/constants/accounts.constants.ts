@@ -11,8 +11,6 @@ export const ACCOUNTS_LABELS = {
   viewDescription: 'Account details, global access rights and affiliations.',
   identitySection: 'User details',
   globalMatrixTitle: 'Global access rights (Sponsor)',
-  globalMatrixDescription:
-    'Masters, eCRF Templates, Projects and the global Audit Trail. Project-level rights are set when the user is affiliated to a project.',
   coNote: 'CO accounts have no global rights. Their rights are set per site when a sponsor user affiliates them.',
   affiliations: 'Affiliated to',
   noAffiliations: 'Not affiliated yet',

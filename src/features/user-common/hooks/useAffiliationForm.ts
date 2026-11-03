@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { AccountType, ScopeType, UserType } from '@/types';
@@ -10,6 +10,7 @@ import { fullName } from '@/utils/string.utils';
 import { AFFILIATION_LABELS as L } from '../constants/affiliation.constants';
 import { affiliationSchema, type AffiliationFormValues } from '../schemas/affiliation.schema';
 import { useAccessRightsField } from './useAccessRightsField';
+import { useFormTabs } from './useFormTabs';
 
 export interface ExistingAffiliation extends AssignmentInput {
   userId: string;
@@ -28,6 +29,15 @@ interface AffiliationFormOptions {
   onSubmit: (values: AffiliationFormValues, meta: { name: string }) => void;
 }
 
+const TABS = ['user', 'access'] as const;
+const FIELD_TABS = {
+  userId: 'user',
+  designation: 'user',
+  timeZone: 'user',
+  templateId: 'access',
+  permissions: 'access',
+} as const;
+
 /** Shared state/logic for Affiliate / Edit Sponsor user and Affiliate / Edit CO user. */
 export function useAffiliationForm({
   accountType,
@@ -39,6 +49,8 @@ export function useAffiliationForm({
   onSubmit,
 }: AffiliationFormOptions) {
   const users = useUsersStore((s) => s.users);
+  const formId = useId();
+  const tabs = useFormTabs(TABS, FIELD_TABS);
 
   const form = useForm<AffiliationFormValues>({
     resolver: zodResolver(affiliationSchema),
@@ -73,12 +85,15 @@ export function useAffiliationForm({
   const selectedUser = users.find((u) => u.id === userId);
   const designationOptions: SelectOption[] = designations.map((d) => ({ value: d, label: d }));
 
-  const handleSubmit = form.handleSubmit((values) =>
-    onSubmit(values, { name: selectedUser ? fullName(selectedUser.prefix, selectedUser.name) : '' }),
+  const handleSubmit = form.handleSubmit(
+    (values) => onSubmit(values, { name: selectedUser ? fullName(selectedUser.prefix, selectedUser.name) : '' }),
+    tabs.showFirstError,
   );
 
   return {
     isEdit: !!existing,
+    formId,
+    tabs,
     form,
     accessRights,
     accountOptions,

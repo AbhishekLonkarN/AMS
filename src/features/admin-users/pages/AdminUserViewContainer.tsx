@@ -10,7 +10,7 @@ export function AdminUserViewContainer({ userId }: { userId?: string }) {
   const { confirm, isNotFound, ...view } = model;
   return (
     <>
-      <UserDetailDrawerView {...view} matrixStyle="table" />
+      <UserDetailDrawerView {...view} />
       <ConfirmDialog {...confirm} />
     </>
   );

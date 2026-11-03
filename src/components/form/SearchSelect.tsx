@@ -16,6 +16,7 @@ import clsx from 'clsx';
 import type { FieldChromeProps, SelectOption } from './form.types';
 import { FORM_LABELS } from './form.constants';
 import { FormField } from './FormField';
+import { useDrawerPortalRoot } from '@/components/overlay/drawer.context';
 import styles from './SearchSelect.module.css';
 
 interface SearchSelectProps extends FieldChromeProps {
@@ -42,6 +43,8 @@ export function SearchSelect({
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<Array<HTMLElement | null>>([]);
+  // Inside a drawer the list must render in the dialog, or it would sit under the top layer.
+  const portalRoot = useDrawerPortalRoot();
 
   const selected = options.find((o) => o.value === value);
   const needle = query.trim().toLowerCase();
@@ -112,7 +115,7 @@ export function SearchSelect({
       </label>
 
       {isOpen && (
-        <FloatingPortal>
+        <FloatingPortal root={portalRoot}>
           <ul ref={refs.setFloating} style={floatingStyles} className={styles.list} {...getFloatingProps()}>
             {filtered.length === 0 && <li className={styles.empty}>{emptyLabel}</li>}
             {filtered.map((option, index) => (

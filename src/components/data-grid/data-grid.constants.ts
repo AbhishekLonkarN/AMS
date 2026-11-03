@@ -17,7 +17,6 @@ export const DATA_GRID_LABELS = {
   previousPage: 'Previous page',
   nextPage: 'Next page',
   lastPage: 'Last page',
-  sortBy: (column: string) => `Sort by ${column}`,
   emptyTitle: 'No records found',
   emptyDescription: 'Try clearing the search or filters.',
   status: 'Status',

@@ -1,8 +1,10 @@
-import { Info } from 'lucide-react';
-import { PageHeader } from '@/components/layout';
-import { FormActions, FormSection, SelectField } from '@/components/form';
+import { Info, ShieldCheck, UserRound } from 'lucide-react';
+import { TabPanel, Tabs } from '@/components/layout';
+import { SelectField } from '@/components/form';
+import { DrawerActions, DrawerPanel, DrawerSection } from '@/components/overlay';
 import {
-  AccessRightsSection,
+  AccessRightsDrawerSections,
+  DRAWER_LABELS as D,
   IdentityFields,
   TIME_ZONE_SELECT_OPTIONS,
   USER_FIELD_LABELS as F,
@@ -12,11 +14,18 @@ import type { SiteUserFormModel } from '../hooks/useSiteUserForm';
 
 type SiteUserFormViewProps = Omit<SiteUserFormModel, 'isNotFound'>;
 
+const TAB_ITEMS = [
+  { key: 'details', label: D.tabDetails, icon: UserRound },
+  { key: 'access', label: D.tabAccess, icon: ShieldCheck },
+];
+
+/** Drawer form: (1) identity, designation, time-zone; (2) access rights. */
 export function SiteUserFormView({
   title,
-  description,
+  subtitle,
   submitLabel,
-  backTo,
+  formId,
+  tabs,
   form,
   accessRights,
   designationOptions,
@@ -28,13 +37,17 @@ export function SiteUserFormView({
   const { errors } = formState;
 
   return (
-    <form className="page-container" onSubmit={handleSubmit} noValidate>
-      <PageHeader title={title} description={description} backTo={backTo} />
-
-      <FormSection title={L.identitySection}>
-        <div className="flex flex-col gap-4">
+    <DrawerPanel
+      title={title}
+      subtitle={subtitle}
+      tabs={<Tabs items={TAB_ITEMS} activeKey={tabs.activeTab} onChange={tabs.setActiveTab} idPrefix={tabs.idPrefix} />}
+      footer={<DrawerActions primaryLabel={submitLabel} formId={formId} isBusy={formState.isSubmitting} />}
+    >
+      {/* Both tabs stay mounted (only hidden) so values and errors survive tab switches. */}
+      <form id={formId} onSubmit={handleSubmit} noValidate>
+        <TabPanel idPrefix={tabs.idPrefix} tabKey="details" activeKey={tabs.activeTab}>
           {reuseNotice && (
-            <div role="note" className="alert alert-info alert-soft">
+            <div role="note" className="alert alert-info alert-soft shrink-0">
               <Info className="size-5 shrink-0" aria-hidden />
               <div>
                 <p className="font-semibold">{L.reuseTitle}</p>
@@ -42,31 +55,35 @@ export function SiteUserFormView({
               </div>
             </div>
           )}
-          <IdentityFields register={register} errors={errors} hasOrganization={false} isStatusLocked={isStatusLocked} />
-        </div>
-      </FormSection>
+          <DrawerSection title={D.userDetails} description={L.identityHint}>
+            <IdentityFields register={register} errors={errors} hasOrganization={false} isStatusLocked={isStatusLocked} />
+          </DrawerSection>
 
-      <FormSection title={L.accessSection}>
-        <AccessRightsSection model={accessRights} title={L.matrixTitle} isTemplateRequired>
-          <SelectField
-            label={F.designation}
-            isRequired
-            options={designationOptions}
-            error={errors.designation?.message}
-            {...register('designation')}
-          />
-          <SelectField
-            label={F.timeZone}
-            isRequired
-            placeholder={false}
-            options={TIME_ZONE_SELECT_OPTIONS}
-            error={errors.timeZone?.message}
-            {...register('timeZone')}
-          />
-        </AccessRightsSection>
-      </FormSection>
+          <DrawerSection title={L.roleSection}>
+            <div className="form-grid">
+              <SelectField
+                label={F.designation}
+                isRequired
+                options={designationOptions}
+                error={errors.designation?.message}
+                {...register('designation')}
+              />
+              <SelectField
+                label={F.timeZone}
+                isRequired
+                placeholder={false}
+                options={TIME_ZONE_SELECT_OPTIONS}
+                error={errors.timeZone?.message}
+                {...register('timeZone')}
+              />
+            </div>
+          </DrawerSection>
+        </TabPanel>
 
-      <FormActions submitLabel={submitLabel} cancelTo={backTo} isSubmitting={formState.isSubmitting} />
-    </form>
+        <TabPanel idPrefix={tabs.idPrefix} tabKey="access" activeKey={tabs.activeTab}>
+          <AccessRightsDrawerSections model={accessRights} matrixTitle={L.matrixTitle} isTemplateRequired />
+        </TabPanel>
+      </form>
+    </DrawerPanel>
   );
 }

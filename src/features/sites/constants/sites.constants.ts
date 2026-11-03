@@ -13,7 +13,9 @@ export const SITE_LABELS = {
   searchPlaceholder: 'Search investigator, site, location…',
   emptyTitle: 'No sites yet',
   emptyDescription: 'Add the first investigator and site for this project.',
+  createDescription: 'A principal investigator and the site they run.',
   sectionInvestigator: 'Investigator',
+  sectionInvestigatorHint: 'Investigator + Email ID must be unique within this project.',
   sectionSite: 'Site',
   // Hub
   hubEdit: 'Edit site',

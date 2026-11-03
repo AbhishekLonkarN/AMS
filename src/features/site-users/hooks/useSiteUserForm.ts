@@ -1,5 +1,4 @@
-import { useEffect, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { SelectOption } from '@/components/form';
@@ -11,23 +10,41 @@ import {
   useSitesStore,
   useUsersStore,
 } from '@/store';
-import { paths } from '@/app/router/route-paths.constants';
 import { DESIGNATION_OPTIONS } from '@/constants/user.constants';
 import { DEFAULT_TIME_ZONE } from '@/constants/time-zone.constants';
 import { fullName, isSameText } from '@/utils/string.utils';
-import { useAccessRightsField } from '@/features/user-common';
+import { useAccessRightsField, useFormTabs } from '@/features/user-common';
 import { SITE_USER_LABELS as L, SITE_USER_VALIDATION as V } from '../constants/site-users.constants';
 import { buildSiteUserSchema, type SiteUserFormValues } from '../schemas/site-user.schema';
 
 export type FormMode = 'create' | 'edit';
 
+interface SiteUserFormOptions {
+  mode: FormMode;
+  projectId: string;
+  siteId: string;
+  membershipId?: string;
+  /** Called after a successful save (closes the drawer). */
+  onDone: () => void;
+}
+
+const TABS = ['details', 'access'] as const;
+const FIELD_TABS = {
+  prefix: 'details',
+  name: 'details',
+  email: 'details',
+  status: 'details',
+  designation: 'details',
+  timeZone: 'details',
+  templateId: 'access',
+  permissions: 'access',
+} as const;
+
 /**
  * Create / Edit site user. Assumption 5: email is unique within the site; the
  * same email at another site re-uses that person's existing site login.
  */
-export function useSiteUserForm(mode: FormMode) {
-  const navigate = useNavigate();
-  const { projectId = '', siteId = '', membershipId } = useParams();
+export function useSiteUserForm({ mode, projectId, siteId, membershipId, onDone }: SiteUserFormOptions) {
   const users = useUsersStore((s) => s.users);
   const addUser = useUsersStore((s) => s.addUser);
   const updateUser = useUsersStore((s) => s.updateUser);
@@ -37,6 +54,8 @@ export function useSiteUserForm(mode: FormMode) {
   const sites = useSitesStore((s) => s.sites);
   const projects = useProjectsStore((s) => s.projects);
   const currentUserId = useSessionStore((s) => s.currentUserId);
+  const formId = useId();
+  const tabs = useFormTabs(TABS, FIELD_TABS);
 
   const site = sites.find((s) => s.id === siteId);
   const membership = mode === 'edit' ? memberships.find((m) => m.id === membershipId && m.siteId === siteId) : undefined;
@@ -97,8 +116,6 @@ export function useSiteUserForm(mode: FormMode) {
     if (!form.getValues('prefix')) form.setValue('prefix', reuseIdentity.prefix, { shouldValidate: true });
   }, [reuseIdentity, form]);
 
-  const listPath = paths.siteUsers(projectId, siteId);
-
   const handleSubmit = form.handleSubmit((values) => {
     const { prefix, name, email: emailValue, status, ...assignment } = values;
     const displayName = fullName(prefix, name);
@@ -124,17 +141,18 @@ export function useSiteUserForm(mode: FormMode) {
       addSiteMembership({ userId: userId!, projectId, siteId, status, ...assignment });
       notify.success(L.created(displayName));
     }
-    navigate(listPath);
-  });
+    onDone();
+  }, tabs.showFirstError);
 
   const designationOptions: SelectOption[] = DESIGNATION_OPTIONS.site.map((d) => ({ value: d, label: d }));
 
   return {
     isNotFound: mode === 'edit' && (!membership || !identity),
     title: mode === 'create' ? L.createTitle : L.editTitle,
-    description: site ? `${site.siteCode} · ${site.siteName}` : undefined,
+    subtitle: site ? `${site.siteCode} · ${site.siteName}` : undefined,
     submitLabel: mode === 'create' ? L.submitCreate : L.submitEdit,
-    backTo: listPath,
+    formId,
+    tabs,
     form,
     accessRights,
     designationOptions,

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+﻿import type { ReactNode } from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import type { PermissionKey } from '@/types';
 import { RequirePermission } from '@/rbac';
@@ -16,13 +16,13 @@ import { UiKitPage } from '@/features/ui-kit';
 import { AdminUserListPage } from '@/features/admin-users';
 import { AccountListPage } from '@/features/sponsor-co-accounts';
 import { CompanyProfilePage } from '@/features/company-profile';
-import { TemplateFormPage, TemplateListPage, TemplateViewPage } from '@/features/access-rights-templates';
+import { TemplateListPage } from '@/features/access-rights-templates';
 import { MasterListPage } from '@/features/masters';
-import { ProjectFormPage, ProjectHubPage, ProjectListPage } from '@/features/projects';
-import { SiteFormPage, SiteHubPage, SiteListPage } from '@/features/sites';
-import { SponsorUserFormPage, SponsorUserListPage, SponsorUserViewPage } from '@/features/project-sponsor-users';
-import { CoUserFormPage, CoUserListPage, CoUserViewPage } from '@/features/site-co-users';
-import { SiteUserFormPage, SiteUserListPage, SiteUserViewPage } from '@/features/site-users';
+import { ProjectHubPage, ProjectListPage } from '@/features/projects';
+import { SiteHubPage, SiteListPage } from '@/features/sites';
+import { SponsorUserListPage } from '@/features/project-sponsor-users';
+import { CoUserListPage } from '@/features/site-co-users';
+import { SiteUserListPage } from '@/features/site-users';
 import { AuditTrailPage } from '@/features/audit-trail';
 import { AssumptionsPage } from '@/features/assumptions';
 import { RequireAuth, RequireMasterKey, RequireProjectAccess, RequireSiteAccess, RequireUserType } from './guards';
@@ -84,33 +84,38 @@ const sponsorRoutes: RouteObject[] = [
     element: <RequireUserType types={['sponsor']}>{phase2(PAGE_TITLES.personalDashboard)}</RequireUserType>,
   },
   page(ROUTES.masters, MASTER_VIEW_PERMISSIONS, <HubPage hub="masters" />),
-  page(ROUTES.accessRights, 'masterDefaultAccessRights.view', <TemplateListPage />),
-  page(ROUTES.accessRightsNew, 'masterDefaultAccessRights.new', <TemplateFormPage key="create" mode="create" />),
-  page(ROUTES.accessRightsView, 'masterDefaultAccessRights.view', <TemplateViewPage />),
-  page(ROUTES.accessRightsEdit, 'masterDefaultAccessRights.edit', <TemplateFormPage key="edit" mode="edit" />),
+  page(ROUTES.accessRights, 'masterDefaultAccessRights.view', <TemplateListPage />, [
+    guardOnly(ROUTES.accessRightsNew, 'masterDefaultAccessRights.new'),
+    guardOnly(ROUTES.accessRightsView, 'masterDefaultAccessRights.view'),
+    guardOnly(ROUTES.accessRightsEdit, 'masterDefaultAccessRights.edit'),
+  ]),
   { path: ROUTES.master, element: <RequireMasterKey><MasterListPage /></RequireMasterKey> },
   page(ROUTES.ecrfTemplates, 'ecrfTemplate.view', phase2(PAGE_TITLES.ecrfTemplates)),
-  page(ROUTES.projects, 'project.view', <ProjectListPage />),
-  page(ROUTES.projectNew, 'project.new', <ProjectFormPage key="create" mode="create" />),
+  page(ROUTES.projects, 'project.view', <ProjectListPage />, [
+    guardOnly(ROUTES.projectNew, 'project.new'),
+    guardOnly(ROUTES.projectListEdit, 'project.edit'),
+  ]),
 ];
 
 const siteRoutes: RouteObject = {
   path: ROUTES.siteHub,
   element: <RequireSiteAccess />,
   children: [
-    { index: true, element: <SiteHubPage /> },
-    page(ROUTES.siteEdit, 'investigatorSite.edit', <SiteFormPage key="edit" mode="edit" />),
+    // The hub stays rendered under its "Edit site" drawer.
+    { element: <SiteHubPage />, children: [{ index: true, element: null }, guardOnly(ROUTES.siteEdit, 'investigatorSite.edit')] },
     page(ROUTES.siteDashboard, null, phase2(PAGE_TITLES.siteDashboard)),
     page(ROUTES.siteEcrfs, 'siteEcrfs.view', phase2(PAGE_TITLES.siteEcrfs)),
     page(ROUTES.siteQueries, 'siteEcrfQuery.view', phase2(PAGE_TITLES.siteQueries)),
-    page(ROUTES.siteCoUsers, 'coUserManagement.view', <CoUserListPage />),
-    page(ROUTES.siteCoUserAffiliate, 'coUserManagement.affiliate', <CoUserFormPage key="create" mode="create" />),
-    page(ROUTES.siteCoUserView, 'coUserManagement.view', <CoUserViewPage />),
-    page(ROUTES.siteCoUserEdit, 'coUserManagement.edit', <CoUserFormPage key="edit" mode="edit" />),
-    page(ROUTES.siteUsers, 'siteUserManagement.view', <SiteUserListPage />),
-    page(ROUTES.siteUserNew, 'siteUserManagement.new', <SiteUserFormPage key="create" mode="create" />),
-    page(ROUTES.siteUserView, 'siteUserManagement.view', <SiteUserViewPage />),
-    page(ROUTES.siteUserEdit, 'siteUserManagement.edit', <SiteUserFormPage key="edit" mode="edit" />),
+    page(ROUTES.siteCoUsers, 'coUserManagement.view', <CoUserListPage />, [
+      guardOnly(ROUTES.siteCoUserAffiliate, 'coUserManagement.affiliate'),
+      guardOnly(ROUTES.siteCoUserView, 'coUserManagement.view'),
+      guardOnly(ROUTES.siteCoUserEdit, 'coUserManagement.edit'),
+    ]),
+    page(ROUTES.siteUsers, 'siteUserManagement.view', <SiteUserListPage />, [
+      guardOnly(ROUTES.siteUserNew, 'siteUserManagement.new'),
+      guardOnly(ROUTES.siteUserView, 'siteUserManagement.view'),
+      guardOnly(ROUTES.siteUserEdit, 'siteUserManagement.edit'),
+    ]),
     page(ROUTES.siteEtmf, 'etmfSite.view', phase2(PAGE_TITLES.siteEtmf)),
     page(ROUTES.siteEtmfProject, 'etmfProject.view', phase2(PAGE_TITLES.projectEtmf)),
     page(ROUTES.siteSupportContacts, 'supportContacts.view', phase2(PAGE_TITLES.supportContacts)),
@@ -122,23 +127,25 @@ const projectRoutes: RouteObject = {
   path: ROUTES.projectHub,
   element: <RequireProjectAccess />,
   children: [
-    { index: true, element: <RequireUserType types={['sponsor']}><ProjectHubPage /></RequireUserType> },
-    page(ROUTES.projectEdit, 'project.edit', <ProjectFormPage key="edit" mode="edit" />),
+    // The hub stays rendered under its "Edit project" drawer.
+    {
+      element: <RequireUserType types={['sponsor']}><ProjectHubPage /></RequireUserType>,
+      children: [{ index: true, element: null }, guardOnly(ROUTES.projectEdit, 'project.edit')],
+    },
     {
       path: ROUTES.projectDashboard,
       element: <RequireUserType types={['sponsor']}>{phase2(PAGE_TITLES.projectDashboard)}</RequireUserType>,
     },
     page(ROUTES.projectEcrf, 'projectEcrf.view', phase2(PAGE_TITLES.projectEcrf)),
-    page(ROUTES.projectSponsorUsers, 'sponsorUserManagement.view', <SponsorUserListPage />),
-    page(
-      ROUTES.projectSponsorUserAffiliate,
-      'sponsorUserManagement.affiliate',
-      <SponsorUserFormPage key="create" mode="create" />,
-    ),
-    page(ROUTES.projectSponsorUserView, 'sponsorUserManagement.view', <SponsorUserViewPage />),
-    page(ROUTES.projectSponsorUserEdit, 'sponsorUserManagement.edit', <SponsorUserFormPage key="edit" mode="edit" />),
-    page(ROUTES.projectSites, 'investigatorSite.view', <SiteListPage />),
-    page(ROUTES.projectSiteNew, 'investigatorSite.new', <SiteFormPage key="create" mode="create" />),
+    page(ROUTES.projectSponsorUsers, 'sponsorUserManagement.view', <SponsorUserListPage />, [
+      guardOnly(ROUTES.projectSponsorUserAffiliate, 'sponsorUserManagement.affiliate'),
+      guardOnly(ROUTES.projectSponsorUserView, 'sponsorUserManagement.view'),
+      guardOnly(ROUTES.projectSponsorUserEdit, 'sponsorUserManagement.edit'),
+    ]),
+    page(ROUTES.projectSites, 'investigatorSite.view', <SiteListPage />, [
+      guardOnly(ROUTES.projectSiteNew, 'investigatorSite.new'),
+      guardOnly(ROUTES.projectSiteListEdit, 'investigatorSite.edit'),
+    ]),
     page(ROUTES.projectQueries, 'projectQueriesAll.export', phase2(PAGE_TITLES.projectQueries)),
     page(ROUTES.projectEtmf, 'etmfProject.view', phase2(PAGE_TITLES.projectEtmf)),
     page(ROUTES.projectDatabaseLock, 'projectDatabase.lock', phase2(PAGE_TITLES.projectDatabaseLock)),

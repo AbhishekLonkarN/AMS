@@ -1,16 +1,22 @@
-import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useId, useMemo } from 'react';
 import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Site } from '@/types';
 import { notify, useSitesStore } from '@/store';
-import { paths } from '@/app/router/route-paths.constants';
 import { isSameText } from '@/utils/string.utils';
 import { useMasterOptions } from '@/features/masters';
 import { SITE_LABELS as L, SITE_VALIDATION } from '../constants/sites.constants';
 import { buildSiteSchema, type SiteFormValues } from '../schemas/site.schema';
 
 export type FormMode = 'create' | 'edit';
+
+interface SiteFormOptions {
+  mode: FormMode;
+  projectId: string;
+  siteId?: string;
+  /** Called after a successful save (closes the drawer). */
+  onDone: () => void;
+}
 
 const toFormValues = (s?: Site) =>
   ({
@@ -24,13 +30,12 @@ const toFormValues = (s?: Site) =>
     statusId: s?.statusId ?? '',
   }) as unknown as SiteFormValues;
 
-/** Create and Edit share this hook and one form view. */
-export function useSiteForm(mode: FormMode) {
-  const navigate = useNavigate();
-  const { projectId = '', siteId } = useParams();
+/** Create and Edit share this hook and one drawer form view. */
+export function useSiteForm({ mode, projectId, siteId, onDone }: SiteFormOptions) {
   const sites = useSitesStore((s) => s.sites);
   const addSite = useSitesStore((s) => s.addSite);
   const updateSite = useSitesStore((s) => s.updateSite);
+  const formId = useId();
   const site = sites.find((s) => s.id === siteId && s.projectId === projectId);
 
   const resolver = useMemo<Resolver<SiteFormValues>>(() => {
@@ -55,7 +60,6 @@ export function useSiteForm(mode: FormMode) {
 
   const form = useForm<SiteFormValues>({ resolver, defaultValues: toFormValues(site) });
   const statusOptions = useMasterOptions('siteStatus', site?.statusId);
-  const listPath = paths.projectSites(projectId);
 
   const handleSubmit = form.handleSubmit((values) => {
     const input = { ...values, projectId, siteCode: values.siteCode.trim().toUpperCase() };
@@ -66,14 +70,15 @@ export function useSiteForm(mode: FormMode) {
       updateSite(site.id, input);
       notify.success(L.saved(input.siteCode));
     }
-    navigate(listPath);
+    onDone();
   });
 
   return {
     isNotFound: mode === 'edit' && !site,
     title: mode === 'create' ? L.createTitle : L.editTitle,
+    subtitle: site ? `${site.siteCode} · ${site.siteName}` : L.createDescription,
     submitLabel: mode === 'create' ? L.submitCreate : L.submitEdit,
-    backTo: listPath,
+    formId,
     form,
     statusOptions,
     handleSubmit,

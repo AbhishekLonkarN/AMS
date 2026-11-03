@@ -57,7 +57,7 @@ export function AdminUserFormView({
           </DrawerSection>
         </div>
         <div {...panelProps('access')}>
-          <AccessRightsDrawerSections model={accessRights} matrixTitle={L.matrixTitle} matrixStyle="table" />
+          <AccessRightsDrawerSections model={accessRights} matrixTitle={L.matrixTitle} />
         </div>
       </form>
     </DrawerPanel>

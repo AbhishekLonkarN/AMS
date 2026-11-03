@@ -25,6 +25,8 @@ export function useSiteHub() {
   ];
 
   return {
+    id: site.id,
+    projectId: site.projectId,
     title: `${site.siteCode} · ${site.siteName}`,
     description: `${site.investigatorName} · ${site.location}`,
     status: masterLabel(site.statusId),

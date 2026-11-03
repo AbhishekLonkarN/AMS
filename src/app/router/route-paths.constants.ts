@@ -38,6 +38,7 @@ export const ROUTES = {
   ecrfTemplates: '/ecrf-templates',
   projects: '/projects',
   projectNew: '/projects/new',
+  projectListEdit: '/projects/edit/:projectId',
 
   // Project hub
   projectHub: '/projects/:projectId',
@@ -50,6 +51,7 @@ export const ROUTES = {
   projectSponsorUserEdit: '/projects/:projectId/sponsor-users/:affiliationId/edit',
   projectSites: '/projects/:projectId/sites',
   projectSiteNew: '/projects/:projectId/sites/new',
+  projectSiteListEdit: '/projects/:projectId/sites/edit/:siteId',
   projectQueries: '/projects/:projectId/queries',
   projectEtmf: '/projects/:projectId/etmf',
   projectDatabaseLock: '/projects/:projectId/database-lock',
@@ -93,6 +95,7 @@ export const paths = {
   accessRightsEdit: (templateId: string) => generatePath(ROUTES.accessRightsEdit, { templateId }),
   master: (masterKey: MasterKey) => generatePath(ROUTES.master, { masterKey }),
 
+  projectListEdit: project(ROUTES.projectListEdit),
   projectHub: project(ROUTES.projectHub),
   projectEdit: project(ROUTES.projectEdit),
   projectDashboard: project(ROUTES.projectDashboard),
@@ -105,6 +108,7 @@ export const paths = {
     generatePath(ROUTES.projectSponsorUserEdit, { projectId, affiliationId }),
   projectSites: project(ROUTES.projectSites),
   projectSiteNew: project(ROUTES.projectSiteNew),
+  projectSiteListEdit: site(ROUTES.projectSiteListEdit),
   projectQueries: project(ROUTES.projectQueries),
   projectEtmf: project(ROUTES.projectEtmf),
   projectDatabaseLock: project(ROUTES.projectDatabaseLock),

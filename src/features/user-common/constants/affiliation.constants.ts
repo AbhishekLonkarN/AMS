@@ -1,6 +1,10 @@
 export const AFFILIATION_LABELS = {
   accountSection: 'User',
-  accessSection: 'Designation and access rights',
+  accountHint: 'Search an active account; its details fill in automatically.',
+  accountHintEdit: 'Account details are managed by the IT admin.',
+  roleSection: 'Designation and time-zone',
+  tabUser: 'User',
+  assignmentSection: 'Affiliation',
   searchAccount: 'Search user by Email ID (User ID)',
   searchPlaceholder: 'Type an email or name…',
   noAccounts: 'No matching active account',

@@ -5,5 +5,6 @@ export { UserMenu } from './UserMenu';
 export { PageHeader } from './PageHeader';
 export { TileGrid } from './TileGrid';
 export { Tabs, type TabItem } from './Tabs';
+export { TabPanel } from './TabPanel';
 export { DetailList, type DetailItem } from './DetailList';
 export * from './layout.types';

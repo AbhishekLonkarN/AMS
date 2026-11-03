@@ -24,7 +24,7 @@ export function useSiteList() {
       { key: 'open', label: L.open, icon: Hospital, onClick: () => navigate(paths.siteHub(projectId, site.id)) },
     ];
     if (canEdit) {
-      actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => navigate(paths.siteEdit(projectId, site.id)) });
+      actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => navigate(paths.projectSiteListEdit(projectId, site.id)) });
     }
     return actions;
   };

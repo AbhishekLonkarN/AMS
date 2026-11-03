@@ -1,18 +1,27 @@
-import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { AccessRightsTemplate, PermissionKey, UserType } from '@/types';
 import { notify, useAccessRightsStore } from '@/store';
 import { PERMISSION_CATALOG } from '@/rbac';
-import { ROUTES } from '@/app/router/route-paths.constants';
 import { USER_TYPE_LABELS } from '@/constants/user.constants';
 import { isSameText } from '@/utils/string.utils';
+import { useFormTabs } from '@/features/user-common';
 import { ACCESS_RIGHTS_LABELS as L } from '../constants/access-rights.constants';
 import { buildTemplateSchema, type TemplateFormValues } from '../schemas/access-rights-template.schema';
 import { useTemplateUsage } from './useTemplateUsage';
 
 export type FormMode = 'create' | 'edit';
+
+interface TemplateFormOptions {
+  mode: FormMode;
+  templateId?: string;
+  /** Called after a successful save (closes the drawer). */
+  onDone: () => void;
+}
+
+const TABS = ['details', 'access'] as const;
+const FIELD_TABS = { name: 'details', userType: 'details', status: 'details', permissions: 'access' } as const;
 
 const toFormValues = (t?: AccessRightsTemplate) =>
   ({
@@ -22,14 +31,14 @@ const toFormValues = (t?: AccessRightsTemplate) =>
     permissions: t?.permissions ?? [],
   }) as unknown as TemplateFormValues;
 
-/** Create and Edit share this hook and one form view. */
-export function useTemplateForm(mode: FormMode) {
-  const navigate = useNavigate();
-  const { templateId } = useParams();
+/** Create and Edit share this hook and one drawer form view. */
+export function useTemplateForm({ mode, templateId, onDone }: TemplateFormOptions) {
   const templates = useAccessRightsStore((s) => s.templates);
   const addTemplate = useAccessRightsStore((s) => s.addTemplate);
   const updateTemplate = useAccessRightsStore((s) => s.updateTemplate);
   const usage = useTemplateUsage();
+  const formId = useId();
+  const tabs = useFormTabs(TABS, FIELD_TABS);
   const template = templates.find((t) => t.id === templateId);
 
   const schema = useMemo(
@@ -60,14 +69,16 @@ export function useTemplateForm(mode: FormMode) {
       updateTemplate(template.id, input);
       notify.success(L.saved(input.name));
     }
-    navigate(ROUTES.accessRights);
-  });
+    onDone();
+  }, tabs.showFirstError);
 
   return {
     isNotFound: mode === 'edit' && !template,
     title: mode === 'create' ? L.createTitle : L.editTitle,
+    subtitle: mode === 'edit' ? template?.name : L.createDescription,
     submitLabel: mode === 'create' ? L.submitCreate : L.submitEdit,
-    backTo: ROUTES.accessRights,
+    formId,
+    tabs,
     form,
     userType,
     matrix: userType ? PERMISSION_CATALOG[userType] : undefined,

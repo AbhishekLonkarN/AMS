@@ -35,6 +35,7 @@ export function useProjectHub() {
   ];
 
   return {
+    id: project.id,
     title: project.name,
     description: project.description,
     status: masterLabel(project.statusId),

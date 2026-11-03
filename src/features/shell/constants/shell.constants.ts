@@ -9,7 +9,6 @@ export const SECTION_TITLES: Record<NavSectionKey, string | undefined> = {
 };
 
 export const SHELL_LABELS = {
-  brandSubtitleFallback: 'Clinical EDC',
   defaultRole: {
     admin: 'AMS IT Admin',
     sponsor: 'Sponsor',
