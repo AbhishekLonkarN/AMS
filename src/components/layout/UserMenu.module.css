@@ -48,3 +48,114 @@
 .footer {
   @apply mt-2 w-full border-t border-base-300 p-0 pt-2;
 }
+
+/* ---------- Admin look ---------- */
+:global([data-shell-variant='admin']) .trigger {
+  gap: 12px;
+  padding: 5px 14px 5px 5px;
+  background: #fff;
+  border: 1px solid #e3e9f1;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(31, 60, 110, 0.06);
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+}
+
+:global([data-shell-variant='admin']) .trigger:hover,
+:global([data-shell-variant='admin']) .trigger:focus-visible {
+  background: #fff;
+  border-color: #1f5f99;
+  box-shadow: 0 0 0 4px #e8f0f8;
+}
+
+:global([data-shell-variant='admin']) .avatar {
+  width: 38px;
+  height: 38px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(135deg, #2a72b6 0%, #1f5f99 100%);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 3.5px rgba(31, 95, 153, 0.35);
+}
+
+:global([data-shell-variant='admin']) .trigger .name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1b2733;
+}
+
+:global([data-shell-variant='admin']) .trigger .role {
+  font-size: 12px;
+  color: #6b7a8a;
+}
+
+:global([data-shell-variant='admin']) .trigger > svg {
+  color: #6b7a8a;
+  transition: color 0.18s;
+}
+
+:global([data-shell-variant='admin']) .trigger:hover > svg {
+  color: #1f5f99;
+}
+
+:global([data-shell-variant='admin']) .panel {
+  width: 19rem;
+  margin-top: 10px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #e3e9f1;
+  border-radius: 20px;
+  box-shadow:
+    0 30px 60px -28px rgba(31, 60, 110, 0.5),
+    0 6px 20px rgba(31, 60, 110, 0.1);
+}
+
+:global([data-shell-variant='admin']) .panelHeader {
+  margin: 0 0 8px;
+  padding: 14px 14px 13px;
+  background: linear-gradient(135deg, #f1f6fc 0%, #e6eff9 100%);
+  border: 0;
+  border-radius: 14px;
+}
+
+:global([data-shell-variant='admin']) .panelHeader .name {
+  font-size: 14px;
+  color: #1b2733;
+}
+
+:global([data-shell-variant='admin']) .groupTitle {
+  padding: 8px 14px 4px;
+  letter-spacing: 0.12em;
+  color: #1f5f99;
+}
+
+:global([data-shell-variant='admin']) .demoOption {
+  border-radius: 10px;
+}
+
+:global([data-shell-variant='admin']) .demoOption:hover {
+  background: #eef4fb;
+}
+
+:global([data-shell-variant='admin']) .demoOption:global(.menu-active) {
+  color: #1f5f99;
+  background: #e8f0f8;
+}
+
+:global([data-shell-variant='admin']) .footer {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e8edf3;
+}
+
+:global([data-shell-variant='admin']) .footer li > * {
+  border-radius: 10px;
+}
+
+:global([data-shell-variant='admin']) .footer li > *:hover {
+  color: #1f5f99;
+  background: #eef4fb;
+}

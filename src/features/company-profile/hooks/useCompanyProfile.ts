@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { SelectOption } from '@/components/form';
 import { notify, useCompanyProfileStore, useUsersStore } from '@/store';
 import { usePermission } from '@/rbac';
-import { ROUTES } from '@/app/router/route-paths.constants';
 import { isSameText } from '@/utils/string.utils';
 import { COMPANY_PROFILE_LABELS as L } from '../constants/company-profile.constants';
 import { companyProfileSchema, type CompanyProfileFormValues } from '../schemas/company-profile.schema';
@@ -60,7 +59,6 @@ export function useCompanyProfile() {
     isEditing: canEdit && isEditing,
     onEdit: canEdit ? handleEdit : undefined,
     handleCancel,
-    backTo: ROUTES.adminHome,
     form,
     adminOptions,
     logoFileName: form.watch('logoFileName'),

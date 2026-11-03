@@ -12,22 +12,23 @@ export const DEMO_USERS = [
 ] as const;
 
 export const LOGIN_LABELS = {
-  title: 'Sign in',
-  subtitle: 'Use your registered email ID (User ID).',
+  title: 'Welcome to ClinTech',
+  subtitle: 'Sign in to your account',
+  description: 'Access your authorized clinical research workspace.',
   email: 'Email ID (User ID)',
   emailPlaceholder: 'name@company.com',
   password: 'Password',
   passwordPlaceholder: 'Any password works in this prototype',
-  submit: 'Sign in',
+  showPassword: 'Show password',
+  hidePassword: 'Hide password',
+  submit: 'Login',
+  forgot: 'Forgot password?',
+  poweredBy: 'Powered by',
   demoTitle: 'Quick demo sign-in',
   demoHint: 'One user per role. Every switch is recorded in the audit trail.',
-  brandTagline: 'Electronic Data Capture for medical-device clinical investigations',
-  brandPoints: [
-    'Role-based access per project and site',
-    'Full audit trail of every change',
-    'Built for EU CE Mark and CDSCO submissions',
-  ],
-  prototypeNote: 'Prototype · dummy data only',
+  heroTitle: 'Clinical research,',
+  heroTitleEmphasis: 'simplified.',
+  heroText: 'Manage clinical study data, participant records, and electronic case report forms in one centralized platform.',
 } as const;
 
 export const LOGIN_ERRORS: Record<LoginErrorCode, string> = {

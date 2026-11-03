@@ -17,3 +17,37 @@
 .side {
   @apply z-(--z-sidebar);
 }
+
+/* ---------- Admin look: the login page's soft lavender behind the content ---------- */
+:global([data-shell-variant='admin']) .content {
+  background: #eef2f9;
+  /* the page scrolls inside .main, so the scrollbar starts below the header instead of running beside it */
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+:global([data-shell-variant='admin']) .main {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #c3cddb transparent;
+}
+
+:global([data-shell-variant='admin']) .main::-webkit-scrollbar {
+  width: 6px;
+}
+
+:global([data-shell-variant='admin']) .main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:global([data-shell-variant='admin']) .main::-webkit-scrollbar-thumb {
+  background: #c3cddb;
+  border-radius: 9999px;
+}
+
+:global([data-shell-variant='admin']) .main::-webkit-scrollbar-thumb:hover {
+  background: #a9b6c8;
+}

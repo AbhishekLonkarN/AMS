@@ -1,1 +1,2 @@
-export { AccountListPage } from './pages/AccountListPage';
+export { AccountFormContainer } from './pages/AccountFormContainer';
+export { AccountViewContainer } from './pages/AccountViewContainer';

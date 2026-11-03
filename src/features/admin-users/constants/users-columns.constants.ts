@@ -1,17 +1,16 @@
 import type { User } from '@/types';
 import { createSrNoColumn, createStatusColumn, type DataGridColumn } from '@/components/data-grid';
-import { ACCOUNT_TYPE_LABELS } from '@/constants/user.constants';
 import { fullName } from '@/utils/string.utils';
-import { ACCOUNT_COLUMN_LABELS as C } from './accounts.constants';
+import { USERS_COLUMN_LABELS as C, USERS_TYPE_LABELS } from './users-list.constants';
 
-export const ACCOUNT_COLUMNS: DataGridColumn<User>[] = [
+export const USERS_COLUMNS: DataGridColumn<User>[] = [
   createSrNoColumn<User>(),
   { id: 'name', header: C.name, accessorFn: (u) => fullName(u.prefix, u.name) },
   { id: 'email', header: C.email, accessorKey: 'email' },
   {
-    id: 'accountType',
-    header: C.accountType,
-    accessorFn: (u) => (u.accountType ? ACCOUNT_TYPE_LABELS[u.accountType] : ''),
+    id: 'type',
+    header: C.type,
+    accessorFn: (u) => (u.userType === 'site' ? '' : USERS_TYPE_LABELS[u.userType]),
     meta: { filterVariant: 'select' },
   },
   { id: 'organization', header: C.organization, accessorKey: 'organization', meta: { filterVariant: 'select' } },

@@ -56,7 +56,10 @@ export const ASSUMPTION_SECTIONS: AssumptionSection[] = [
     id: 'access',
     title: 'Access and navigation',
     items: [
-      { title: 'Back-up', body: 'Not in the Admin matrix; shown to admins with Cloud Settings › View.' },
+      {
+        title: 'Admin sidebar',
+        body: 'Dashboard, Company Profile, Users (Admin Users and Sponsor & CO Users), Project Export and Audit Trail. Cloud Settings and Back-up are not in the sidebar for now.',
+      },
       {
         title: 'Queries on eCRFs of Project',
         body: 'The matrix only has Export for this module, so Export is what makes the page visible.',

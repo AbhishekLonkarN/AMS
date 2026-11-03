@@ -1,11 +1,14 @@
 /** Every page / nav / tile title in one place. */
 export const PAGE_TITLES = {
   home: 'Home',
+  dashboard: 'Dashboard',
   adminHome: 'Admin Portal',
-  companyProfile: 'Software and Owner Company Profile',
+  companyProfile: 'Company Profile',
+  users: 'Users',
   adminUsers: 'Admin User Management',
   accounts: 'Sponsor and CO User Management',
   databaseExport: 'Project Database – Export',
+  projectExport: 'Project Export',
   cloudSettings: 'Cloud Settings',
   backup: 'Back-up',
   auditTrail: 'Audit Trail',
@@ -42,9 +45,11 @@ export const PAGE_TITLES = {
 
 export const PAGE_DESCRIPTIONS = {
   companyProfile: 'Owner company branding and IT admin details',
+  users: 'Admin users, and sponsor and CO user accounts',
   adminUsers: 'Create, edit and manage admin access rights',
   accounts: 'Create global accounts for sponsor and CRO staff',
   databaseExport: 'Export a full project database',
+  projectExport: 'Export a full project database',
   cloudSettings: 'Cloud environment configuration',
   backup: 'Manual and scheduled back-ups',
   auditTrail: 'Every change, login and permission event',

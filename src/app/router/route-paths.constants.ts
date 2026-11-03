@@ -14,15 +14,18 @@ export const ROUTES = {
 
   // Admin portal
   adminHome: '/admin',
-  adminUsers: '/admin/users',
-  adminUserNew: '/admin/users/new',
-  adminUserView: '/admin/users/:userId',
-  adminUserEdit: '/admin/users/:userId/edit',
-  accounts: '/admin/accounts',
-  accountNew: '/admin/accounts/new',
-  accountView: '/admin/accounts/:userId',
-  accountEdit: '/admin/accounts/:userId/edit',
   companyProfile: '/admin/company-profile',
+  // Users tab: one entry in the sidebar, two lists inside it
+  users: '/admin/users',
+  adminUsers: '/admin/users/admin-users',
+  adminUserNew: '/admin/users/admin-users/new',
+  adminUserView: '/admin/users/admin-users/:userId',
+  adminUserEdit: '/admin/users/admin-users/:userId/edit',
+  accounts: '/admin/users/sponsor-and-co',
+  accountNew: '/admin/users/sponsor-and-co/new',
+  accountView: '/admin/users/sponsor-and-co/:userId',
+  accountEdit: '/admin/users/sponsor-and-co/:userId/edit',
+  projectExport: '/admin/project-export',
   cloudSettings: '/admin/cloud-settings',
   backup: '/admin/backup',
 

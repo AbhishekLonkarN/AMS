@@ -20,7 +20,6 @@ export function CompanyProfileView({
   isEditing,
   onEdit,
   handleCancel,
-  backTo,
   form,
   adminOptions,
   logoFileName,
@@ -38,7 +37,6 @@ export function CompanyProfileView({
         <PageHeader
           title={L.title}
           description={L.description}
-          backTo={backTo}
           actions={
             onEdit && (
               <button type="button" className="btn btn-primary btn-sm" onClick={onEdit}>
@@ -76,7 +74,6 @@ export function CompanyProfileView({
       <PageHeader
         title={L.editTitle}
         description={L.description}
-        backTo={backTo}
         actions={
           <>
             <button type="button" className="btn btn-ghost btn-sm" onClick={handleCancel}>

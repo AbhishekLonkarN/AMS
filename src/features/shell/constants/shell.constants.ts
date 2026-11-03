@@ -19,13 +19,13 @@ export const SHELL_LABELS = {
 } as const;
 
 export const HUB_TITLES = {
-  admin: 'Admin Portal',
+  admin: 'Dashboard',
   sponsor: 'Home',
   masters: 'Masters',
 } as const;
 
 export const HUB_DESCRIPTIONS = {
-  admin: 'System housekeeping: company profile, users, exports and audit.',
+  admin: 'Company profile, users, project export and audit trail.',
   sponsor: 'Masters, templates and the projects you are affiliated to.',
   masters: 'Reference lists used in dropdowns across ClinTech.',
 } as const;

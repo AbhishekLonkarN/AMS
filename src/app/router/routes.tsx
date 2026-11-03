@@ -1,5 +1,5 @@
-﻿import type { ReactNode } from 'react';
-import { createBrowserRouter, type RouteObject } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
 import type { PermissionKey } from '@/types';
 import { RequirePermission } from '@/rbac';
 import { PAGE_TITLES } from '@/constants/page-titles.constants';
@@ -13,8 +13,8 @@ import {
   ShellLayoutPage,
 } from '@/features/shell';
 import { UiKitPage } from '@/features/ui-kit';
-import { AdminUserListPage } from '@/features/admin-users';
-import { AccountListPage } from '@/features/sponsor-co-accounts';
+import { AdminDashboardPage } from '@/features/admin-dashboard';
+import { UsersListPage } from '@/features/admin-users';
 import { CompanyProfilePage } from '@/features/company-profile';
 import { TemplateListPage } from '@/features/access-rights-templates';
 import { MasterListPage } from '@/features/masters';
@@ -60,19 +60,23 @@ const guardOnly = (path: string, permission: PermissionKey): RouteObject => ({
 // ---- route tree ----------------------------------------------------------
 
 const adminRoutes: RouteObject[] = [
-  { path: ROUTES.adminHome, element: <RequireUserType types={['admin']}><HubPage hub="admin" /></RequireUserType> },
-  // List pages open create / view / edit in a drawer; the children only guard those URLs.
-  page(ROUTES.adminUsers, 'adminUser.view', <AdminUserListPage />, [
+  { path: ROUTES.adminHome, element: <RequireUserType types={['admin']}><AdminDashboardPage /></RequireUserType> },
+  page(ROUTES.companyProfile, 'companyProfile.view', <CompanyProfilePage />),
+  // One "Users" tab in the sidebar: a single list of Admin, Sponsor and CO users. Create / view / edit open
+  // in a drawer over it; those child routes only enforce their permission.
+  page(ROUTES.users, ['adminUser.view', 'sponsorCoUser.view'], <UsersListPage />, [
     guardOnly(ROUTES.adminUserNew, 'adminUser.new'),
     guardOnly(ROUTES.adminUserView, 'adminUser.view'),
     guardOnly(ROUTES.adminUserEdit, 'adminUser.edit'),
-  ]),
-  page(ROUTES.accounts, 'sponsorCoUser.view', <AccountListPage />, [
     guardOnly(ROUTES.accountNew, 'sponsorCoUser.new'),
     guardOnly(ROUTES.accountView, 'sponsorCoUser.view'),
     guardOnly(ROUTES.accountEdit, 'sponsorCoUser.edit'),
+    // The former separate lists now live in the Users list.
+    { path: ROUTES.adminUsers, element: <Navigate to={ROUTES.users} replace /> },
+    { path: ROUTES.accounts, element: <Navigate to={ROUTES.users} replace /> },
   ]),
-  page(ROUTES.companyProfile, 'companyProfile.view', <CompanyProfilePage />),
+  page(ROUTES.projectExport, 'projectDatabase.export', phase2(PAGE_TITLES.projectExport)),
+  // Not in the Admin sidebar for now (routes kept; add a tab or move them inside one later).
   page(ROUTES.cloudSettings, 'cloudSettings.view', phase2(PAGE_TITLES.cloudSettings)),
   page(ROUTES.backup, 'cloudSettings.view', phase2(PAGE_TITLES.backup)),
 ];
