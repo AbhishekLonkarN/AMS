@@ -127,8 +127,7 @@
 }
 
 .hbarFill {
-  @apply block h-full rounded-pill;
-  background: linear-gradient(90deg, var(--color-accent-500), var(--color-brand-600));
+  @apply block h-full rounded-pill bg-brand-600;
 }
 
 .hbarValue {
