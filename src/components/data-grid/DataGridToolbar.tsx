@@ -1,35 +1,36 @@
 import type { ReactNode } from 'react';
-import { FileSpreadsheet, FileText, FilterX, Search } from 'lucide-react';
+import { FileSpreadsheet, FileText, Search, X } from 'lucide-react';
 import clsx from 'clsx';
 import type { DataGridExport, ToolbarSelectFilter } from './data-grid.types';
 import { DATA_GRID_LABELS } from './data-grid.constants';
+import { DataGridFilters } from './DataGridFilters';
 import styles from './DataGrid.module.css';
 
 interface DataGridToolbarProps {
   search: string;
   searchPlaceholder: string;
   onSearchChange: (value: string) => void;
-  /** One dropdown per `select` column, in the same row as the search box. */
+  /** One dropdown per `select` column, inside the Filters popover. */
   filters: ToolbarSelectFilter[];
   onFilterChange: (id: string, value: string | undefined) => void;
-  hasActiveFilters: boolean;
   onClearFilters: () => void;
   exportActions?: DataGridExport;
   actions?: ReactNode;
 }
 
-/** One row: search (all text columns) + a dropdown per select column + export + page actions. */
+/** Search (all text columns) + Filters popover + export + page actions; active filters show as chips below. */
 export function DataGridToolbar({
   search,
   searchPlaceholder,
   onSearchChange,
   filters,
   onFilterChange,
-  hasActiveFilters,
   onClearFilters,
   exportActions,
   actions,
 }: DataGridToolbarProps) {
+  const activeFilters = filters.filter((filter) => filter.value);
+
   return (
     <div className={styles.toolbar}>
       <label className={clsx('input input-sm', styles.search)}>
@@ -44,24 +45,13 @@ export function DataGridToolbar({
         />
       </label>
 
-      {filters.map((filter) => (
-        <label key={filter.id} className={clsx('select select-sm', styles.selectFilter, filter.value && styles.active)}>
-          <span className="label">{filter.label}</span>
-          <select value={filter.value} onChange={(e) => onFilterChange(filter.id, e.target.value || undefined)}>
-            <option value="">{DATA_GRID_LABELS.filterAll}</option>
-            {filter.options.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </label>
-      ))}
-
-      {hasActiveFilters && (
-        <button type="button" className="btn btn-ghost btn-sm" onClick={onClearFilters}>
-          <FilterX className="size-4" aria-hidden /> {DATA_GRID_LABELS.clearFilters}
-        </button>
+      {filters.length > 0 && (
+        <DataGridFilters
+          filters={filters}
+          activeCount={activeFilters.length}
+          onFilterChange={onFilterChange}
+          onClearFilters={onClearFilters}
+        />
       )}
 
       <div className={styles.toolbarEnd}>
@@ -77,6 +67,27 @@ export function DataGridToolbar({
         )}
         {actions}
       </div>
+
+      {activeFilters.length > 0 && (
+        <div className={styles.chips}>
+          {activeFilters.map((filter) => (
+            <span key={filter.id} className={styles.chip}>
+              <span className={styles.chipLabel}>{filter.label}:</span> {filter.value}
+              <button
+                type="button"
+                className={styles.chipRemove}
+                aria-label={DATA_GRID_LABELS.removeFilter(filter.label)}
+                onClick={() => onFilterChange(filter.id, undefined)}
+              >
+                <X className="size-3" aria-hidden />
+              </button>
+            </span>
+          ))}
+          <button type="button" className="btn btn-link btn-xs" onClick={onClearFilters}>
+            {DATA_GRID_LABELS.clearAll}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

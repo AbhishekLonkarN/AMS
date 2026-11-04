@@ -37,3 +37,7 @@
 .size {
   @apply flex items-center gap-2 text-label leading-7 text-ink-500;
 }
+
+.sizeSelect {
+  @apply w-[4.5rem];
+}

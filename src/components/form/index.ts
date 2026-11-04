@@ -3,6 +3,7 @@ export { TextField } from './TextField';
 export { TextAreaField } from './TextAreaField';
 export { SelectField } from './SelectField';
 export { SearchSelect } from './SearchSelect';
+export { DropdownSelect } from './DropdownSelect';
 export { FileField } from './FileField';
 export { ReadOnlyField } from './ReadOnlyField';
 export { FormSection } from './FormSection';

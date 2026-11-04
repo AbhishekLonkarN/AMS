@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -17,7 +17,7 @@ import { EmptyState } from '@/components/feedback';
 import { Tooltip } from '@/components/overlay';
 import type { DataGridColumn, DataGridProps, ToolbarSelectFilter } from './data-grid.types';
 import { Pagination, DEFAULT_PAGE_SIZE } from '@/components/pagination';
-import { DATA_GRID_LABELS } from './data-grid.constants';
+import { DATA_GRID_LABELS, MAX_VISIBLE_ROWS } from './data-grid.constants';
 import { DataGridToolbar } from './DataGridToolbar';
 import styles from './DataGrid.module.css';
 
@@ -36,7 +36,7 @@ function withFilterFns<T>(columns: DataGridColumn<T>[]): DataGridColumn<T>[] {
   });
 }
 
-/** Generic list grid: one-row toolbar (search + dropdown filters), sort, pagination, export, row actions. */
+/** Generic list grid: toolbar (search + Filters popover), sort, pagination, export, row actions. */
 export function DataGrid<T>({
   data,
   columns,
@@ -116,7 +116,31 @@ export function DataGrid<T>({
 
   const rows = table.getRowModel().rows;
   const totalRows = table.getFilteredRowModel().rows.length;
-  // A dropdown in the toolbar for every `select` column, in column order.
+
+  // Past MAX_VISIBLE_ROWS the body scrolls (header pinned) instead of the card growing.
+  // Rows wrap to different heights, so cap at the measured top of the first hidden row.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [maxScrollHeight, setMaxScrollHeight] = useState<number>();
+  useLayoutEffect(() => {
+    const scroller = scrollRef.current;
+    const tableEl = scroller?.querySelector('table');
+    if (!scroller || !tableEl) return;
+    const measure = () => {
+      const firstHidden = tableEl.tBodies[0]?.rows[MAX_VISIBLE_ROWS];
+      // offsetHeight − clientHeight = the horizontal scrollbar, which also takes room inside the cap.
+      setMaxScrollHeight(firstHidden ? firstHidden.offsetTop + scroller.offsetHeight - scroller.clientHeight : undefined);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(tableEl);
+    return () => observer.disconnect();
+  }, [rows]);
+
+  // A new page starts at its first row.
+  useLayoutEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0 });
+  }, [pagination.pageIndex, pagination.pageSize]);
+  // A dropdown in the Filters popover for every `select` column, in column order.
   const selectFilters: ToolbarSelectFilter[] = table
     .getAllLeafColumns()
     .filter((column) => column.columnDef.meta?.filterVariant === 'select')
@@ -132,9 +156,9 @@ export function DataGrid<T>({
     setPagination((p) => ({ ...p, pageIndex: 0 }));
   };
 
+  // Clears the popover filters only; the search box has its own clear.
   const handleClearFilters = () => {
     setColumnFilters([]);
-    setGlobalFilter('');
     setPagination((p) => ({ ...p, pageIndex: 0 }));
   };
 
@@ -146,15 +170,14 @@ export function DataGrid<T>({
         onSearchChange={handleSearchChange}
         filters={selectFilters}
         onFilterChange={(id, value) => table.getColumn(id)?.setFilterValue(value)}
-        hasActiveFilters={columnFilters.length > 0 || globalFilter !== ''}
         onClearFilters={handleClearFilters}
         exportActions={exportActions}
         actions={toolbarActions}
       />
 
-      <div className={styles.scroll}>
+      <div ref={scrollRef} className={styles.scroll} style={{ maxHeight: maxScrollHeight }}>
         <table className={clsx('table', styles.table)}>
-          <thead>
+          <thead className={styles.thead}>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

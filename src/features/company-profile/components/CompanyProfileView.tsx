@@ -1,4 +1,4 @@
-import { Pencil, Save } from 'lucide-react';
+import { Building2, Laptop, Pencil, Save, UserRound } from 'lucide-react';
 import { PageHeader } from '@/components/layout';
 import {
   FileField,
@@ -13,6 +13,7 @@ import {
   COMPANY_PROFILE_LABELS as L,
 } from '../constants/company-profile.constants';
 import type { CompanyProfileModel } from '../hooks/useCompanyProfile';
+import styles from './CompanyProfileView.module.css';
 
 /** Read-only profile; the Edit button (edit rights only) turns the same sections into a form. */
 export function CompanyProfileView({
@@ -45,23 +46,41 @@ export function CompanyProfileView({
             )
           }
         />
-        <FormSection title={L.ownerSection}>
-          <div className="form-grid">
-            <ReadOnlyField label={F.ownerDisplayName} value={profile.ownerDisplayName} />
-            <ReadOnlyField label={F.legalName} value={profile.legalName} />
-            <ReadOnlyField label={F.address} value={profile.address} isFullWidth />
+        <FormSection title={L.ownerSection} icon={Building2}>
+          <div className={styles.columns}>
+            <div className={styles.column}>
+              <ReadOnlyField label={F.ownerDisplayName} value={profile.ownerDisplayName} />
+              <ReadOnlyField label={F.address} value={profile.address} />
+            </div>
+            <div className={styles.column}>
+              <ReadOnlyField label={F.legalName} value={profile.legalName} />
+            </div>
           </div>
         </FormSection>
-        <FormSection title={L.softwareSection}>
-          <div className="form-grid">
-            <ReadOnlyField label={F.softwareName} value={profile.softwareName} />
-            <ReadOnlyField label={F.logo} value={profile.logoFileName} />
+        <FormSection title={L.softwareSection} icon={Laptop}>
+          <div className={styles.columns}>
+            <div className={styles.column}>
+              <ReadOnlyField
+                label={F.softwareName}
+                value={profile.softwareName && <span className={styles.emphasis}>{profile.softwareName}</span>}
+              />
+            </div>
+            <div className={styles.column}>
+              <ReadOnlyField label={F.logo} value={profile.logoFileName} />
+            </div>
           </div>
         </FormSection>
-        <FormSection title={L.adminSection}>
-          <div className="form-grid">
-            <ReadOnlyField label={F.itAdminUserId} value={profile.itAdminUserId} />
-            <ReadOnlyField label={F.itAdminName} value={profile.itAdminName} />
+        <FormSection title={L.adminSection} icon={UserRound}>
+          <div className={styles.columns}>
+            <div className={styles.column}>
+              <ReadOnlyField
+                label={F.itAdminUserId}
+                value={profile.itAdminUserId && <span className={styles.emphasis}>{profile.itAdminUserId}</span>}
+              />
+            </div>
+            <div className={styles.column}>
+              <ReadOnlyField label={F.itAdminName} value={profile.itAdminName} />
+            </div>
           </div>
         </FormSection>
       </div>
@@ -86,7 +105,7 @@ export function CompanyProfileView({
         }
       />
 
-      <FormSection title={L.ownerSection}>
+      <FormSection title={L.ownerSection} icon={Building2}>
         <div className="form-grid">
           <TextField label={F.ownerDisplayName} isRequired error={errors.ownerDisplayName?.message} {...register('ownerDisplayName')} />
           <TextField label={F.legalName} isRequired error={errors.legalName?.message} {...register('legalName')} />
@@ -94,14 +113,14 @@ export function CompanyProfileView({
         </div>
       </FormSection>
 
-      <FormSection title={L.softwareSection}>
+      <FormSection title={L.softwareSection} icon={Laptop}>
         <div className="form-grid">
           <TextField label={F.softwareName} isRequired error={errors.softwareName?.message} {...register('softwareName')} />
           <FileField label={F.logo} accept="image/*" fileName={logoFileName} onFileNameChange={handleLogoChange} />
         </div>
       </FormSection>
 
-      <FormSection title={L.adminSection}>
+      <FormSection title={L.adminSection} icon={UserRound}>
         <div className="form-grid">
           <SelectField
             label={F.itAdminUserId}

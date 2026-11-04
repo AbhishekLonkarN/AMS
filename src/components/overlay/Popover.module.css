@@ -1,5 +1,6 @@
 @reference "@/styles/index.css";
 
+/* max-height is set from the free viewport space (see Popover); content scrolls past it. */
 .panel {
-  @apply z-(--z-dropdown) min-w-56 rounded-card border border-base-300 bg-base-100 p-3 shadow-overlay;
+  @apply z-(--z-dropdown) flex min-w-56 flex-col overflow-y-auto rounded-card border border-base-300 bg-base-100 p-3 shadow-overlay;
 }

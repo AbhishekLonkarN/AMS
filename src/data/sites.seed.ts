@@ -85,7 +85,7 @@ export const SITES_SEED: Site[] = [
     statusId: 'ms-ss-recruiting',
   }),
 
-  // ---- ABCD (gives Dyna Martin a second membership → project/site picker) ----
+  // ---- ABCD ----
   site({
     id: 'site-abcd-fr001',
     projectId: 'prj-abcd',

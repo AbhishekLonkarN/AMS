@@ -12,6 +12,15 @@
   @apply flex size-9 shrink-0 items-center justify-center rounded-control bg-primary text-primary-content;
 }
 
+/* A full-colour logo sits on a light tile instead of the brand blue. */
+.brandMark:has(.brandLogo) {
+  @apply bg-ink-0 p-1;
+}
+
+.brandLogo {
+  @apply size-full object-contain;
+}
+
 .brandText {
   min-width: 0;
 }
@@ -54,143 +63,4 @@
 
 .icon {
   @apply size-4 shrink-0;
-}
-
-/*
- * ---------- Admin look ----------
- * "Hero Fade": navy at the top fading to the brand blue at the bottom, like the overlay on the login photo.
- * The active tab is solid white. Logo and tab structure unchanged.
- */
-:global([data-shell-variant='admin']) .sidebar {
-  position: relative;
-  font-family: 'Segoe UI', Inter, Arial, sans-serif;
-  color: #e3efff;
-  background: linear-gradient(180deg, #071e40 0%, #0d3566 55%, #1f5f99 100%);
-  border-right: 1px solid rgba(207, 230, 255, 0.1);
-}
-
-:global([data-shell-variant='admin']) .brand {
-  height: 44px;
-  gap: 10px;
-  padding: 0 20px 0 28px;
-  border-bottom: 1px solid rgba(207, 230, 255, 0.16);
-}
-
-/* the logo keeps its login-page colours; it is sized so only the cross shows, with the name beside it as text */
-:global([data-shell-variant='admin']) .brandMark {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  overflow: hidden;
-  color: #fff;
-  background: transparent;
-}
-
-:global([data-shell-variant='admin']) .brandLogo {
-  position: absolute;
-  top: 1px;
-  left: -3px;
-  width: 35px;
-  max-width: none;
-  height: auto;
-}
-
-:global([data-shell-variant='admin']) .brandName {
-  font-family: Georgia, 'Palatino Linotype', 'Times New Roman', serif;
-  font-size: 19px;
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-  color: #fff;
-}
-
-/* the Admin sidebar shows the product name only */
-:global([data-shell-variant='admin']) .brandSubtitle {
-  display: none;
-}
-
-:global([data-shell-variant='admin']) .sections {
-  gap: 6px;
-  padding: 20px 0 18px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
-}
-
-:global([data-shell-variant='admin']) .sectionHeader {
-  padding: 8px 30px;
-}
-
-:global([data-shell-variant='admin']) .sectionTitle {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: #8db4dc;
-}
-
-:global([data-shell-variant='admin']) .sectionTitle::before {
-  content: '';
-  width: 16px;
-  height: 2px;
-  border-radius: 2px;
-  background: #20bfd3;
-}
-
-:global([data-shell-variant='admin']) .menu {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 0 16px;
-}
-
-:global([data-shell-variant='admin']) .link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 36px;
-  padding: 0 10px 0 16px;
-  overflow: hidden;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: #dbe9fa;
-  border-radius: 4px;
-  transition:
-    background 0.15s,
-    color 0.15s;
-}
-
-:global([data-shell-variant='admin']) .link .icon {
-  width: 26px;
-  height: 26px;
-  padding: 5px;
-  color: rgba(227, 239, 255, 0.82);
-  stroke-width: 1.7;
-  background: transparent;
-}
-
-:global([data-shell-variant='admin']) .link:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-:global([data-shell-variant='admin']) .link:hover .icon {
-  color: #fff;
-}
-
-:global([data-shell-variant='admin']) .link:global(.menu-active) {
-  font-weight: 600;
-  color: #0d3566;
-  background: #fff;
-}
-
-:global([data-shell-variant='admin']) .link:global(.menu-active) .icon {
-  color: #0d3566;
-}
-
-:global([data-shell-variant='admin']) .link:focus-visible {
-  outline: 2px solid #cfe6ff;
-  outline-offset: 2px;
 }

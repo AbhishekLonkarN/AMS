@@ -1,14 +1,12 @@
 import type { LoginErrorCode } from '@/types';
+import { USER_TYPE_LABELS } from '@/constants/user.constants';
 
-/** One user per role for the demo switcher (login page + header). */
+/** One user per user type for the demo switcher (login page + header). */
 export const DEMO_USERS = [
-  { userId: 'usr-abcd', roleLabel: 'Admin' },
-  { userId: 'usr-jpatel', roleLabel: 'Head-Sponsor' },
-  { userId: 'usr-kbhatt', roleLabel: 'PM-Sponsor' },
-  { userId: 'usr-akulkarni', roleLabel: 'QA Auditor' },
-  { userId: 'usr-amartin', roleLabel: 'CRA-CO' },
-  { userId: 'usr-pchevalier', roleLabel: 'Investigator' },
-  { userId: 'usr-dyna', roleLabel: 'CRC' },
+  { userId: 'usr-abcd', roleLabel: USER_TYPE_LABELS.admin },
+  { userId: 'usr-jpatel', roleLabel: USER_TYPE_LABELS.sponsor },
+  { userId: 'usr-amartin', roleLabel: USER_TYPE_LABELS.co },
+  { userId: 'usr-pchevalier', roleLabel: USER_TYPE_LABELS.site },
 ] as const;
 
 export const LOGIN_LABELS = {
@@ -25,7 +23,7 @@ export const LOGIN_LABELS = {
   forgot: 'Forgot password?',
   poweredBy: 'Powered by',
   demoTitle: 'Quick demo sign-in',
-  demoHint: 'One user per role. Every switch is recorded in the audit trail.',
+  demoHint: 'One user per user type. Every switch is recorded in the audit trail.',
   heroTitle: 'Clinical research,',
   heroTitleEmphasis: 'simplified.',
   heroText: 'Manage clinical study data, participant records, and electronic case report forms in one centralized platform.',

@@ -123,7 +123,7 @@ export const ASSUMPTION_SECTIONS: AssumptionSection[] = [
       { title: 'Uploads', body: 'Logo uploads keep the file name only; the Company Profile logo is therefore optional.' },
       {
         title: 'Seed data',
-        body: 'Duplicate placeholder emails in the drafts were replaced with unique ones. Two ABCD sites were added so a CRC has two memberships.',
+        body: 'Seed data has one user per user type (AMS IT Admin, Sponsor, CO / CRO, Site); further users are created from the app.',
       },
       {
         title: 'Prototype storage',
@@ -136,11 +136,8 @@ export const ASSUMPTION_SECTIONS: AssumptionSection[] = [
 export const DEMO_GUIDE: Record<string, string> = {
   'usr-abcd': 'Create admin users and sponsor/CO accounts; edit the company profile; read the audit trail.',
   'usr-jpatel': 'Everything: masters, projects, sites, affiliate sponsor/CO users, create site users.',
-  'usr-kbhatt': 'Run projects and sites; masters are view-only.',
-  'usr-akulkarni': 'View and export only: notice the missing Add / Edit buttons.',
   'usr-amartin': 'CRA at FR-006 only: monitor the site, create site users.',
   'usr-pchevalier': 'Investigator at FR-006: the site-user view of the app.',
-  'usr-dyna': 'CRC at two sites: picks a project/site after login.',
 };
 
 export const PHASE2_MODULES = [
