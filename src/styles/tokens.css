@@ -116,6 +116,14 @@
   }
 }
 
+/*
+ * Root size: every rem-based token (type, spacing, controls) scales from this.
+ * 93.75% = 15px, so the UI reads like a ~94% browser zoom at 100%.
+ */
+:root {
+  --root-font-size: 93.75%;
+}
+
 /* z-index scale (Tailwind v4 has no z namespace; use as z-(--z-header)) */
 :root {
   --z-base: 0;

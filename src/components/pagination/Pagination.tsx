@@ -1,5 +1,7 @@
+import { useId } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
+import { DropdownSelect } from '@/components/form';
 import { PAGE_SIZE_OPTIONS, PAGINATION_LABELS as L } from './pagination.constants';
 import { getPageItems } from './pagination.utils';
 import styles from './Pagination.module.css';
@@ -32,6 +34,7 @@ export function Pagination({
   pageSizeOptions = PAGE_SIZE_OPTIONS,
   itemLabel = L.defaultItemLabel,
 }: PaginationProps) {
+  const sizeLabelId = useId();
   const from = totalRows === 0 ? 0 : pageIndex * pageSize + 1;
   const to = Math.min(totalRows, (pageIndex + 1) * pageSize);
   const lastIndex = Math.max(0, pageCount - 1);
@@ -84,20 +87,17 @@ export function Pagination({
         </nav>
       </div>
 
-      <label className={styles.size}>
-        {L.rowsPerPage}
-        <select
-          className="select select-sm h-7 min-h-0 w-[4.5rem] text-label"
-          value={pageSize}
-          onChange={(e) => onPageSizeChange(Number(e.target.value))}
-        >
-          {pageSizeOptions.map((size) => (
-            <option key={size} value={size}>
-              {size}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className={styles.size}>
+        <span id={sizeLabelId}>{L.rowsPerPage}</span>
+        <DropdownSelect
+          size="sm"
+          className={styles.sizeSelect}
+          labelledBy={sizeLabelId}
+          value={String(pageSize)}
+          options={pageSizeOptions.map((size) => ({ value: String(size), label: String(size) }))}
+          onChange={(value) => onPageSizeChange(Number(value))}
+        />
+      </div>
     </div>
   );
 }

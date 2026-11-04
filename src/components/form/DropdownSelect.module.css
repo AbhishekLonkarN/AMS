@@ -1,0 +1,100 @@
+@reference "@/styles/index.css";
+
+/* ---- Trigger ---- */
+.trigger {
+  @apply flex w-full cursor-pointer items-center gap-2 rounded-control border border-ink-300 bg-base-100 text-left text-base-content transition-colors hover:border-brand-400;
+}
+
+.md {
+  @apply h-10 px-3 text-body;
+}
+
+.sm {
+  @apply h-8 px-3 text-label;
+}
+
+.trigger:focus-visible,
+.triggerOpen {
+  @apply border-primary ring-3 ring-brand-100 outline-none;
+}
+
+.trigger:disabled {
+  @apply cursor-not-allowed border-base-300 bg-base-200 text-ink-500 hover:border-base-300;
+}
+
+/* Filters: a chosen value is tinted brand so active ones stand out. */
+.triggerSet {
+  @apply border-brand-300 bg-brand-50 font-medium text-brand-800;
+}
+
+.triggerInvalid,
+.triggerInvalid:hover {
+  @apply border-error;
+}
+
+.triggerInvalid:focus-visible,
+.triggerInvalid.triggerOpen {
+  @apply border-error ring-status-error-soft;
+}
+
+.value {
+  @apply min-w-0 flex-1 truncate;
+}
+
+.placeholder {
+  @apply text-ink-500;
+}
+
+.chevron {
+  @apply size-4 shrink-0 text-ink-500 transition-transform;
+}
+
+.chevronOpen {
+  @apply rotate-180 text-primary;
+}
+
+/* ---- Open list: bordered card that stands apart from what is behind it ---- */
+.list {
+  @apply z-(--z-dropdown) flex flex-col gap-0.5 overflow-y-auto rounded-control border border-ink-300 bg-base-100 p-1 text-body shadow-overlay;
+}
+
+.listSm {
+  @apply text-label;
+}
+
+.option {
+  @apply flex cursor-pointer items-center gap-2 rounded-control px-2.5 py-1.5 text-base-content outline-none;
+}
+
+/* The "nothing chosen" option (All / Select… / None) is muted and divided from the real values. */
+.optionEmpty {
+  @apply mb-0.5 border-b border-base-300 pb-2 text-ink-500;
+}
+
+.optionActive {
+  @apply bg-ink-100;
+}
+
+.optionSelected {
+  @apply bg-brand-50 font-semibold text-brand-800;
+}
+
+.optionSelected.optionActive {
+  @apply bg-brand-100;
+}
+
+.optionDisabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.optionLabel {
+  @apply min-w-0 flex-1 break-words;
+}
+
+.optionDescription {
+  @apply block text-caption font-normal text-ink-500;
+}
+
+.check {
+  @apply size-4 shrink-0 text-primary;
+}

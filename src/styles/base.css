@@ -1,5 +1,9 @@
 /* Resets and typography defaults. Keep this small; component styling lives in modules. */
 @layer base {
+  html {
+    font-size: var(--root-font-size);
+  }
+
   html,
   body,
   #root {
@@ -30,6 +34,18 @@
   :where(.input, .select, .textarea) :focus-visible {
     @apply outline-none;
   }
+}
+
+/*
+ * Field focus: a brand border + soft halo instead of daisyUI's dark 2px outline.
+ * Unlayered on purpose — daisyUI's focus rule sits in the utilities layer and would win over @layer base.
+ */
+:is(.input, .select, .textarea):is(:focus, :focus-within) {
+  @apply border-primary ring-3 ring-brand-100 outline-none;
+}
+
+:is(.input-error, .select-error, .textarea-error):is(:focus, :focus-within) {
+  @apply border-error ring-status-error-soft;
 }
 
 /*
