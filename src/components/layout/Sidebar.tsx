@@ -7,6 +7,8 @@ import styles from './Sidebar.module.css';
 interface SidebarProps {
   brandName: string;
   brandSubtitle: string;
+  /** Logo shown in the brand tile instead of the default icon. */
+  brandLogo?: string;
   sections: NavSectionView[];
 }
 
@@ -29,14 +31,14 @@ function SidebarLink({ item }: { item: NavItemView }) {
   );
 }
 
-export function Sidebar({ brandName, brandSubtitle, sections }: SidebarProps) {
+export function Sidebar({ brandName, brandSubtitle, brandLogo, sections }: SidebarProps) {
   return (
     <nav className={styles.sidebar}>
       <div className={styles.brand}>
         <span className={styles.brandMark}>
-          <Activity aria-hidden />
+          {brandLogo ? <img src={brandLogo} alt="" className={styles.brandLogo} /> : <Activity aria-hidden />}
         </span>
-        <span className="min-w-0">
+        <span className={styles.brandText}>
           <span className={styles.brandName}>{brandName}</span>
           <span className={styles.brandSubtitle}>{brandSubtitle}</span>
         </span>

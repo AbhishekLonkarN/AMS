@@ -9,7 +9,7 @@ export function ShellLayoutPage() {
     <AppShell
       variant={variant}
       pageKey={pageKey}
-      sidebar={<Sidebar brandName={brand.name} brandSubtitle={brand.subtitle} sections={sections} />}
+      sidebar={<Sidebar brandName={brand.name} brandSubtitle={brand.subtitle} brandLogo={brand.logo} sections={sections} />}
       header={
         <ContextHeader
           project={projectChip}

@@ -8,7 +8,7 @@ import { ROUTES } from '@/app/router/route-paths.constants';
 import { USER_TYPE_LABELS, RECORD_STATUS_LABELS } from '@/constants/user.constants';
 import { DASHBOARD_LABELS as L, type QuickActionConfig } from '../constants/admin-dashboard.constants';
 import type { KpiView } from '../hooks/useAdminDashboard';
-import { initials, type ActivityKind, type DayPoint, type StatusCount } from '../utils/admin-dashboard.utils';
+import { avatarColor, initials, type ActivityKind, type DayPoint, type StatusCount } from '../utils/admin-dashboard.utils';
 import { ActivityChart, DonutChart, StatusBars, type DonutSegment } from './DashboardCharts';
 import styles from './AdminDashboardView.module.css';
 
@@ -90,7 +90,7 @@ export function AdminDashboardView({
         {kpis.map((kpi) => (
           <article key={kpi.key} className={styles.kpi}>
             <span className={styles.kpiIcon} data-tone={kpi.tone}>
-              <kpi.icon className="size-5" aria-hidden />
+              <kpi.icon className="size-4" aria-hidden />
             </span>
             <div className="min-w-0">
               <p className={styles.kpiLabel}>{kpi.label}</p>
@@ -133,7 +133,7 @@ export function AdminDashboardView({
                 return (
                   <li key={item.id} className={styles.feedItem}>
                     <span className={styles.feedIcon} data-kind={item.kind}>
-                      <Icon className="size-4" aria-hidden />
+                      <Icon className="size-3.5" aria-hidden />
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className={styles.feedEvent}>{item.event}</p>
@@ -155,7 +155,7 @@ export function AdminDashboardView({
               <li key={action.key}>
                 <Link to={action.to} className={styles.action}>
                   <span className={styles.actionIcon}>
-                    <action.icon className="size-4" aria-hidden />
+                    <action.icon className="size-3.5" aria-hidden />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className={styles.actionLabel}>{action.label}</span>
@@ -181,7 +181,7 @@ export function AdminDashboardView({
             <ul className={clsx(styles.users, styles.scroll)}>
               {recentUsers.map((user) => (
                 <li key={user.id} className={styles.userRow}>
-                  <span className={styles.avatar} aria-hidden>
+                  <span className={styles.avatar} style={{ background: avatarColor(user.email) }} aria-hidden>
                     {initials(user.name)}
                   </span>
                   <div className="min-w-0 flex-1">

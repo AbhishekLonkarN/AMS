@@ -31,6 +31,30 @@
   @apply overflow-x-auto;
 }
 
+/* Thin scrollbar for the table's horizontal (and vertical) scroll. */
+.scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #c3cddb transparent;
+}
+
+.scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: #c3cddb;
+  border-radius: 9999px;
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: #a9b6c8;
+}
+
 .table {
   @apply text-body;
 }
@@ -71,11 +95,3 @@
   @apply flex items-center justify-end gap-0.5;
 }
 
-/* ---- Pagination ---- */
-.pagination {
-  @apply flex flex-wrap items-center justify-between gap-3 border-t border-base-300 px-4 py-3;
-}
-
-.paginationEnd {
-  @apply flex flex-wrap items-center gap-3;
-}

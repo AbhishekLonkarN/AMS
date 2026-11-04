@@ -12,7 +12,6 @@ export function AuditTrailView({
   searchPlaceholder,
   emptyTitle,
   emptyDescription,
-  exportActions,
 }: AuditTrailModel) {
   return (
     <div className="page-container">
@@ -22,10 +21,10 @@ export function AuditTrailView({
         columns={columns}
         getRowId={getRowId}
         initialPageSize={pageSize}
+        itemLabel="entries"
         searchPlaceholder={searchPlaceholder}
         emptyTitle={emptyTitle}
         emptyDescription={emptyDescription}
-        exportActions={exportActions}
       />
     </div>
   );

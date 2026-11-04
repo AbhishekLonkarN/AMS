@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ChevronsRight } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useDrawerClose } from './drawer.context';
 import { OVERLAY_LABELS } from './overlay.constants';
 import styles from './DrawerPanel.module.css';
@@ -19,14 +19,14 @@ interface DrawerPanelProps {
   children: ReactNode;
 }
 
-/** Drawer layout: header (» close + title), optional toolbar and tabs, scrolling body, sticky footer. */
+/** Drawer layout: header (× close + title), optional toolbar and tabs, scrolling body, sticky footer. */
 export function DrawerPanel({ title, subtitle, headerExtra, toolbar, tabs, footer, children }: DrawerPanelProps) {
   const close = useDrawerClose();
   return (
     <>
       <header className={styles.header}>
         <button type="button" className="btn btn-ghost btn-sm btn-square" aria-label={OVERLAY_LABELS.close} onClick={close}>
-          <ChevronsRight className="size-5 text-ink-500" aria-hidden />
+          <X className="size-5 text-ink-500" aria-hidden />
         </button>
         <div className="min-w-0 flex-1">
           <h2 className={styles.title}>{title}</h2>

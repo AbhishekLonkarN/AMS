@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import type { AuditEntry, MasterItem, Project, RecordStatus, User, UserType } from '@/types';
 import { formatDate } from '@/utils/date.utils';
+import { AVATAR_COLORS } from '../constants/admin-dashboard.constants';
 
 export type ActivityKind = 'login' | 'create' | 'edit' | 'status' | 'rights' | 'other';
 
@@ -88,6 +89,13 @@ export function projectsByStatus(projects: Project[], masters: MasterItem[]): St
 /** Newest first; users created at the same time keep the most recently added first. */
 export const recentlyAdded = (users: User[], limit: number) =>
   [...users].reverse().sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
+
+/** Stable colour per user, so the same person always gets the same avatar colour. */
+export const avatarColor = (key: string) => {
+  let hash = 0;
+  for (const char of key) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  return AVATAR_COLORS[hash % AVATAR_COLORS.length];
+};
 
 export const initials = (name: string) =>
   name

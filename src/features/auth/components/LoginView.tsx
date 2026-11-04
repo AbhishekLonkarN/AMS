@@ -5,7 +5,7 @@ import type { DemoUserOption } from '@/components/layout';
 import { LOGIN_LABELS } from '../constants/auth.constants';
 import type { LoginFormValues } from '../schemas/login.schema';
 import amsLogo from '../assets/ams-logo.png';
-import clintechLogo from '../assets/clintech-logo.png';
+import clintechLogo from '@/assets/clintech-logo.png';
 import heroBackground from '../assets/login-left-background.png';
 import { DemoUserList } from './DemoUserList';
 import styles from './LoginView.module.css';

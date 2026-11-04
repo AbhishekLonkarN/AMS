@@ -49,7 +49,7 @@ export const PAGE_DESCRIPTIONS = {
   adminUsers: 'Create, edit and manage admin access rights',
   accounts: 'Create global accounts for sponsor and CRO staff',
   databaseExport: 'Export a full project database',
-  projectExport: 'Export a full project database',
+  projectExport: 'Download the database of any sponsor project',
   cloudSettings: 'Cloud environment configuration',
   backup: 'Manual and scheduled back-ups',
   auditTrail: 'Every change, login and permission event',

@@ -10,7 +10,7 @@
 }
 
 .kpiIcon {
-  @apply grid size-11 shrink-0 place-items-center rounded-xl;
+  @apply grid size-9 shrink-0 place-items-center rounded-lg;
 }
 
 .kpiIcon[data-tone='brand'] {
@@ -37,7 +37,7 @@
 }
 
 .kpiValue {
-  @apply text-display font-bold leading-tight text-ink-900;
+  @apply text-[1.375rem] font-bold leading-tight text-ink-900;
 }
 
 /* ---------- Rows ---------- */
@@ -59,7 +59,7 @@
 }
 
 .cardTitle {
-  @apply text-lead font-semibold text-ink-900;
+  @apply text-[0.9375rem] font-semibold text-ink-900;
 }
 
 .cardSubtitle {
@@ -131,7 +131,7 @@
 }
 
 .feedIcon {
-  @apply grid size-9 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-700;
+  @apply grid size-7 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-700;
 }
 .feedIcon[data-kind='create'] {
   @apply bg-tone-green-soft text-tone-green;
@@ -168,7 +168,7 @@
 }
 
 .actionIcon {
-  @apply grid size-9 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-700;
+  @apply grid size-7 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-700;
 }
 
 .actionLabel {
@@ -197,7 +197,7 @@
 }
 
 .avatar {
-  @apply grid size-9 shrink-0 place-items-center rounded-full text-caption font-bold text-white;
+  @apply grid size-7 shrink-0 place-items-center rounded-full text-[0.6875rem] font-bold text-white;
   background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-700));
 }
 
