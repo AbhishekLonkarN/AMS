@@ -1,0 +1,14 @@
+@reference "@/styles/index.css";
+
+/* Two columns split by a hairline; stacks on small screens. */
+.columns {
+  @apply grid gap-4 md:grid-cols-2 md:gap-0 md:divide-x md:divide-base-300;
+}
+
+.column {
+  @apply flex min-w-0 flex-col gap-4 md:px-6 md:first:pl-0 md:last:pr-0;
+}
+
+.emphasis {
+  @apply font-semibold;
+}
