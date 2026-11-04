@@ -53,6 +53,8 @@ export interface DataGridProps<T> {
   emptyTitle?: string;
   emptyDescription?: string;
   initialPageSize?: number;
+  /** What the rows are called in the pagination summary, e.g. "users" -> "1–10 of 150 users". */
+  itemLabel?: string;
   initialSorting?: SortingState;
   /** Rows to show de-emphasised (e.g. In-active / Deaffiliated records). */
   isRowMuted?: (row: T) => boolean;

@@ -34,7 +34,7 @@ export function DrawerActions({
 
   return (
     <div className={clsx(styles.actions, hasPrimary && styles.twoUp)}>
-      <button type="button" className={clsx('btn', styles.cancel)} onClick={onCancel ?? close}>
+      <button type="button" data-btn="cancel" className={clsx('btn', styles.cancel)} onClick={onCancel ?? close}>
         {cancelLabel}
       </button>
       {hasPrimary && (

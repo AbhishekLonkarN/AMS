@@ -19,6 +19,7 @@ export function MasterListView(model: MasterListModel) {
         rowActions={model.rowActions}
         isRowMuted={(i) => i.status !== 'active'}
         searchPlaceholder={MASTER_LABELS.searchPlaceholder}
+        itemLabel="items"
         toolbarActions={
           model.canAdd && (
             <button type="button" className="btn btn-primary btn-sm" onClick={model.onAdd}>

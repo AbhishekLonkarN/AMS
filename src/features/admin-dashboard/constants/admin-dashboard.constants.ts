@@ -25,6 +25,9 @@ export const ACTIVITY_DAYS = 30;
 export const RECENT_ACTIVITY_COUNT = 30;
 export const RECENT_USERS_COUNT = 15;
 
+/** Avatar colours for the recently added users; each user keeps the same one (picked from the email). */
+export const AVATAR_COLORS = ['#059669', '#ea580c', '#9333ea', '#4338ca', '#2563eb', '#475569', '#0d9488', '#db2777'];
+
 /** Chart colours per user type (design tokens). */
 export const USER_TYPE_COLORS: Record<UserType, string> = {
   admin: 'var(--color-brand-700)',

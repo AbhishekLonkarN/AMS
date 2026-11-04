@@ -15,6 +15,7 @@ import {
 import { UiKitPage } from '@/features/ui-kit';
 import { AdminDashboardPage } from '@/features/admin-dashboard';
 import { UsersListPage } from '@/features/admin-users';
+import { ProjectExportPage } from '@/features/project-export';
 import { CompanyProfilePage } from '@/features/company-profile';
 import { TemplateListPage } from '@/features/access-rights-templates';
 import { MasterListPage } from '@/features/masters';
@@ -75,7 +76,7 @@ const adminRoutes: RouteObject[] = [
     { path: ROUTES.adminUsers, element: <Navigate to={ROUTES.users} replace /> },
     { path: ROUTES.accounts, element: <Navigate to={ROUTES.users} replace /> },
   ]),
-  page(ROUTES.projectExport, 'projectDatabase.export', phase2(PAGE_TITLES.projectExport)),
+  page(ROUTES.projectExport, 'projectDatabase.export', <ProjectExportPage />),
   // Not in the Admin sidebar for now (routes kept; add a tab or move them inside one later).
   page(ROUTES.cloudSettings, 'cloudSettings.view', phase2(PAGE_TITLES.cloudSettings)),
   page(ROUTES.backup, 'cloudSettings.view', phase2(PAGE_TITLES.backup)),

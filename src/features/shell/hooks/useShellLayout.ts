@@ -3,7 +3,9 @@ import type { ContextChipView } from '@/components/layout';
 import { useCompanyProfileStore, useSessionStore } from '@/store';
 import { ROUTES, paths } from '@/app/router/route-paths.constants';
 import { useDemoUsers } from '@/features/auth';
+import clintechLogo from '@/assets/clintech-logo.png';
 import { fullName, initials } from '@/utils/string.utils';
+import { PLATFORM_BRAND_NAME } from '../constants/shell.constants';
 import { useCurrentContext } from './useCurrentContext';
 import { useShellNavigation } from './useShellNavigation';
 
@@ -47,7 +49,10 @@ export function useShellLayout() {
 
   return {
     variant: user?.userType === 'admin' ? ('admin' as const) : ('default' as const),
-    brand: { name: profile.softwareName, subtitle: profile.ownerDisplayName },
+    brand:
+      user?.userType === 'admin'
+        ? { name: PLATFORM_BRAND_NAME, subtitle: profile.ownerDisplayName, logo: clintechLogo }
+        : { name: profile.softwareName, subtitle: profile.ownerDisplayName, logo: undefined },
     sections,
     pageKey,
     projectChip,

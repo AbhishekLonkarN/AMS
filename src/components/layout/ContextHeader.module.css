@@ -34,6 +34,7 @@ a.chip {
 
 /* ---------- Admin look: frosted white bar, light-gray divider with a soft shadow ---------- */
 :global([data-shell-variant='admin']) .header {
+  height: 44px;
   font-family: 'Segoe UI', Inter, Arial, sans-serif;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(14px) saturate(1.5);

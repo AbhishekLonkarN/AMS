@@ -21,6 +21,8 @@ interface UserListViewProps<T> {
   isRowMuted?: (row: T) => boolean;
   exportActions?: DataGridExport;
   searchPlaceholder?: string;
+  /** Rows are called this in the pagination summary (default "records"). */
+  itemLabel?: string;
   emptyTitle?: string;
   emptyDescription?: string;
   /** Deactivate / Deaffiliate confirm dialog, when the list has one. */
@@ -42,6 +44,7 @@ export function UserListView<T>({
   isRowMuted,
   exportActions,
   searchPlaceholder,
+  itemLabel,
   emptyTitle,
   emptyDescription,
   confirm,
@@ -57,6 +60,7 @@ export function UserListView<T>({
         isRowMuted={isRowMuted}
         exportActions={exportActions}
         searchPlaceholder={searchPlaceholder}
+        itemLabel={itemLabel}
         emptyTitle={emptyTitle}
         emptyDescription={emptyDescription}
         toolbarActions={

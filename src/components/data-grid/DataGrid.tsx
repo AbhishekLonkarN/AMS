@@ -16,9 +16,9 @@ import clsx from 'clsx';
 import { EmptyState } from '@/components/feedback';
 import { Tooltip } from '@/components/overlay';
 import type { DataGridColumn, DataGridProps, ToolbarSelectFilter } from './data-grid.types';
-import { DATA_GRID_LABELS, DEFAULT_PAGE_SIZE } from './data-grid.constants';
+import { Pagination, DEFAULT_PAGE_SIZE } from '@/components/pagination';
+import { DATA_GRID_LABELS } from './data-grid.constants';
 import { DataGridToolbar } from './DataGridToolbar';
-import { DataGridPagination } from './DataGridPagination';
 import styles from './DataGrid.module.css';
 
 const ACTIONS_COLUMN_ID = '__actions';
@@ -48,6 +48,7 @@ export function DataGrid<T>({
   emptyTitle = DATA_GRID_LABELS.emptyTitle,
   emptyDescription = DATA_GRID_LABELS.emptyDescription,
   initialPageSize = DEFAULT_PAGE_SIZE,
+  itemLabel,
   initialSorting = [],
   isRowMuted,
 }: DataGridProps<T>) {
@@ -199,7 +200,8 @@ export function DataGrid<T>({
         {rows.length === 0 && <EmptyState title={emptyTitle} description={emptyDescription} />}
       </div>
 
-      <DataGridPagination
+      <Pagination
+        itemLabel={itemLabel}
         pageIndex={pagination.pageIndex}
         pageCount={table.getPageCount()}
         pageSize={pagination.pageSize}

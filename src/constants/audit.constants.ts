@@ -10,6 +10,7 @@ export const AUDIT_PAGES = {
   sponsorUsers: 'Sponsor User Management',
   coUsers: 'CO User Management',
   siteUsers: 'Site User Management',
+  projectExport: 'Project Database - Export',
 } as const;
 
 export const AUDIT_NA = 'NA';

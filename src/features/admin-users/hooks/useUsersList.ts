@@ -75,6 +75,7 @@ export function useUsersList() {
     rowActions,
     isRowMuted: (u: User) => u.status !== 'active',
     searchPlaceholder: L.searchPlaceholder,
+    itemLabel: 'users',
     confirm: statusToggle.confirm,
   };
 }

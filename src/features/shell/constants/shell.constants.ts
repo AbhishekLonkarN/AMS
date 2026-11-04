@@ -1,12 +1,15 @@
 import type { NavSectionKey } from './navigation.constants';
 
 export const SECTION_TITLES: Record<NavSectionKey, string | undefined> = {
-  admin: 'Admin portal',
+  admin: undefined, // the Admin sidebar has no section heading
   sponsor: 'Sponsor portal',
   mySites: undefined,
   project: 'Project',
   site: 'Site',
 };
+
+/** The product shown in the Admin sidebar, with the logo from the login page. */
+export const PLATFORM_BRAND_NAME = 'ClinTech';
 
 export const SHELL_LABELS = {
   defaultRole: {
