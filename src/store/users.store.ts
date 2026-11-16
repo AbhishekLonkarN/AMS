@@ -76,7 +76,7 @@ export const useUsersStore = createAppStore<UsersState>('users', (set, get) => (
     set((s) => ({ users: s.users.map((u) => (u.id === id ? { ...u, status } : u)) }));
     recordAudit({
       page: PAGE_BY_TYPE[user.userType],
-      event: `${status === 'active' ? 'Re-activated' : 'Deactivated'} user ${user.email}`,
+      event: `${status === 'active' ? 'Activated' : 'Deactivated'} user ${user.email}`,
       originalValue: statusText(user.status),
       changedTo: statusText(status),
     });

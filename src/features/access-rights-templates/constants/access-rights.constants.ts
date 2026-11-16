@@ -12,6 +12,8 @@ export const ACCESS_RIGHTS_LABELS = {
   createDescription: 'A reusable set of rights that prefills user and affiliation forms.',
   detailsSection: 'Access rights set',
   detailsHint: 'The name must be unique. The user type decides which rights can be set.',
+  detailsHintEdit:
+    'The name must be unique. Changes apply to this set only: users and affiliations that already hold it keep their current rights.',
   tabDetails: 'Details',
   tabAccess: 'Access rights',
   matrixTitle: (userType: string) => `Access rights (${userType})`,
@@ -23,16 +25,16 @@ export const ACCESS_RIGHTS_LABELS = {
   view: 'View',
   edit: 'Edit',
   deactivate: 'Deactivate',
-  reactivate: 'Re-activate',
+  reactivate: 'Activate',
   confirmDeactivateTitle: 'Deactivate access rights set?',
-  confirmReactivateTitle: 'Re-activate access rights set?',
+  confirmReactivateTitle: 'Activate access rights set?',
   confirmDeactivate: (name: string) =>
     `“${name}” will be hidden from template dropdowns. Users and affiliations that already use it keep their rights.`,
   confirmReactivate: (name: string) => `“${name}” will be available in template dropdowns again.`,
   created: (name: string) => `“${name}” has been added.`,
   saved: (name: string) => `Changes to “${name}” have been saved.`,
   deactivated: (name: string) => `“${name}” has been deactivated.`,
-  reactivated: (name: string) => `“${name}” has been re-activated.`,
+  reactivated: (name: string) => `“${name}” has been activated.`,
   searchPlaceholder: 'Search set name…',
 } as const;
 

@@ -213,7 +213,7 @@ export const useAffiliationsStore = createAppStore<AffiliationsState>('affiliati
     recordAudit({
       siteId: membership.siteId,
       page: AUDIT_PAGES.siteUsers,
-      event: `${status === 'active' ? 'Re-activated' : 'Deactivated'} site user ${emailOf(membership.userId)}`,
+      event: `${status === 'active' ? 'Activated' : 'Deactivated'} site user ${emailOf(membership.userId)}`,
       originalValue: statusText(membership.status),
       changedTo: statusText(status),
     });

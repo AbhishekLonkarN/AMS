@@ -1,7 +1,7 @@
 export const AUDIT_TRAIL_LABELS = {
   title: 'Audit Trail',
   description:
-    'Every login, create, edit, deactivate, re-activate, affiliate, deaffiliate and access-rights change. Entries are never deleted.',
+    'Every login, create, edit, deactivate, activate, affiliate, deaffiliate and access-rights change. Entries are never deleted.',
   searchPlaceholder: 'Search events, values, users…',
   emptyTitle: 'No audit entries',
   emptyDescription: 'Try clearing the search or filters.',
@@ -11,10 +11,10 @@ export const AUDIT_TRAIL_LABELS = {
 export const AUDIT_COLUMN_LABELS = {
   date: 'Date',
   time: 'Time',
-  timeZone: 'Reference Time-zone',
-  project: 'Project',
-  investigator: 'Investigator',
-  participantId: 'Screening / Participant ID',
+  timeZone: 'Time-zone',
+  project: 'Reference Project Name',
+  investigator: 'Reference Investigator',
+  participantId: 'Reference Screening ID / Participant ID',
   formPage: 'Form / Page / Screen / Menu',
   event: 'Event',
   originalValue: 'Original Data',

@@ -1,7 +1,7 @@
 export const SITE_LABELS = {
   listTitle: 'Investigator and Site',
   listDescription: 'Investigators and sites participating in this project.',
-  addButton: 'Add New Investigator and Site',
+  addButton: 'Add New Investigator and Site in this Project',
   createTitle: 'Add New Investigator and Site in this Project',
   editTitle: 'Edit Investigator and Site in this Project',
   submitCreate: 'Submit',

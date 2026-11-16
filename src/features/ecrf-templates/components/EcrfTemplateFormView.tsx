@@ -23,6 +23,8 @@ const TAB_ITEMS = [
 export function EcrfTemplateFormView({
   title,
   subtitle,
+  isNameLocked,
+  detailsHint,
   tabs,
   form,
   productGroupOptions,
@@ -97,11 +99,13 @@ export function EcrfTemplateFormView({
             void handlePrimary();
           }}
         >
-          <DrawerSection title={L.detailsSection} description={L.detailsHint}>
+          <DrawerSection title={L.detailsSection} description={detailsHint}>
             <div className="form-grid">
               <TextField
                 label={F.name}
                 isRequired
+                readOnly={isNameLocked}
+                hint={isNameLocked ? L.nameLocked : undefined}
                 error={errors.name?.message}
                 {...register('name')}
               />

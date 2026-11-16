@@ -162,6 +162,9 @@ export function useEcrfTemplateForm({ mode, templateId, onDone }: EcrfTemplateFo
     isNotFound: mode === 'edit' && !template,
     title: mode === 'create' ? L.createTitle : L.editTitle,
     subtitle: mode === 'edit' ? template?.name : L.createDescription,
+    // The name is read-only on edit (AMS p.17); the edit screen states that changes don't reach projects (BR-TPL-11).
+    isNameLocked: mode === 'edit',
+    detailsHint: mode === 'edit' ? L.detailsHintEdit : L.detailsHint,
     tabs,
     form,
     productGroupOptions,

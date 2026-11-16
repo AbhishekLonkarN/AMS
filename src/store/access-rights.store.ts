@@ -59,7 +59,7 @@ export const useAccessRightsStore = createAppStore<AccessRightsState>('access-ri
     set((s) => ({ templates: s.templates.map((t) => (t.id === id ? { ...t, status } : t)) }));
     recordAudit({
       page: PAGE,
-      event: `${status === 'active' ? 'Re-activated' : 'Deactivated'} access rights set ${template.name}`,
+      event: `${status === 'active' ? 'Activated' : 'Deactivated'} access rights set ${template.name}`,
       originalValue: statusText(template.status),
       changedTo: statusText(status),
     });

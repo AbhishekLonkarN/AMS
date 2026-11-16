@@ -23,6 +23,7 @@ export function TemplateFormView({
   title,
   subtitle,
   submitLabel,
+  detailsHint,
   formId,
   tabs,
   form,
@@ -48,7 +49,7 @@ export function TemplateFormView({
     >
       <form id={formId} onSubmit={handleSubmit} noValidate>
         <TabPanel idPrefix={tabs.idPrefix} tabKey="details" activeKey={tabs.activeTab}>
-          <DrawerSection title={L.detailsSection} description={L.detailsHint}>
+          <DrawerSection title={L.detailsSection} description={detailsHint}>
             <div className="form-grid">
               <TextField label={F.name} isRequired error={errors.name?.message} {...register('name')} />
               <SelectField

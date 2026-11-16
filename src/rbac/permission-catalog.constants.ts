@@ -26,7 +26,7 @@ export const ACTION_LABELS: Record<ActionKey, string> = {
   view: 'View',
   delete: 'Delete',
   export: 'Export',
-  lock: 'Lock/Unlock',
+  lock: 'Lock / Un-lock',
   draftSave: 'Draft Save',
   submit: 'Submit',
   respond: 'Respond',

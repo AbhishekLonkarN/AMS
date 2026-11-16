@@ -34,7 +34,7 @@ export const MASTER_META: Record<MasterKey, MasterMeta> = {
   },
   participantStatus: {
     title: "Master-Participant's Status",
-    itemName: 'Participant Status',
+    itemName: "Participant's Status",
     permissionModule: 'masterParticipantStatus',
     deactivatePermission: 'masterParticipantStatus.delete',
   },

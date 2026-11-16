@@ -77,6 +77,8 @@ export function useTemplateForm({ mode, templateId, onDone }: TemplateFormOption
     title: mode === 'create' ? L.createTitle : L.editTitle,
     subtitle: mode === 'edit' ? template?.name : L.createDescription,
     submitLabel: mode === 'create' ? L.submitCreate : L.submitEdit,
+    // Editing a set doesn't change users who already hold it; the edit screen says so (BR-MST-12).
+    detailsHint: mode === 'edit' ? L.detailsHintEdit : L.detailsHint,
     formId,
     tabs,
     form,

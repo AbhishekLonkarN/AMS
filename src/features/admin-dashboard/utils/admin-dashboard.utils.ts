@@ -11,7 +11,7 @@ export function classifyEvent(event: string): ActivityKind {
   if (e.startsWith('log-in') || e.startsWith('logged')) {return 'login';}
   if (e.includes('access rights')) {return 'rights';}
   if (/^(created|affiliated)/.test(e)) {return 'create';}
-  if (/^(deactivated|re-activated|deaffiliated)/.test(e)) {return 'status';}
+  if (/^(deactivated|activated|re-activated|deaffiliated)/.test(e)) {return 'status';}
   if (e.startsWith('edited')) {return 'edit';}
   return 'other';
 }

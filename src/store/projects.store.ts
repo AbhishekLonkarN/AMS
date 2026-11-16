@@ -28,7 +28,7 @@ const PROJECT_AUDIT_FIELDS: AuditField<Project>[] = [
   { key: 'sponsor', label: 'Sponsor' },
   { key: 'projectManagerId', label: 'Project Manager', format: userName },
   { key: 'croName', label: 'CRO Name' },
-  { key: 'croProjectManagerId', label: 'CRO Project Manager', format: userName },
+  { key: 'croProjectManagerId', label: 'CRO Project Manager 1', format: userName },
   { key: 'croAssistantPmId', label: 'CRO Assistant Project Manager', format: userName },
   { key: 'enrolmentTarget', label: 'Total Enrolment Target' },
   { key: 'sitesIdentified', label: 'Sites Identified' },

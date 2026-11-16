@@ -51,7 +51,7 @@ export const useEcrfTemplatesStore = createAppStore<EcrfTemplatesState>('ecrf-te
     set((s) => ({ templates: s.templates.map((t) => (t.id === id ? { ...t, status, updatedAt: nowIso() } : t)) }));
     recordAudit({
       page: AUDIT_PAGES.ecrfTemplates,
-      event: `${status === 'active' ? 'Re-activated' : 'Deactivated'} eCRF template ${template.name}`,
+      event: `${status === 'active' ? 'Activated' : 'Deactivated'} eCRF template ${template.name}`,
       originalValue: statusText(template.status),
       changedTo: statusText(status),
     });

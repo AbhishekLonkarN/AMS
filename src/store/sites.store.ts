@@ -24,7 +24,7 @@ const SITE_AUDIT_FIELDS: AuditField<Site>[] = [
   { key: 'siteCode', label: 'Site ID' },
   { key: 'siteName', label: 'Site Name' },
   { key: 'location', label: 'Location' },
-  { key: 'address', label: 'Complete Address' },
+  { key: 'address', label: 'Complete Address for Correspondence' },
   { key: 'expectedRecruitment', label: 'Expected Recruitment' },
   { key: 'statusId', label: 'Site Status', format: masterLabel },
 ];

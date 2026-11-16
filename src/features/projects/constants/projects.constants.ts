@@ -1,8 +1,8 @@
 export const PROJECT_LABELS = {
   listTitle: 'Projects',
   listDescription: 'Clinical investigations you are affiliated to.',
-  addButton: 'Add Project',
-  createTitle: 'Add Project',
+  addButton: 'Create Project',
+  createTitle: 'Create Project',
   editTitle: 'Edit Project',
   submitCreate: 'Add',
   submitEdit: 'Save',
@@ -16,6 +16,7 @@ export const PROJECT_LABELS = {
   createDescription: 'You are affiliated to the new project automatically.',
   sectionStudy: 'Study',
   sectionStudyHint: 'The project name must be unique.',
+  lockedOnEdit: 'Cannot be changed once the project is created.',
   sectionTeam: 'Sponsor and CRO team',
   sectionTeamHint: 'The CRO fields are optional.',
   sectionTargets: 'Targets and status',
@@ -38,7 +39,7 @@ export const PROJECT_FIELDS = {
   sponsor: 'Sponsor',
   projectManagerId: 'Project Manager',
   croName: 'CRO Name',
-  croProjectManagerId: 'CRO Project Manager',
+  croProjectManagerId: 'CRO Project Manager 1',
   croAssistantPmId: 'CRO Assistant Project Manager',
   enrolmentTarget: 'Total Enrolment Target',
   sitesIdentified: 'Sites Identified',
@@ -50,4 +51,5 @@ export const PROJECT_VALIDATION = {
   required: 'This field is required.',
   nameTaken: 'This Project Name already exists.',
   positiveNumber: 'Enter a whole number greater than 0.',
+  logoRequired: 'Upload the logo of the sponsor.',
 } as const;

@@ -13,6 +13,7 @@ export function ProjectFormView({
   formId,
   form,
   options,
+  isIdentityLocked,
   logoFileName,
   handleLogoChange,
   handleSubmit,
@@ -29,8 +30,22 @@ export function ProjectFormView({
       <form id={formId} onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
         <DrawerSection title={L.sectionStudy} description={L.sectionStudyHint}>
           <div className="form-grid">
-            <TextField label={F.name} isRequired error={errors.name?.message} {...register('name')} />
-            <TextField label={F.cipNo} isRequired error={errors.cipNo?.message} {...register('cipNo')} />
+            <TextField
+              label={F.name}
+              isRequired
+              readOnly={isIdentityLocked}
+              hint={isIdentityLocked ? L.lockedOnEdit : undefined}
+              error={errors.name?.message}
+              {...register('name')}
+            />
+            <TextField
+              label={F.cipNo}
+              isRequired
+              readOnly={isIdentityLocked}
+              hint={isIdentityLocked ? L.lockedOnEdit : undefined}
+              error={errors.cipNo?.message}
+              {...register('cipNo')}
+            />
             <TextField label={F.testProduct} isRequired error={errors.testProduct?.message} {...register('testProduct')} />
             <TextField label={F.sponsor} isRequired error={errors.sponsor?.message} {...register('sponsor')} />
             <TextAreaField
@@ -41,7 +56,14 @@ export function ProjectFormView({
               error={errors.description?.message}
               {...register('description')}
             />
-            <FileField label={F.logo} accept="image/*" fileName={logoFileName} onFileNameChange={handleLogoChange} />
+            <FileField
+              label={F.logo}
+              accept="image/*"
+              isRequired
+              error={errors.logoFileName?.message}
+              fileName={logoFileName}
+              onFileNameChange={handleLogoChange}
+            />
           </div>
         </DrawerSection>
 

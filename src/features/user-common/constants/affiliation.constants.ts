@@ -7,7 +7,7 @@ export const AFFILIATION_LABELS = {
   assignmentSection: 'Affiliation',
   searchAccount: 'Search user by Email ID (User ID)',
   searchPlaceholder: 'Type an email or name…',
-  noAccounts: 'No matching active account',
+  noAccounts: 'No matching active account. The platform administrator must create the account first.',
   alreadyAffiliated: 'Already affiliated',
   affiliatedOn: 'Affiliated on',
   affiliatedBy: 'Affiliated by',
@@ -17,7 +17,7 @@ export const AFFILIATION_LABELS = {
   deaffiliate: 'Deaffiliate',
   confirmDeaffiliateTitle: 'Deaffiliate user?',
   confirmDeaffiliate: (name: string, where: string) =>
-    `${name} will lose all access to ${where} immediately. The record is kept for the audit trail.`,
+    `${name} will lose all access to ${where} immediately. Their platform account, other affiliations and the authorship of past entries are kept.`,
   deaffiliated: (name: string) => `${name} has been deaffiliated.`,
   affiliated: (name: string) => `${name} has been affiliated.`,
   saved: (name: string) => `Changes to ${name} have been saved.`,

@@ -34,7 +34,9 @@ export const MASTERS_SEED: MasterItem[] = [
     'Database Locked',
     'All FU completed, all data queries resolved, all site close-out completed and database is locked for data analysis.',
   ),
-  item('projectStatus', 'ms-ps-archived', 'Archived', 'CER signed.'),
+  item('projectStatus', 'ms-ps-archived', 'Archived', 'CIR (Clinical Investigation Report) signed.'),
+  item('projectStatus', 'ms-ps-hold', 'Hold', 'The project was started, but then kept on hold.'),
+  item('projectStatus', 'ms-ps-terminated', 'Terminated', 'The project was started, but then terminated prematurely.'),
 
   // ---- Site Status ----
   item(
@@ -43,6 +45,7 @@ export const MASTERS_SEED: MasterItem[] = [
     'Feasibility Done',
     'Feasibility study has been carried out, but site selection decision not yet taken.',
   ),
+  item('siteStatus', 'ms-ss-qualification', 'Site Qualification Done', 'Site qualification process completed.'),
   item('siteStatus', 'ms-ss-selected', 'Selected', 'Site has been selected for participation in this study.'),
   item(
     'siteStatus',
@@ -50,6 +53,13 @@ export const MASTERS_SEED: MasterItem[] = [
     'Back-up',
     'Site has been selected but not to be initiated as of now, and in case required, will be initiated in future for this study.',
   ),
+  item(
+    'siteStatus',
+    'ms-ss-agreement',
+    'Agreement Done',
+    'CTA, financial agreement and related contracts signed by all parties.',
+  ),
+  item('siteStatus', 'ms-ss-ec-approval', 'EC Approval', "Site's ethics committee has approved the clinical trial."),
   item('siteStatus', 'ms-ss-initiated', 'Initiated', 'Site has been initiated for recruitment of participants in the study.'),
   item('siteStatus', 'ms-ss-closed', 'Closed', 'Site has been closed for this study.'),
   item(
@@ -105,5 +115,11 @@ export const MASTERS_SEED: MasterItem[] = [
   ),
   item('participantStatus', 'ms-pt-consent-withdrawn', 'Consent Withdrawn', 'After enrolment, participant has withdrawn the consent.'),
   item('participantStatus', 'ms-pt-lost-fu', 'Lost to follow-up', 'After enrolment, participant has been lost to follow-up.'),
+  item(
+    'participantStatus',
+    'ms-pt-death',
+    'Death',
+    'After enrolment, the participant died before completing the study.',
+  ),
   item('participantStatus', 'ms-pt-completed', 'Completed', 'After enrolment, participant has completed the study.'),
 ];

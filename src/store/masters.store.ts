@@ -63,7 +63,7 @@ export const useMastersStore = createAppStore<MastersState>('masters', (set, get
     const meta = MASTER_META[item.masterKey];
     recordAudit({
       page: meta.title,
-      event: `${status === 'active' ? 'Re-activated' : 'Deactivated'} ${meta.itemName} ${item.label}`,
+      event: `${status === 'active' ? 'Activated' : 'Deactivated'} ${meta.itemName} ${item.label}`,
       originalValue: statusText(item.status),
       changedTo: statusText(status),
     });

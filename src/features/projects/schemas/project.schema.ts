@@ -19,7 +19,7 @@ export function buildProjectSchema(isNameTaken: (name: string) => boolean) {
     enrolmentTarget: positiveInt(),
     sitesIdentified: positiveInt(),
     statusId: required(),
-    logoFileName: z.string().optional(),
+    logoFileName: z.string({ required_error: V.logoRequired }).min(1, V.logoRequired),
   });
 }
 

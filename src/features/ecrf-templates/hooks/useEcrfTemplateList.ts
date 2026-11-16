@@ -32,7 +32,10 @@ export function useEcrfTemplateList() {
 
   const canCreate = can('ecrfTemplate.new');
   const canEdit = can('ecrfTemplate.edit');
-  const canToggle = can('ecrfTemplate.delete');
+  // Activate / Deactivate requires Edit (SCR-SPN-10).
+  const canToggle = can('ecrfTemplate.edit');
+  // Newest first (BR-TPL-02); the store appends new templates at the end.
+  const rows = useMemo(() => [...templates].reverse(), [templates]);
 
   const columns = useMemo<DataGridColumn<EcrfTemplate>[]>(
     () => [
@@ -92,7 +95,7 @@ export function useEcrfTemplateList() {
     createLabel: canCreate ? L.addButton : undefined,
     createTo: canCreate ? ROUTES.ecrfTemplateNew : undefined,
     columns,
-    data: templates,
+    data: rows,
     getRowId: (t: EcrfTemplate) => t.id,
     rowActions,
     isRowMuted: (t: EcrfTemplate) => t.status !== 'active',

@@ -35,7 +35,7 @@ const toFormValues = (p?: Project) =>
     enrolmentTarget: p?.enrolmentTarget ?? '',
     sitesIdentified: p?.sitesIdentified ?? '',
     statusId: p?.statusId ?? '',
-    logoFileName: p?.logoFileName,
+    logoFileName: p?.logoFileName ?? '',
   }) as unknown as ProjectFormValues;
 
 const toInput = (v: ProjectFormValues): ProjectInput => ({
@@ -107,8 +107,11 @@ export function useProjectForm({ mode, projectId, onDone }: ProjectFormOptions) 
     formId,
     form,
     options,
+    // Project Name and CIP No. are read-only on edit (AMS p.20).
+    isIdentityLocked: mode === 'edit',
     logoFileName: form.watch('logoFileName'),
-    handleLogoChange: (name: string) => form.setValue('logoFileName', name, { shouldDirty: true }),
+    handleLogoChange: (name: string) =>
+      form.setValue('logoFileName', name, { shouldDirty: true, shouldValidate: form.formState.isSubmitted }),
     handleSubmit,
   };
 }

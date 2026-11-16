@@ -30,7 +30,7 @@ export const SYSTEM_DEFAULT_ECRF = {
         { key: 'gender', label: 'Gender', type: 'select', required: true, width: 8, options: [
           { value: 'male', label: 'Male' },
           { value: 'female', label: 'Female' },
-          { value: 'other', label: 'Other' },
+          { value: 'third_gender', label: 'Third Gender' },
         ] },
       ],
     },

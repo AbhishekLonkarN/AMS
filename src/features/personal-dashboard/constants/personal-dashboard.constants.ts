@@ -1,5 +1,5 @@
 export const PERSONAL_DASHBOARD_LABELS = {
-  title: 'Dashboard',
+  title: "User's Personal Dashboard",
   description: 'Your projects, sites and recent activity at a glance.',
   kpis: {
     projects: 'My projects',
