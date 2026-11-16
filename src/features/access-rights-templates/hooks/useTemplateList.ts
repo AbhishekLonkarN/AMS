@@ -64,7 +64,6 @@ export function useTemplateList() {
   return {
     title: L.listTitle,
     description: L.listDescription,
-    backTo: ROUTES.masters,
     createLabel: canCreate ? L.addButton : undefined,
     createTo: canCreate ? ROUTES.accessRightsNew : undefined,
     columns,
@@ -80,7 +79,7 @@ export function useTemplateList() {
       confirmLabel: isDeactivating ? L.deactivate : L.reactivate,
       tone: isDeactivating ? ('danger' as const) : ('primary' as const),
       onConfirm: () => {
-        if (!pending) return;
+        if (!pending) {return;}
         toggleTemplateStatus(pending.id);
         notify.success(isDeactivating ? L.deactivated(name) : L.reactivated(name));
         setPending(null);

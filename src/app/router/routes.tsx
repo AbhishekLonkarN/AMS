@@ -3,17 +3,27 @@ import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-do
 import type { PermissionKey } from '@/types';
 import { RequirePermission } from '@/rbac';
 import { PAGE_TITLES } from '@/constants/page-titles.constants';
-import { ContextPickerPage, HomeRedirectPage, LoginPage } from '@/features/auth';
+import {
+  CheckEmailPage,
+  ContextPickerPage,
+  ForgotPasswordPage,
+  HomeRedirectPage,
+  LoginPage,
+  PasswordUpdatedPage,
+  ResetPasswordPage,
+} from '@/features/auth';
 import {
   ForbiddenPage,
   HubPage,
   MASTER_VIEW_PERMISSIONS,
+  MastersIndexPage,
   NotFoundPage,
   PlaceholderPage,
   ShellLayoutPage,
 } from '@/features/shell';
 import { UiKitPage } from '@/features/ui-kit';
 import { AdminDashboardPage } from '@/features/admin-dashboard';
+import { PersonalDashboardPage } from '@/features/personal-dashboard';
 import { UsersListPage } from '@/features/admin-users';
 import { ProjectExportPage } from '@/features/project-export';
 import { CompanyProfilePage } from '@/features/company-profile';
@@ -26,6 +36,7 @@ import { CoUserListPage } from '@/features/site-co-users';
 import { SiteUserListPage } from '@/features/site-users';
 import { AuditTrailPage } from '@/features/audit-trail';
 import { AssumptionsPage } from '@/features/assumptions';
+import { EcrfTemplateListPage } from '@/features/ecrf-templates';
 import { RequireAuth, RequireMasterKey, RequireProjectAccess, RequireSiteAccess, RequireUserType } from './guards';
 import { ROUTES } from './route-paths.constants';
 import { RouteErrorPage } from './RouteErrorPage';
@@ -83,19 +94,19 @@ const adminRoutes: RouteObject[] = [
 ];
 
 const sponsorRoutes: RouteObject[] = [
-  { path: ROUTES.home, element: <RequireUserType types={['sponsor']}><HubPage hub="sponsor" /></RequireUserType> },
-  {
-    path: ROUTES.personalDashboard,
-    element: <RequireUserType types={['sponsor']}>{phase2(PAGE_TITLES.personalDashboard)}</RequireUserType>,
-  },
-  page(ROUTES.masters, MASTER_VIEW_PERMISSIONS, <HubPage hub="masters" />),
+  // The Home hub is gone from the sidebar; old links land on the dashboard.
+  { path: ROUTES.home, element: <Navigate to={ROUTES.personalDashboard} replace /> },
+  page(ROUTES.masters, MASTER_VIEW_PERMISSIONS, <MastersIndexPage />),
   page(ROUTES.accessRights, 'masterDefaultAccessRights.view', <TemplateListPage />, [
     guardOnly(ROUTES.accessRightsNew, 'masterDefaultAccessRights.new'),
     guardOnly(ROUTES.accessRightsView, 'masterDefaultAccessRights.view'),
     guardOnly(ROUTES.accessRightsEdit, 'masterDefaultAccessRights.edit'),
   ]),
   { path: ROUTES.master, element: <RequireMasterKey><MasterListPage /></RequireMasterKey> },
-  page(ROUTES.ecrfTemplates, 'ecrfTemplate.view', phase2(PAGE_TITLES.ecrfTemplates)),
+  page(ROUTES.ecrfTemplates, 'ecrfTemplate.view', <EcrfTemplateListPage />, [
+    guardOnly(ROUTES.ecrfTemplateNew, 'ecrfTemplate.new'),
+    guardOnly(ROUTES.ecrfTemplateEdit, 'ecrfTemplate.edit'),
+  ]),
   page(ROUTES.projects, 'project.view', <ProjectListPage />, [
     guardOnly(ROUTES.projectNew, 'project.new'),
     guardOnly(ROUTES.projectListEdit, 'project.edit'),
@@ -155,7 +166,6 @@ const projectRoutes: RouteObject = {
     page(ROUTES.projectEtmf, 'etmfProject.view', phase2(PAGE_TITLES.projectEtmf)),
     page(ROUTES.projectDatabaseLock, 'projectDatabase.lock', phase2(PAGE_TITLES.projectDatabaseLock)),
     page(ROUTES.projectSelectiveExport, 'selectiveParticipantData.export', phase2(PAGE_TITLES.selectiveExport)),
-    page(ROUTES.projectDatabaseExport, 'projectDatabase.export', phase2(PAGE_TITLES.databaseExport)),
     page(ROUTES.projectSupportContacts, 'supportContacts.view', phase2(PAGE_TITLES.supportContacts)),
     page(ROUTES.projectSettings, 'settings.view', phase2(PAGE_TITLES.projectSettings)),
     siteRoutes,
@@ -164,6 +174,11 @@ const projectRoutes: RouteObject = {
 
 const routes: RouteObject[] = [
   { path: ROUTES.login, element: <LoginPage />, errorElement: <RouteErrorPage /> },
+  // Forgot password: four signed-out steps (ask for email, check email, new password, done)
+  { path: ROUTES.forgotPassword, element: <ForgotPasswordPage />, errorElement: <RouteErrorPage /> },
+  { path: ROUTES.forgotPasswordSent, element: <CheckEmailPage />, errorElement: <RouteErrorPage /> },
+  { path: ROUTES.resetPassword, element: <ResetPasswordPage />, errorElement: <RouteErrorPage /> },
+  { path: ROUTES.passwordUpdated, element: <PasswordUpdatedPage />, errorElement: <RouteErrorPage /> },
   {
     element: <RequireAuth />,
     errorElement: <RouteErrorPage />,
@@ -175,9 +190,12 @@ const routes: RouteObject[] = [
           { path: ROUTES.forbidden, element: <ForbiddenPage /> },
           { path: ROUTES.assumptions, element: <AssumptionsPage /> },
           { path: ROUTES.selectContext, element: <ContextPickerPage /> },
+          {
+            path: ROUTES.personalDashboard,
+            element: <RequireUserType types={['sponsor', 'co', 'site']}><PersonalDashboardPage /></RequireUserType>,
+          },
           { path: ROUTES.uiKit, element: <UiKitPage /> },
           page(ROUTES.auditTrail, 'auditTrail.view', <AuditTrailPage />),
-          page(ROUTES.databaseExport, 'projectDatabase.export', phase2(PAGE_TITLES.databaseExport)),
           ...adminRoutes,
           ...sponsorRoutes,
           projectRoutes,

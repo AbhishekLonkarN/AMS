@@ -26,7 +26,7 @@ export function useTemplateDetail(templateId?: string) {
   const can = usePermissionChecker();
   const [isConfirming, setIsConfirming] = useState(false);
 
-  if (!template) return { isNotFound: true as const };
+  if (!template) {return { isNotFound: true as const };}
 
   const isActive = template.status === 'active';
   const toolbarActions: DrawerToolbarAction[] = can('masterDefaultAccessRights.delete')

@@ -10,7 +10,7 @@ export function RequireSiteAccess() {
   const isKnown = useSitesStore((s) => s.sites.some((x) => x.id === siteId && x.projectId === projectId));
   const isAccessible = useAccessibleSites(projectId).some((s) => s.id === siteId);
 
-  if (!isKnown) return <NotFoundPage />;
-  if (!isAccessible) return <Navigate to={ROUTES.forbidden} replace />;
+  if (!isKnown) {return <NotFoundPage />;}
+  if (!isAccessible) {return <Navigate to={ROUTES.forbidden} replace />;}
   return <Outlet />;
 }

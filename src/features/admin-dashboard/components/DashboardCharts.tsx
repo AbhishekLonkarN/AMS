@@ -134,6 +134,16 @@ export function ActivityChart({ points }: ActivityChartProps) {
   );
 }
 
+/** One palette colour per status bar: teal, cyan, sage, yellow, then back through the teals. */
+const STATUS_BAR_COLORS = [
+  'var(--color-brand-700)',
+  'var(--color-accent-500)',
+  'var(--color-sage-300)',
+  'var(--color-status-warning)',
+  'var(--color-brand-500)',
+  'var(--color-sage-700)',
+];
+
 interface StatusBarsProps {
   items: StatusCount[];
 }
@@ -143,11 +153,14 @@ export function StatusBars({ items }: StatusBarsProps) {
   const max = Math.max(1, ...items.map((i) => i.count));
   return (
     <ul className={styles.hbars}>
-      {items.map((item) => (
+      {items.map((item, index) => (
         <li key={item.id} className={styles.hbarRow}>
           <span className={styles.hbarLabel}>{item.label}</span>
           <span className={styles.hbarTrack}>
-            <span className={styles.hbarFill} style={{ width: `${(item.count / max) * 100}%` }} />
+            <span
+              className={styles.hbarFill}
+              style={{ width: `${(item.count / max) * 100}%`, background: STATUS_BAR_COLORS[index % STATUS_BAR_COLORS.length] }}
+            />
           </span>
           <span className={styles.hbarValue}>{item.count}</span>
         </li>

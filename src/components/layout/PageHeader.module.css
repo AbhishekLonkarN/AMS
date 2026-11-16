@@ -19,3 +19,8 @@
 .actions {
   @apply flex flex-wrap items-center gap-2;
 }
+
+/* Admin look: page titles in the primary teal */
+:global([data-shell-variant='admin']) .title {
+  color: var(--color-brand-700);
+}

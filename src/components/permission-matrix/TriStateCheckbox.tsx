@@ -13,12 +13,13 @@ interface TriStateCheckboxProps {
 export function TriStateCheckbox({ state, label, onChange, className }: TriStateCheckboxProps) {
   const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if (ref.current) ref.current.indeterminate = state === 'some';
+    if (ref.current) {ref.current.indeterminate = state === 'some';}
   }, [state]);
   return (
     <input
       ref={ref}
       type="checkbox"
+      data-level="main"
       className={clsx('checkbox checkbox-xs checkbox-primary', className)}
       aria-label={label}
       checked={state === 'all'}

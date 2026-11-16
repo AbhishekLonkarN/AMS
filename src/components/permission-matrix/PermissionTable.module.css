@@ -79,11 +79,6 @@
   @apply rounded-sm;
 }
 
-/* Differs from the selected template: subtle amber ring (shape + colour). */
-.changed {
-  @apply outline-2 outline-offset-2 outline-status-warning;
-}
-
 .na {
   @apply text-ink-300 select-none;
 }

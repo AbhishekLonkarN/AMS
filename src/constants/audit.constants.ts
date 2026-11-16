@@ -11,6 +11,7 @@ export const AUDIT_PAGES = {
   coUsers: 'CO User Management',
   siteUsers: 'Site User Management',
   projectExport: 'Project Database - Export',
+  ecrfTemplates: 'eCRF Templates',
 } as const;
 
 export const AUDIT_NA = 'NA';

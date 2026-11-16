@@ -34,7 +34,7 @@ export function useSiteUserDetail(projectId: string, siteId: string, membershipI
   );
 
   const membership = memberships.find((m) => m.id === membershipId && m.siteId === siteId);
-  if (!membership) return { isNotFound: true as const };
+  if (!membership) {return { isNotFound: true as const };}
 
   const user = users.find((u) => u.id === membership.userId);
   const statusKind = affiliationStatusKind(membership.status);

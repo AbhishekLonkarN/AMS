@@ -42,7 +42,7 @@ export const useMastersStore = createAppStore<MastersState>('masters', (set, get
 
   updateMasterItem: (id, input) => {
     const before = get().items.find((i) => i.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after: MasterItem = { ...before, ...input, updatedAt: nowIso() };
     set((s) => ({ items: s.items.map((i) => (i.id === id ? after : i)) }));
     const meta = MASTER_META[before.masterKey];
@@ -57,7 +57,7 @@ export const useMastersStore = createAppStore<MastersState>('masters', (set, get
 
   toggleMasterItemStatus: (id) => {
     const item = get().items.find((i) => i.id === id);
-    if (!item) return;
+    if (!item) {return;}
     const status = item.status === 'active' ? 'inactive' : 'active';
     set((s) => ({ items: s.items.map((i) => (i.id === id ? { ...i, status, updatedAt: nowIso() } : i)) }));
     const meta = MASTER_META[item.masterKey];

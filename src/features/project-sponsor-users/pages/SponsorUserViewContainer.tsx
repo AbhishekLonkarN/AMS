@@ -11,7 +11,7 @@ interface SponsorUserViewContainerProps {
 /** Drawer content container for View mode (+ its Deaffiliate confirm). */
 export function SponsorUserViewContainer({ projectId, affiliationId }: SponsorUserViewContainerProps) {
   const model = useSponsorUserDetail(projectId, affiliationId);
-  if (model.isNotFound) return <NotFoundPage />;
+  if (model.isNotFound) {return <NotFoundPage />;}
   const { confirm, isNotFound, ...view } = model;
   return (
     <>

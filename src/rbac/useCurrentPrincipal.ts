@@ -13,7 +13,7 @@ export function useCurrentPrincipal(): Principal | null {
 
   return useMemo(() => {
     const user = users.find((u) => u.id === userId);
-    if (!user) return null;
+    if (!user) {return null;}
     return { user, grants: buildGrants(user, { sponsorAffiliations, coAffiliations, siteMemberships }) };
   }, [userId, users, sponsorAffiliations, coAffiliations, siteMemberships]);
 }

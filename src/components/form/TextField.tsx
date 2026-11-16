@@ -2,12 +2,13 @@ import { forwardRef, useId, type InputHTMLAttributes } from 'react';
 import clsx from 'clsx';
 import type { FieldChromeProps } from './form.types';
 import { FormField } from './FormField';
+import { requiredPlaceholder } from './form.utils';
 
 type TextFieldProps = FieldChromeProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'children'>;
 
-/** Labelled input. Spread `register('name')` onto it. */
+/** Labelled input. Spread `register('name')` onto it. A required field shows "Enter <label>" as its hint unless a placeholder is given. */
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
-  { label, hint, error, isRequired, isFullWidth, id, className, ...inputProps },
+  { label, hint, error, isRequired, isFullWidth, id, className, placeholder, ...inputProps },
   ref,
 ) {
   const autoId = useId();
@@ -21,6 +22,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
         aria-invalid={!!error}
         aria-required={isRequired}
         aria-describedby={error || hint ? `${inputId}-message` : undefined}
+        placeholder={placeholder ?? (isRequired ? requiredPlaceholder(label) : undefined)}
         {...inputProps}
       />
     </FormField>

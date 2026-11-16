@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 import { SIDEBAR_DRAWER_ID, LAYOUT_LABELS } from './layout.constants';
 import styles from './AppShell.module.css';
@@ -6,6 +6,8 @@ import styles from './AppShell.module.css';
 interface AppShellProps {
   sidebar: ReactNode;
   header: ReactNode;
+  /** Shown between the header and the page, when there is a trail to show. */
+  breadcrumbs?: ReactNode;
   /** Changes when the user moves to another page; replays the page-enter animation. */
   pageKey?: string;
   /** `admin` switches on the branded Admin look (see the *.module.css files). */
@@ -14,7 +16,7 @@ interface AppShellProps {
 }
 
 /** Sidebar + header + content. Below `lg` the sidebar becomes a daisyUI drawer. */
-export function AppShell({ sidebar, header, pageKey, variant = 'default', children }: AppShellProps) {
+export function AppShell({ sidebar, header, breadcrumbs, pageKey, variant = 'default', children }: AppShellProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 
@@ -22,18 +24,14 @@ export function AppShell({ sidebar, header, pageKey, variant = 'default', childr
   // and start the new page at the top.
   useEffect(() => {
     const main = mainRef.current;
-    if (!main || pageKey === undefined) return;
+    if (!main || pageKey === undefined) {return;}
     main.classList.remove(styles.pageEnter);
     void main.offsetWidth;
     main.classList.add(styles.pageEnter);
     window.scrollTo({ top: 0 });
     main.scrollTo({ top: 0 }); // the Admin shell scrolls inside <main>
+    setIsDrawerOpen(false); // close the mobile drawer after following a sidebar link
   }, [pageKey]);
-
-  // Close the mobile drawer after following a link.
-  const handleSideClick = (event: MouseEvent<HTMLElement>) => {
-    if ((event.target as HTMLElement).closest('a')) setIsDrawerOpen(false);
-  };
 
   return (
     <div className="drawer lg:drawer-open" data-shell-variant={variant}>
@@ -46,11 +44,12 @@ export function AppShell({ sidebar, header, pageKey, variant = 'default', childr
       />
       <div className={clsx('drawer-content', styles.content)}>
         {header}
+        {breadcrumbs}
         <main ref={mainRef} className={styles.main}>
           {children}
         </main>
       </div>
-      <aside className={clsx('drawer-side', styles.side)} onClick={handleSideClick}>
+      <aside className={clsx('drawer-side', styles.side)}>
         <label htmlFor={SIDEBAR_DRAWER_ID} aria-label={LAYOUT_LABELS.closeMenu} className="drawer-overlay" />
         {sidebar}
       </aside>

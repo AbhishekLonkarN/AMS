@@ -2,7 +2,7 @@ import type { DataGridColumn } from '@/components/data-grid';
 import type { AuditRow } from '../utils/audit-trail.utils';
 import { AUDIT_COLUMN_LABELS as C } from './audit-trail.constants';
 
-const LONG_TEXT = 'min-w-48 max-w-xs whitespace-normal break-words text-label';
+const LONG_TEXT = { isTruncated: true } as const;
 
 export const AUDIT_COLUMNS: DataGridColumn<AuditRow>[] = [
   {
@@ -19,8 +19,8 @@ export const AUDIT_COLUMNS: DataGridColumn<AuditRow>[] = [
   { id: 'investigator', header: C.investigator, accessorKey: 'investigator', meta: { filterVariant: 'select' } },
   { id: 'participantId', header: C.participantId, accessorKey: 'participantId' },
   { id: 'formPage', header: C.formPage, accessorKey: 'formPage', meta: { filterVariant: 'select' } },
-  { id: 'event', header: C.event, accessorKey: 'event', meta: { className: LONG_TEXT } },
-  { id: 'originalValue', header: C.originalValue, accessorKey: 'originalValue', meta: { className: LONG_TEXT } },
-  { id: 'changedTo', header: C.changedTo, accessorKey: 'changedTo', meta: { className: LONG_TEXT } },
+  { id: 'event', header: C.event, accessorKey: 'event', meta: LONG_TEXT },
+  { id: 'originalValue', header: C.originalValue, accessorKey: 'originalValue', meta: LONG_TEXT },
+  { id: 'changedTo', header: C.changedTo, accessorKey: 'changedTo', meta: LONG_TEXT },
   { id: 'user', header: C.user, accessorKey: 'user', meta: { filterVariant: 'select' } },
 ];

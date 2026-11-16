@@ -15,7 +15,7 @@ export const PAGE_TITLES = {
   assumptions: 'Prototype Assumptions',
   selectContext: 'My Projects & Sites',
 
-  personalDashboard: "User's Personal Dashboard",
+  personalDashboard: 'Dashboard',
   masters: 'Masters',
   accessRights: 'Master-Default Access Rights',
   ecrfTemplates: 'eCRF Templates',

@@ -12,7 +12,7 @@ interface SiteUserViewContainerProps {
 /** Drawer content container for View mode (+ its Deactivate / Re-activate confirm). */
 export function SiteUserViewContainer({ projectId, siteId, membershipId }: SiteUserViewContainerProps) {
   const model = useSiteUserDetail(projectId, siteId, membershipId);
-  if (model.isNotFound) return <NotFoundPage />;
+  if (model.isNotFound) {return <NotFoundPage />;}
   const { confirm, isNotFound, ...view } = model;
   return (
     <>

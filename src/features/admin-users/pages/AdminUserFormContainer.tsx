@@ -11,6 +11,6 @@ interface AdminUserFormContainerProps {
 /** Drawer content container: wires the form hook to the drawer form view. */
 export function AdminUserFormContainer({ mode, userId, onDone }: AdminUserFormContainerProps) {
   const { isNotFound, ...model } = useAdminUserForm({ mode, userId, onDone });
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <AdminUserFormView {...model} />;
 }

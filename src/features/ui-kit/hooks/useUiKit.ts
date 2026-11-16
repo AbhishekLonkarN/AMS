@@ -59,7 +59,7 @@ export function useUiKit() {
     return actions;
   };
   const handleConfirmDeactivate = () => {
-    if (pendingDeactivate) notify.success(L.confirmed(fullName(pendingDeactivate.prefix, pendingDeactivate.name)));
+    if (pendingDeactivate) {notify.success(L.confirmed(fullName(pendingDeactivate.prefix, pendingDeactivate.name)));}
     setPendingDeactivate(null);
   };
 

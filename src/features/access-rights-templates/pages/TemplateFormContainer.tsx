@@ -11,6 +11,6 @@ interface TemplateFormContainerProps {
 /** Drawer content container: wires the form hook to the drawer form view. */
 export function TemplateFormContainer({ mode, templateId, onDone }: TemplateFormContainerProps) {
   const { isNotFound, ...model } = useTemplateForm({ mode, templateId, onDone });
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <TemplateFormView {...model} />;
 }

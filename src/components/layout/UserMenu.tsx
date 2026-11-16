@@ -38,7 +38,8 @@ export function UserMenu(props: UserMenuProps) {
         <ChevronDown className="size-4 text-ink-500" aria-hidden />
       </button>
 
-      <div tabIndex={0} className={clsx('dropdown-content', styles.panel)}>
+      {/* tabIndex -1: clicks inside keep focus in the dropdown (so it stays open) without adding a tab stop. */}
+      <div tabIndex={-1} className={clsx('dropdown-content', styles.panel)}>
         <div className={styles.panelHeader}>
           <span className={styles.name}>{name}</span>
           <span className={styles.role}>{email}</span>

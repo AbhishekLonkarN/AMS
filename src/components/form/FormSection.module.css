@@ -1,20 +1,20 @@
 @reference "@/styles/index.css";
 
+/* Compact header row: small icon + title, a hairline underneath, then the fields. */
 .header {
   @apply mb-5 flex flex-wrap items-start justify-between gap-3;
 }
 
-/* The icon circle is taller than the title, so tighten the gap below it. */
 .headerWithIcon {
-  @apply mb-3;
+  @apply mb-5 border-b border-base-300 pb-3;
 }
 
 .heading {
-  @apply flex items-center gap-4;
+  @apply flex items-center gap-3;
 }
 
 .icon {
-  @apply flex size-10 shrink-0 items-center justify-center rounded-pill bg-brand-50 text-primary;
+  @apply flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-primary;
 }
 
 .title {
@@ -23,9 +23,4 @@
 
 .description {
   @apply mt-0.5 text-label text-ink-500;
-}
-
-/* size-10 icon + gap-4 = 3.5rem: fields start under the title. */
-.indented {
-  @apply md:pl-14;
 }

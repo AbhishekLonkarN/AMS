@@ -26,7 +26,7 @@ export function useAdminUserDetail(userId?: string) {
   const statusToggle = useUserStatusToggle();
   const user = users.find((u) => u.id === userId && u.userType === 'admin');
 
-  if (!user) return { isNotFound: true as const };
+  if (!user) {return { isNotFound: true as const };}
 
   const template = templates.find((t) => t.id === user.globalTemplateId);
   const isActive = user.status === 'active';

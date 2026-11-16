@@ -11,6 +11,6 @@ interface ProjectFormContainerProps {
 /** Drawer content container: wires the form hook to the drawer form view. */
 export function ProjectFormContainer({ mode, projectId, onDone }: ProjectFormContainerProps) {
   const { isNotFound, ...model } = useProjectForm({ mode, projectId, onDone });
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <ProjectFormView {...model} />;
 }

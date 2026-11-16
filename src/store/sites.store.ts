@@ -52,7 +52,7 @@ export const useSitesStore = createAppStore<SitesState>('sites', (set, get) => (
 
   updateSite: (id, input) => {
     const before = get().sites.find((s) => s.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after = { ...before, ...input };
     set((s) => ({ sites: s.sites.map((x) => (x.id === id ? after : x)) }));
     recordFieldChanges({

@@ -16,7 +16,7 @@ export function useRouteParams(): RouteContextParams {
 /** Scope implied by the current URL: site > project > none ("anywhere"). */
 export function useRouteScope(): Scope | undefined {
   const { projectId, siteId } = useRouteParams();
-  if (projectId && siteId) return { type: 'site', projectId, siteId };
-  if (projectId) return { type: 'project', projectId };
+  if (projectId && siteId) {return { type: 'site', projectId, siteId };}
+  if (projectId) {return { type: 'project', projectId };}
   return undefined;
 }

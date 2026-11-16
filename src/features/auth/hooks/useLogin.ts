@@ -19,6 +19,9 @@ export function useLogin() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
+    // check a field when the user leaves it, and again on every keystroke once it has an error
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
   });
 
   // Return to the page that bounced us to login, else the role's home (via "/").

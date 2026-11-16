@@ -15,7 +15,7 @@ export function SiteHubPage() {
     paramKey: 'siteId',
     listPath: model ? paths.siteHub(model.projectId, model.id) : '',
   });
-  if (!model) return <NotFoundPage />;
+  if (!model) {return <NotFoundPage />;}
 
   const { id, projectId, ...hub } = model;
   return (

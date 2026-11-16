@@ -4,7 +4,6 @@ import type { MasterItem, MasterKey } from '@/types';
 import type { RowAction } from '@/components/data-grid';
 import { notify, useMastersStore } from '@/store';
 import { usePermissionChecker } from '@/rbac';
-import { ROUTES } from '@/app/router/route-paths.constants';
 import { MASTERS_CONFIG } from '../masters.config';
 import { MASTER_LABELS as L } from '../constants/masters.constants';
 import { buildMasterColumns } from '../constants/master-columns.constants';
@@ -28,7 +27,7 @@ export function useMasterList(masterKey: MasterKey) {
 
   const rowActions = (item: MasterItem): RowAction[] => {
     const actions: RowAction[] = [];
-    if (canEdit) actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => formModel.openEdit(item) });
+    if (canEdit) {actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => formModel.openEdit(item) });}
     if (canToggle) {
       const isActive = item.status === 'active';
       actions.push({
@@ -46,7 +45,7 @@ export function useMasterList(masterKey: MasterKey) {
   const pendingLabel = pendingToggle?.label ?? '';
 
   const handleConfirmToggle = () => {
-    if (!pendingToggle) return;
+    if (!pendingToggle) {return;}
     toggleMasterItemStatus(pendingToggle.id);
     notify.success(isDeactivating ? L.deactivated(pendingLabel) : L.reactivated(pendingLabel));
     setPendingToggle(null);
@@ -55,7 +54,6 @@ export function useMasterList(masterKey: MasterKey) {
   return {
     title: config.title,
     description: config.description,
-    backTo: ROUTES.masters,
     items,
     columns,
     rowActions: canEdit || canToggle ? rowActions : undefined,

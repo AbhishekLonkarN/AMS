@@ -1,9 +1,9 @@
 import { Building2, Laptop, Pencil, Save, UserRound } from 'lucide-react';
+import clsx from 'clsx';
 import { PageHeader } from '@/components/layout';
 import {
   FileField,
   FormSection,
-  ReadOnlyField,
   SelectField,
   TextAreaField,
   TextField,
@@ -14,6 +14,15 @@ import {
 } from '../constants/company-profile.constants';
 import type { CompanyProfileModel } from '../hooks/useCompanyProfile';
 import styles from './CompanyProfileView.module.css';
+
+function Item({ label, value, isWide, isStrong }: { label: string; value?: string; isWide?: boolean; isStrong?: boolean }) {
+  return (
+    <div className={clsx(styles.item, isWide && styles.wide)}>
+      <span className={styles.label}>{label}</span>
+      <span className={clsx(styles.value, isStrong && value && styles.emphasis, !value && styles.empty)}>{value || '—'}</span>
+    </div>
+  );
+}
 
 /** Read-only profile; the Edit button (edit rights only) turns the same sections into a form. */
 export function CompanyProfileView({
@@ -47,40 +56,22 @@ export function CompanyProfileView({
           }
         />
         <FormSection title={L.ownerSection} icon={Building2}>
-          <div className={styles.columns}>
-            <div className={styles.column}>
-              <ReadOnlyField label={F.ownerDisplayName} value={profile.ownerDisplayName} />
-              <ReadOnlyField label={F.address} value={profile.address} />
-            </div>
-            <div className={styles.column}>
-              <ReadOnlyField label={F.legalName} value={profile.legalName} />
-            </div>
+          <div className={styles.grid}>
+            <Item label={F.ownerDisplayName} value={profile.ownerDisplayName} />
+            <Item label={F.legalName} value={profile.legalName} />
+            <Item label={F.address} value={profile.address} isWide />
           </div>
         </FormSection>
         <FormSection title={L.softwareSection} icon={Laptop}>
-          <div className={styles.columns}>
-            <div className={styles.column}>
-              <ReadOnlyField
-                label={F.softwareName}
-                value={profile.softwareName && <span className={styles.emphasis}>{profile.softwareName}</span>}
-              />
-            </div>
-            <div className={styles.column}>
-              <ReadOnlyField label={F.logo} value={profile.logoFileName} />
-            </div>
+          <div className={styles.grid}>
+            <Item label={F.softwareName} value={profile.softwareName} isStrong />
+            <Item label={F.logo} value={profile.logoFileName} />
           </div>
         </FormSection>
         <FormSection title={L.adminSection} icon={UserRound}>
-          <div className={styles.columns}>
-            <div className={styles.column}>
-              <ReadOnlyField
-                label={F.itAdminUserId}
-                value={profile.itAdminUserId && <span className={styles.emphasis}>{profile.itAdminUserId}</span>}
-              />
-            </div>
-            <div className={styles.column}>
-              <ReadOnlyField label={F.itAdminName} value={profile.itAdminName} />
-            </div>
+          <div className={styles.grid}>
+            <Item label={F.itAdminUserId} value={profile.itAdminUserId} isStrong />
+            <Item label={F.itAdminName} value={profile.itAdminName} />
           </div>
         </FormSection>
       </div>

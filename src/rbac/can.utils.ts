@@ -20,7 +20,7 @@ export interface GrantSources {
  * contribute nothing, so deaffiliation takes effect immediately.
  */
 export function buildGrants(user: User, sources: GrantSources): Grant[] {
-  if (user.status !== 'active') return [];
+  if (user.status !== 'active') {return [];}
 
   switch (user.userType) {
     case 'admin':
@@ -59,8 +59,8 @@ export function buildGrants(user: User, sources: GrantSources): Grant[] {
  * - site request        → global, the site's project, or that site
  */
 export function scopeCovers(grant: Scope, requested?: Scope): boolean {
-  if (!requested) return true;
-  if (grant.type === 'global') return true;
+  if (!requested) {return true;}
+  if (grant.type === 'global') {return true;}
 
   switch (requested.type) {
     case 'global':
@@ -68,7 +68,7 @@ export function scopeCovers(grant: Scope, requested?: Scope): boolean {
     case 'project':
       return grant.projectId === requested.projectId;
     case 'site':
-      if (grant.type === 'project') return grant.projectId === requested.projectId;
+      if (grant.type === 'project') {return grant.projectId === requested.projectId;}
       return grant.siteId === requested.siteId;
   }
 }
@@ -79,7 +79,7 @@ export function can(
   permission: PermissionKey | PermissionKey[],
   scope?: Scope,
 ): boolean {
-  if (!principal || principal.user.status !== 'active') return false;
+  if (!principal || principal.user.status !== 'active') {return false;}
   const wanted = Array.isArray(permission) ? permission : [permission];
 
   return principal.grants.some(

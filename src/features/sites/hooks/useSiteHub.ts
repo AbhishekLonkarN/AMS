@@ -14,7 +14,7 @@ export function useSiteHub() {
   const tiles = useHubTiles('site');
   const canEdit = usePermission('investigatorSite.edit');
 
-  if (!site) return null;
+  if (!site) {return null;}
 
   const facts: HubFact[] = [
     { label: F.investigatorName, value: site.investigatorName },

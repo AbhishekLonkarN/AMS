@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { Pencil } from 'lucide-react';
+import { Download, Pencil } from 'lucide-react';
 import { PageHeader, TileGrid, type TileView } from '@/components/layout';
 import { ReadOnlyField } from '@/components/form';
 import { SHELL_LABELS } from '../constants/shell.constants';
@@ -24,6 +24,9 @@ interface HubSummaryViewProps {
   status?: string;
   editTo?: string;
   editLabel: string;
+  /** Downloads this project's database; omitted when the user has no export right. */
+  onExport?: () => void;
+  exportLabel?: string;
   facts: HubFact[];
   progress?: HubProgress;
   tilesTitle: string;
@@ -37,6 +40,8 @@ export function HubSummaryView({
   status,
   editTo,
   editLabel,
+  onExport,
+  exportLabel,
   facts,
   progress,
   tilesTitle,
@@ -50,8 +55,13 @@ export function HubSummaryView({
         actions={
           <>
             {status && <span className="badge badge-soft badge-primary">{status}</span>}
+            {onExport && (
+              <button type="button" className="btn btn-secondary btn-sm" onClick={onExport}>
+                <Download className="size-4" aria-hidden /> {exportLabel}
+              </button>
+            )}
             {editTo && (
-              <Link to={editTo} className="btn btn-sm">
+              <Link to={editTo} className="btn btn-primary btn-sm">
                 <Pencil className="size-4" aria-hidden /> {editLabel}
               </Link>
             )}

@@ -8,7 +8,7 @@ export function LoginPage() {
   const isLoggedIn = useSessionStore((s) => !!s.currentUserId);
   const { form, loginError, demoUsers, handleSubmit, handleDemoLogin } = useLogin();
 
-  if (isLoggedIn) return <Navigate to={ROUTES.root} replace />;
+  if (isLoggedIn) {return <Navigate to={ROUTES.root} replace />;}
 
   return (
     <LoginView

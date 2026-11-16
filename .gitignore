@@ -1,3 +1,6 @@
 node_modules
 dist
 *.local
+.vscode
+lint-report.html
+typecheck-report.html

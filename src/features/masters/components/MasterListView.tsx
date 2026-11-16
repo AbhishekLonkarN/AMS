@@ -9,7 +9,7 @@ import { MasterFormModal } from './MasterFormModal';
 export function MasterListView(model: MasterListModel) {
   return (
     <div className="page-container">
-      <PageHeader title={model.title} description={model.description} backTo={model.backTo} />
+      <PageHeader title={model.title} description={model.description} />
       <DataGrid
         // Fresh grid state (search, filters, page) when switching between masters.
         key={model.title}

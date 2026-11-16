@@ -5,12 +5,15 @@ import type { MasterKey } from '@/types';
 export const ROUTES = {
   root: '/',
   login: '/login',
+  forgotPassword: '/forgot-password',
+  forgotPasswordSent: '/forgot-password/sent',
+  resetPassword: '/reset-password',
+  passwordUpdated: '/reset-password/done',
   selectContext: '/select-context',
   forbidden: '/403',
   assumptions: '/assumptions',
   uiKit: '/ui-kit',
   auditTrail: '/audit-trail',
-  databaseExport: '/database-export',
 
   // Admin portal
   adminHome: '/admin',
@@ -39,6 +42,8 @@ export const ROUTES = {
   accessRightsEdit: '/masters/access-rights/:templateId/edit',
   master: '/masters/:masterKey',
   ecrfTemplates: '/ecrf-templates',
+  ecrfTemplateNew: '/ecrf-templates/new',
+  ecrfTemplateEdit: '/ecrf-templates/:templateId/edit',
   projects: '/projects',
   projectNew: '/projects/new',
   projectListEdit: '/projects/edit/:projectId',
@@ -59,7 +64,6 @@ export const ROUTES = {
   projectEtmf: '/projects/:projectId/etmf',
   projectDatabaseLock: '/projects/:projectId/database-lock',
   projectSelectiveExport: '/projects/:projectId/selective-export',
-  projectDatabaseExport: '/projects/:projectId/database-export',
   projectSupportContacts: '/projects/:projectId/support-contacts',
   projectSettings: '/projects/:projectId/settings',
 
@@ -97,6 +101,7 @@ export const paths = {
   accessRightsView: (templateId: string) => generatePath(ROUTES.accessRightsView, { templateId }),
   accessRightsEdit: (templateId: string) => generatePath(ROUTES.accessRightsEdit, { templateId }),
   master: (masterKey: MasterKey) => generatePath(ROUTES.master, { masterKey }),
+  ecrfTemplateEdit: (templateId: string) => generatePath(ROUTES.ecrfTemplateEdit, { templateId }),
 
   projectListEdit: project(ROUTES.projectListEdit),
   projectHub: project(ROUTES.projectHub),
@@ -116,7 +121,6 @@ export const paths = {
   projectEtmf: project(ROUTES.projectEtmf),
   projectDatabaseLock: project(ROUTES.projectDatabaseLock),
   projectSelectiveExport: project(ROUTES.projectSelectiveExport),
-  projectDatabaseExport: project(ROUTES.projectDatabaseExport),
   projectSupportContacts: project(ROUTES.projectSupportContacts),
   projectSettings: project(ROUTES.projectSettings),
 

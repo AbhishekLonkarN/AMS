@@ -34,10 +34,10 @@ export function useAffiliationList({
   const rowActions = (row: AffiliationRow): RowAction[] => {
     const actions: RowAction[] = [];
     const isEnded = row.statusKind === 'deaffiliated';
-    if (canView) actions.push({ key: 'view', label: L.view, icon: Eye, onClick: () => onView(row.id) });
-    if (canEdit && !isEnded) actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => onEdit(row.id) });
+    if (canView) {actions.push({ key: 'view', label: L.view, icon: Eye, onClick: () => onView(row.id) });}
+    if (canEdit && !isEnded) {actions.push({ key: 'edit', label: L.edit, icon: Pencil, onClick: () => onEdit(row.id) });}
     const endButton = end.actionFor(row);
-    if (endButton) actions.push(endButton);
+    if (endButton) {actions.push(endButton);}
     return actions;
   };
 

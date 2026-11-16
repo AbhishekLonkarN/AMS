@@ -1,0 +1,74 @@
+@reference "@/styles/index.css";
+
+.form {
+  @apply flex flex-col gap-4;
+}
+
+.card {
+  @apply flex flex-col gap-4 rounded-card border border-base-300 bg-base-100 p-4 shadow-card;
+}
+
+.summary {
+  @apply flex cursor-pointer list-none items-start justify-between gap-3;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.chevron {
+  @apply mt-0.5 size-4 shrink-0 text-ink-500 transition-transform duration-200;
+}
+
+.card[open] .chevron {
+  @apply rotate-180;
+}
+
+.heading {
+  @apply flex flex-col gap-0.5;
+}
+
+.title {
+  @apply text-lead font-semibold text-base-content;
+}
+
+.description {
+  @apply text-label text-ink-500;
+}
+
+/* 24-column grid: each field spans its configured width. The container query lets a narrow
+   host (the builder's preview column, a phone) stack every field full width. */
+.grid {
+  @apply grid grid-cols-24 gap-x-4 gap-y-4;
+  container-type: inline-size;
+}
+
+.cell {
+  @apply relative rounded-control transition-shadow duration-150;
+  grid-column: span var(--span, 24) / span var(--span, 24);
+  min-width: 0;
+}
+
+/* Outline around a preview field that is linked to the card being hovered / clicked. */
+.cellActive {
+  @apply ring-2 ring-brand-500 ring-offset-4 ring-offset-base-100;
+}
+
+.cellHit {
+  @apply absolute -inset-1 cursor-pointer rounded-control bg-transparent outline-none;
+  @apply hover:bg-brand-500/5 focus-visible:ring-2 focus-visible:ring-brand-500;
+}
+
+@container (max-width: 360px) {
+  .cell {
+    grid-column: 1 / -1;
+  }
+}
+
+.choices {
+  @apply flex flex-wrap gap-x-4 gap-y-2;
+}
+
+.choice {
+  @apply flex cursor-pointer items-center gap-2 text-body text-base-content;
+}

@@ -31,7 +31,7 @@ export function sanitizePermissions(
 }
 
 export function isSamePermissionSet(a: readonly PermissionKey[], b: readonly PermissionKey[]): boolean {
-  if (a.length !== b.length) return false;
+  if (a.length !== b.length) {return false;}
   const setA = new Set(a);
   return b.every((k) => setA.has(k));
 }

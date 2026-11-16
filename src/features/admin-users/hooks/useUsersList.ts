@@ -26,8 +26,8 @@ export function useUsersList() {
   const rows = useMemo(
     () =>
       [...users].reverse().filter((u) => {
-        if (u.userType === 'admin') return canViewAdmins;
-        if (u.userType === 'sponsor' || u.userType === 'co') return canViewAccounts;
+        if (u.userType === 'admin') {return canViewAdmins;}
+        if (u.userType === 'sponsor' || u.userType === 'co') {return canViewAccounts;}
         return false;
       }),
     [users, canViewAdmins, canViewAccounts],
@@ -41,7 +41,7 @@ export function useUsersList() {
     const edit = isAdmin ? paths.adminUserEdit(user.id) : paths.accountEdit(user.id);
 
     const actions: RowAction[] = [];
-    if (canView) actions.push({ key: 'view', label: A.view, icon: Eye, onClick: () => navigate(view) });
+    if (canView) {actions.push({ key: 'view', label: A.view, icon: Eye, onClick: () => navigate(view) });}
     if (canEdit) {
       actions.push({ key: 'edit', label: A.edit, icon: Pencil, onClick: () => navigate(edit) });
       // An admin cannot deactivate their own account.

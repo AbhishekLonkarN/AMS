@@ -1,0 +1,310 @@
+@reference "@/styles/index.css";
+
+/* ---- layout: editor | live preview ---- */
+
+.builder {
+  @apply grid grid-cols-1 items-start gap-6 xl:grid-cols-2;
+}
+
+.editor {
+  @apply flex min-w-0 flex-col gap-3;
+}
+
+/* The preview follows the user down a long editor. */
+.preview {
+  @apply flex min-w-0 flex-col gap-3 rounded-card border border-dashed border-ink-300 bg-ink-50 p-4;
+  @apply xl:sticky xl:top-0;
+}
+
+.columnHeader {
+  @apply flex items-start justify-between gap-3;
+}
+
+.columnTitle {
+  @apply text-body font-semibold text-base-content;
+}
+
+.columnHint {
+  @apply text-label text-ink-500;
+}
+
+/* ---- section card ---- */
+
+.sectionCard {
+  @apply flex flex-col rounded-card border border-base-300 bg-base-100 shadow-card transition-colors duration-200;
+}
+
+.sectionHeader {
+  @apply flex items-center gap-2 px-3 py-2;
+}
+
+.sectionToggle {
+  @apply flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-control px-1 py-1 text-left;
+  @apply hover:bg-ink-100 focus-visible:outline-2 focus-visible:outline-brand-500;
+}
+
+.sectionName {
+  @apply truncate text-body font-semibold text-base-content;
+}
+
+.sectionMeta {
+  @apply shrink-0 text-caption text-ink-500;
+}
+
+.chevron {
+  @apply size-4 shrink-0 text-ink-500 transition-transform duration-200;
+}
+
+.chevronOpen {
+  @apply rotate-180;
+}
+
+.headerActions {
+  @apply ml-auto flex shrink-0 items-center gap-0.5;
+}
+
+/*
+ * Expand / collapse. Animating grid-template-rows (0fr ↔ 1fr) follows the body's real height,
+ * unlike a max-height guess. Visibility flips only after the close finishes, so collapsed
+ * fields drop out of the tab order and screen readers without cutting the animation short.
+ */
+.collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 240ms cubic-bezier(0.2, 0, 0, 1),
+    visibility 0s linear 240ms;
+}
+
+.collapseOpen {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 240ms cubic-bezier(0.2, 0, 0, 1),
+    visibility 0s;
+}
+
+.collapseInner {
+  @apply min-h-0 overflow-hidden opacity-0 transition-opacity duration-200 ease-out;
+}
+
+.collapseOpen > .collapseInner {
+  @apply opacity-100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapse,
+  .collapseOpen,
+  .collapseInner {
+    transition: none;
+  }
+}
+
+.sectionBody {
+  @apply flex flex-col gap-4 border-t border-base-300 p-4;
+}
+
+/* ---- field card ---- */
+
+.fieldList {
+  @apply flex flex-col gap-3;
+}
+
+.fieldCard {
+  @apply flex flex-col gap-3 rounded-control border border-base-300 bg-ink-50 p-3 transition-colors duration-200;
+}
+
+.fieldHeader {
+  @apply flex items-center gap-2;
+}
+
+/* Collapsed: just the summary row. */
+.fieldCardCollapsed {
+  @apply gap-0 bg-base-100 py-2 hover:border-ink-400;
+}
+
+.fieldBody {
+  @apply flex flex-col gap-3;
+}
+
+.fieldToggle {
+  @apply flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-control py-0.5 text-left;
+  @apply focus-visible:outline-2 focus-visible:outline-brand-500;
+}
+
+.fieldChevron {
+  @apply size-4 shrink-0 text-ink-500 transition-transform duration-200;
+}
+
+.fieldChevronOpen {
+  @apply rotate-90;
+}
+
+.requiredChip {
+  @apply shrink-0 rounded-pill bg-status-error-soft px-2 py-0.5 text-caption text-tone-pink;
+}
+
+.widthChip {
+  @apply shrink-0 rounded-pill bg-ink-100 px-2 py-0.5 font-mono text-caption text-ink-500;
+}
+
+/* Linked to the field under the pointer in the preview. */
+.linked {
+  @apply border-brand-500;
+}
+
+/* Landed here from the preview or just created: a short glow so the eye finds it. */
+.flash {
+  animation: field-flash 1.4s ease-out;
+}
+
+@keyframes field-flash {
+  0%,
+  30% {
+    box-shadow: 0 0 0 3px var(--color-brand-200);
+    background-color: var(--color-brand-50);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash {
+    animation: none;
+    @apply border-brand-500;
+  }
+}
+
+/* "+" between two cards: a thin line that shows its button on hover / keyboard focus. */
+.insertSlot {
+  @apply relative -my-2 flex h-4 items-center justify-center;
+}
+
+.insertSlot::before {
+  content: '';
+  @apply absolute inset-x-2 top-1/2 h-px bg-brand-500 opacity-0 transition-opacity duration-150;
+}
+
+.insertButton {
+  @apply relative z-1 flex size-5 cursor-pointer items-center justify-center rounded-pill border border-brand-500 bg-base-100 text-brand-700;
+  @apply scale-75 opacity-0 transition-all duration-150 hover:bg-brand-50;
+  @apply focus-visible:scale-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-brand-500;
+}
+
+.insertSlot:hover::before {
+  @apply opacity-100;
+}
+
+.insertSlot:hover .insertButton {
+  @apply scale-100 opacity-100;
+}
+
+/* ---- preview mode switch ---- */
+
+.modeSwitch {
+  @apply flex shrink-0 rounded-control border border-base-300 bg-base-100 p-0.5;
+}
+
+.modeButton {
+  @apply flex cursor-pointer items-center gap-1.5 rounded-[calc(var(--radius-control)-2px)] px-2.5 py-1 text-caption font-medium text-ink-600;
+  @apply transition-colors duration-150 hover:bg-ink-100;
+}
+
+.modeButtonActive {
+  @apply bg-action text-ink-0 hover:bg-action;
+}
+
+/* ---- test run ---- */
+
+.testForm {
+  @apply flex flex-col gap-4;
+}
+
+.testActions {
+  @apply flex items-center gap-2;
+}
+
+.testPassed {
+  @apply flex flex-col gap-2 rounded-control border border-status-success bg-status-success-soft p-3;
+}
+
+.testFailed {
+  @apply rounded-control border border-status-error bg-status-error-soft p-3;
+}
+
+.testMessage {
+  @apply flex items-center gap-2 text-label font-medium text-ink-800;
+}
+
+.testJson {
+  @apply max-h-72 overflow-auto rounded-control bg-ink-900 p-3 font-mono text-caption text-ink-0;
+}
+
+.fieldIndex {
+  @apply flex size-5 shrink-0 items-center justify-center rounded-pill bg-brand-50 text-caption font-semibold text-brand-700;
+}
+
+.fieldName {
+  @apply min-w-0 flex-1 truncate text-body font-medium text-base-content;
+}
+
+.typeBadge {
+  @apply shrink-0 rounded-pill bg-ink-100 px-2 py-0.5 text-caption text-ink-600;
+}
+
+.fieldGrid {
+  @apply grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-2;
+}
+
+.fullRow {
+  @apply md:col-span-2;
+}
+
+.switchRow {
+  @apply flex cursor-pointer items-center gap-2 self-end pb-2 text-body text-base-content;
+}
+
+.note {
+  @apply flex items-start gap-2 rounded-control bg-status-info-soft px-3 py-2 text-label text-ink-700;
+}
+
+/* ---- validation ---- */
+
+.invalid {
+  @apply border-status-error;
+}
+
+.invalidText {
+  @apply px-4 text-label font-medium text-error;
+}
+
+.fieldCard .invalidText {
+  @apply px-0;
+}
+
+/* ---- options ---- */
+
+.options {
+  @apply flex flex-col gap-2;
+}
+
+.optionList {
+  @apply flex flex-col gap-1.5;
+}
+
+.optionRow {
+  @apply flex items-center gap-1.5;
+}
+
+/* ---- removed fields (undo) ---- */
+
+.removedList {
+  @apply flex flex-wrap gap-2;
+}
+
+.removedChip {
+  @apply inline-flex cursor-pointer items-center gap-1.5 rounded-pill border border-dashed border-ink-300 bg-base-100 px-3 py-1 text-caption text-ink-600;
+  @apply transition-colors duration-150 hover:border-brand-500 hover:text-brand-700;
+}

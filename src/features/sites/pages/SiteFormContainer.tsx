@@ -12,6 +12,6 @@ interface SiteFormContainerProps {
 /** Drawer content container: wires the form hook to the drawer form view. */
 export function SiteFormContainer(props: SiteFormContainerProps) {
   const { isNotFound, ...model } = useSiteForm(props);
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <SiteFormView {...model} />;
 }

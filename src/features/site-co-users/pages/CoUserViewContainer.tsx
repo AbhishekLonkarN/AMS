@@ -12,7 +12,7 @@ interface CoUserViewContainerProps {
 /** Drawer content container for View mode (+ its Deaffiliate confirm). */
 export function CoUserViewContainer({ projectId, siteId, affiliationId }: CoUserViewContainerProps) {
   const model = useCoUserDetail(projectId, siteId, affiliationId);
-  if (model.isNotFound) return <NotFoundPage />;
+  if (model.isNotFound) {return <NotFoundPage />;}
   const { confirm, isNotFound, ...view } = model;
   return (
     <>

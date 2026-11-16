@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useState, type KeyboardEvent } from 'react';
+import { forwardRef, useId, useRef, useState, type KeyboardEvent } from 'react';
 import {
   FloatingFocusManager,
   FloatingNode,
@@ -10,6 +10,7 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useTransitionStyles,
   useFloatingNodeId,
   useInteractions,
   useListNavigation,
@@ -76,6 +77,7 @@ export const DropdownSelect = forwardRef<HTMLButtonElement, DropdownSelectProps>
   // Inside a drawer / modal the list must render in the dialog, or it would sit under the top layer.
   const portalRoot = useDrawerPortalRoot();
   const nodeId = useFloatingNodeId();
+  const listId = useId();
 
   const items: SelectOption[] = emptyLabel === undefined ? options : [{ value: '', label: emptyLabel }, ...options];
   const selectedIndex = items.findIndex((o) => o.value === value);
@@ -85,6 +87,7 @@ export const DropdownSelect = forwardRef<HTMLButtonElement, DropdownSelectProps>
 
   const { refs, floatingStyles, context } = useFloating({
     nodeId,
+    transform: false, // top/left positioning, so the open animation can use transform
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: 'bottom-start',
@@ -103,6 +106,11 @@ export const DropdownSelect = forwardRef<HTMLButtonElement, DropdownSelectProps>
       }),
     ],
   });
+  // Fades and settles in from the trigger on open, and fades out before unmounting.
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(context, {
+    duration: { open: 160, close: 110 },
+    initial: ({ side }) => ({ opacity: 0, transform: `translateY(${side === 'top' ? '6px' : '-6px'}) scale(0.98)` }),
+  });
   const triggerRef = useMergeRefs([refs.setReference, ref]);
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
@@ -120,7 +128,7 @@ export const DropdownSelect = forwardRef<HTMLButtonElement, DropdownSelectProps>
   ]);
 
   const choose = (option: SelectOption) => {
-    if (option.isDisabled) return;
+    if (option.isDisabled) {return;}
     onChange(option.value);
     setIsOpen(false);
   };
@@ -148,6 +156,8 @@ export const DropdownSelect = forwardRef<HTMLButtonElement, DropdownSelectProps>
         ref={triggerRef}
         id={id}
         type="button"
+        // A select-only combobox: the role that supports aria-invalid / aria-required on the trigger.
+        role="combobox"
         title={triggerLabel}
         disabled={isDisabled}
         aria-labelledby={labelledBy}
@@ -163,19 +173,22 @@ export const DropdownSelect = forwardRef<HTMLButtonElement, DropdownSelectProps>
           className,
         )}
         {...getReferenceProps({ onKeyDown: stopEscape })}
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? listId : undefined}
       >
         <span className={clsx(styles.value, isEmpty && styles.placeholder)}>{triggerLabel}</span>
         <ChevronDown className={clsx(styles.chevron, isOpen && styles.chevronOpen)} aria-hidden />
       </button>
 
-      {isOpen && (
+      {isMounted && (
         <FloatingPortal root={portalRoot}>
           <FloatingFocusManager context={context} modal={false}>
             <ul
               ref={refs.setFloating}
-              style={floatingStyles}
+              style={{ ...floatingStyles, ...transitionStyles }}
               className={clsx(styles.list, size === 'sm' && styles.listSm)}
               {...getFloatingProps({ onKeyDown: stopEscape })}
+              id={listId}
             >
               {items.map((option, index) => {
                 const isSelected = index === selectedIndex;

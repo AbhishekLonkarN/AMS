@@ -5,6 +5,6 @@ import { MASTER_LABELS } from './masters.constants';
 export const buildMasterColumns = (itemName: string): DataGridColumn<MasterItem>[] => [
   createSrNoColumn<MasterItem>(),
   { id: 'label', header: itemName, accessorKey: 'label', meta: { className: 'font-medium' } },
-  { id: 'description', header: MASTER_LABELS.description, accessorKey: 'description' },
+  { id: 'description', header: MASTER_LABELS.description, accessorKey: 'description', meta: { isTruncated: true } },
   createStatusColumn<MasterItem>((i) => i.status, MASTER_LABELS.status),
 ];

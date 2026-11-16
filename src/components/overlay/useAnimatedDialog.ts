@@ -29,11 +29,11 @@ export function useAnimatedDialog(isOpen: boolean) {
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!isOpen || !isMounted || !dialog) return;
+    if (!isOpen || !isMounted || !dialog) {return;}
     // showModal() focuses the first focusable element; inside a still off-screen panel that
     // makes the browser scroll it into view and breaks the slide. Focus the dialog itself instead.
     dialog.autofocus = true;
-    if (!dialog.open) dialog.showModal();
+    if (!dialog.open) {dialog.showModal();}
     dialog.scrollLeft = 0;
     dialog.scrollTop = 0;
     // The dialog was display:none until now: flush styles and wait two frames so the
@@ -51,7 +51,7 @@ export function useAnimatedDialog(isOpen: boolean) {
 
   // Lock page scroll behind the overlay.
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isMounted) {return;}
     const root = document.documentElement;
     const previous = root.style.overflow;
     root.style.overflow = 'hidden';
@@ -75,7 +75,7 @@ export function useDialogEscape(
 ) {
   return {
     onKeyDown: (e: React.KeyboardEvent<HTMLDialogElement>) => {
-      if (e.key !== 'Escape') return;
+      if (e.key !== 'Escape') {return;}
       e.preventDefault();
       onClose();
     },

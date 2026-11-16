@@ -6,7 +6,7 @@ import styles from './FormSection.module.css';
 interface FormSectionProps {
   title?: string;
   description?: string;
-  /** Shown in a circle before the title; the body is indented to line up with the title. */
+  /** Shown in a small tile before the title; a hairline separates the header from the fields. */
   icon?: LucideIcon;
   actions?: ReactNode;
   children: ReactNode;
@@ -21,7 +21,7 @@ export function FormSection({ title, description, icon: Icon, actions, children 
           <div className={styles.heading}>
             {Icon && (
               <span className={styles.icon}>
-                <Icon className="size-5" aria-hidden />
+                <Icon className="size-4" aria-hidden />
               </span>
             )}
             <div>
@@ -32,7 +32,7 @@ export function FormSection({ title, description, icon: Icon, actions, children 
           {actions}
         </div>
       )}
-      <div className={clsx(Icon && styles.indented)}>{children}</div>
+      {children}
     </section>
   );
 }

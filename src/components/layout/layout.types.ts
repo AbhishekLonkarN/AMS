@@ -25,6 +25,12 @@ export interface TileView {
   icon: LucideIcon;
 }
 
+export interface BreadcrumbView {
+  label: string;
+  /** Omitted for the current page. */
+  to?: string;
+}
+
 export interface ContextChipView {
   label: string;
   detail?: string;

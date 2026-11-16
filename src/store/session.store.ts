@@ -16,12 +16,12 @@ interface SessionState {
 }
 
 function checkCanLogin(user: User): LoginResult {
-  if (user.status !== 'active') return { isSuccess: false, error: 'inactive' };
+  if (user.status !== 'active') {return { isSuccess: false, error: 'inactive' };}
   if (user.userType === 'site') {
     const hasMembership = useAffiliationsStore
       .getState()
       .siteMemberships.some((m) => m.userId === user.id && m.status === 'active');
-    if (!hasMembership) return { isSuccess: false, error: 'noActiveMembership' };
+    if (!hasMembership) {return { isSuccess: false, error: 'noActiveMembership' };}
   }
   return { isSuccess: true, user };
 }
@@ -38,7 +38,7 @@ export const useSessionStore = createSessionStore<SessionState>('session', (set,
   const attempt = (email: string, user: User | undefined): LoginResult => {
     const result: LoginResult = user ? checkCanLogin(user) : { isSuccess: false, error: 'notFound' };
     auditLogin(user?.email ?? email.trim(), result.isSuccess);
-    if (result.isSuccess) set({ currentUserId: result.user.id });
+    if (result.isSuccess) {set({ currentUserId: result.user.id });}
     return result;
   };
 
@@ -56,7 +56,7 @@ export const useSessionStore = createSessionStore<SessionState>('session', (set,
     },
 
     logout: () => {
-      if (!get().currentUserId) return;
+      if (!get().currentUserId) {return;}
       recordAudit({ page: AUDIT_PAGES.login, event: 'Logged out' });
       set({ currentUserId: null });
     },

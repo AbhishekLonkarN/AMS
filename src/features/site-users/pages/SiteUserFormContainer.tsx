@@ -13,6 +13,6 @@ interface SiteUserFormContainerProps {
 /** Drawer content container: wires the form hook to the drawer form view. */
 export function SiteUserFormContainer(props: SiteUserFormContainerProps) {
   const { isNotFound, ...model } = useSiteUserForm(props);
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <SiteUserFormView {...model} />;
 }

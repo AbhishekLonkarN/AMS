@@ -34,9 +34,9 @@ export function Modal({ isOpen, title, description, size = 'md', onClose, childr
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (isOpen && !dialog.open) dialog.showModal();
-    if (!isOpen && dialog.open) dialog.close();
+    if (!dialog) {return;}
+    if (isOpen && !dialog.open) {dialog.showModal();}
+    if (!isOpen && dialog.open) {dialog.close();}
     setPortalRoot(isOpen ? dialog : null);
   }, [isOpen]);
 

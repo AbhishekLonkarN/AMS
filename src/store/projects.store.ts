@@ -57,7 +57,7 @@ export const useProjectsStore = createAppStore<ProjectsState>('projects', (set, 
 
   updateProject: (id, input) => {
     const before = get().projects.find((p) => p.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after = { ...before, ...input };
     set((s) => ({ projects: s.projects.map((p) => (p.id === id ? after : p)) }));
     recordFieldChanges({

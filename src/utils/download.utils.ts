@@ -50,7 +50,7 @@ export async function saveFile(filename: string, content: string, mimeType: stri
       await writable.close();
       return true;
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') return false; // the user cancelled
+      if (error instanceof DOMException && error.name === 'AbortError') {return false;} // the user cancelled
       // Any other failure (blocked picker, no permission): use a normal download instead.
     }
   }

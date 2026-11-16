@@ -20,7 +20,7 @@
 
 /* ---------- Admin look: the login page's soft lavender behind the content ---------- */
 :global([data-shell-variant='admin']) .content {
-  background: #eef2f9;
+  background: #f8fafb;
   /* the page scrolls inside .main, so the scrollbar starts below the header instead of running beside it */
   height: 100vh;
   height: 100dvh;
@@ -32,7 +32,7 @@
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #c3cddb transparent;
+  scrollbar-color: #b3cdd5 transparent;
 }
 
 :global([data-shell-variant='admin']) .main::-webkit-scrollbar {
@@ -44,12 +44,12 @@
 }
 
 :global([data-shell-variant='admin']) .main::-webkit-scrollbar-thumb {
-  background: #c3cddb;
+  background: #b3cdd5;
   border-radius: 9999px;
 }
 
 :global([data-shell-variant='admin']) .main::-webkit-scrollbar-thumb:hover {
-  background: #a9b6c8;
+  background: #99bcc7;
 }
 
 /*
@@ -57,47 +57,48 @@
  * so everything built on them matches; headings (heading, title, lead, display) keep their own sizes.
  */
 :global([data-shell-variant='admin']) .content {
-  --text-caption: 0.78rem;
-  --text-caption--line-height: 1.125rem;
-  --text-label: 0.78rem;
-  --text-label--line-height: 1.125rem;
-  --text-body: 0.78rem;
-  --text-body--line-height: 1.125rem;
-  font-size: 0.78rem;
+  --text-caption: 0.85rem;
+  --text-caption--line-height: 1.25rem;
+  --text-label: 0.85rem;
+  --text-label--line-height: 1.25rem;
+  --text-body: 0.85rem;
+  --text-body--line-height: 1.25rem;
+  font-size: 0.85rem;
 }
 
 /* daisyUI controls carry their own font sizes; bring them to the same one */
 :global([data-shell-variant='admin']) .content :is(:global(.btn), :global(.input), :global(.select), :global(.textarea), :global(.table), :global(.menu), :global(.tab), :global(.badge), :global(.label), :global(.dropdown-content)) {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
 }
 
 /*
- * Admin: every text button is the same flat blue as the active sidebar tab (#2673A9), with no glow or shadow.
- * Icon-only buttons (square / extra-small) and Cancel / ghost buttons keep their own look.
+ * Buttons come in three kinds: Primary (btn-primary, filled, the one main action of a page),
+ * Secondary (btn-secondary, outlined) and Tertiary (btn-ghost, text only). See styles/base.css.
+ * Admin: the primary button is the flat action colour, the same as the sidebar, with no glow or shadow.
  */
-:global([data-shell-variant='admin']) .main :global(.btn):not(:global(.btn-square)):not(:global(.btn-xs)):not(:global(.btn-ghost)):not([data-btn='cancel']) {
-  --btn-bg: #2673a9;
+:global([data-shell-variant='admin']) .main :global(.btn-primary):not(:global(.btn-square)):not(:global(.btn-xs)) {
+  --btn-bg: var(--color-action);
   --btn-fg: #fff;
-  --btn-border: #2673a9;
+  --btn-border: var(--color-action);
   --btn-shadow: none;
   color: #fff;
-  background-color: #2673a9;
+  background-color: var(--color-action);
   background-image: none;
-  border-color: #2673a9;
+  border-color: var(--color-action);
   box-shadow: none;
   text-shadow: none;
 }
 
-:global([data-shell-variant='admin']) .main :global(.btn):not(:global(.btn-square)):not(:global(.btn-xs)):not(:global(.btn-ghost)):not([data-btn='cancel']):hover:not(:disabled) {
-  background-color: #1f648f;
-  border-color: #1f648f;
+:global([data-shell-variant='admin']) .main :global(.btn-primary):not(:global(.btn-square)):not(:global(.btn-xs)):hover:not(:disabled) {
+  background-color: var(--color-action-hover);
+  border-color: var(--color-action-hover);
   box-shadow: none;
 }
 
-:global([data-shell-variant='admin']) .main :global(.btn):not(:global(.btn-square)):not(:global(.btn-xs)):not(:global(.btn-ghost)):not([data-btn='cancel']):disabled {
+:global([data-shell-variant='admin']) .main :global(.btn-primary):not(:global(.btn-square)):not(:global(.btn-xs)):disabled {
   color: #fff;
-  background-color: #2673a9;
-  border-color: #2673a9;
+  background-color: var(--color-action);
+  border-color: var(--color-action);
   opacity: 0.5;
 }
 
@@ -108,12 +109,12 @@
 :global([data-shell-variant='admin']),
 :global([data-shell-variant='admin']) * {
   scrollbar-width: thin;
-  scrollbar-color: #c3cddb transparent;
+  scrollbar-color: #b3cdd5 transparent;
 }
 
 :global(html):has(:global([data-shell-variant='admin'])) {
   scrollbar-width: thin;
-  scrollbar-color: #c3cddb transparent;
+  scrollbar-color: #b3cdd5 transparent;
 }
 
 /* Admin: status pills (Active / In-active ...) show the text only, without the small icon. */
@@ -121,3 +122,16 @@
   display: none;
 }
 
+/*
+ * Admin: a ticked box is filled with the action colour and a white tick. Covers every checkbox on every
+ * admin page (tables, drawers, permission matrices).
+ */
+:global([data-shell-variant='admin']) .content :global(.checkbox:checked),
+:global([data-shell-variant='admin']) .content :global(.checkbox[aria-checked='true']),
+:global([data-shell-variant='admin']) .content :global(.checkbox:indeterminate),
+:global([data-shell-variant='admin']) .content :global(.checkbox[aria-checked='mixed']) {
+  --input-color: var(--color-action);
+  color: #fff;
+  border-color: var(--color-action);
+  box-shadow: none;
+}

@@ -1,4 +1,5 @@
 export { ShellLayoutPage } from './pages/ShellLayoutPage';
+export { MastersIndexPage } from './pages/MastersIndexPage';
 export { HubPage } from './pages/HubPage';
 export { PlaceholderPage } from './pages/PlaceholderPage';
 export { ForbiddenPage } from './pages/ForbiddenPage';

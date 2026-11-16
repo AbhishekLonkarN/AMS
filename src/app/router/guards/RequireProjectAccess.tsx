@@ -10,7 +10,7 @@ export function RequireProjectAccess() {
   const isKnown = useProjectsStore((s) => s.projects.some((p) => p.id === projectId));
   const isAccessible = useAccessibleProjects().some((p) => p.id === projectId);
 
-  if (!isKnown) return <NotFoundPage />;
-  if (!isAccessible) return <Navigate to={ROUTES.forbidden} replace />;
+  if (!isKnown) {return <NotFoundPage />;}
+  if (!isAccessible) {return <Navigate to={ROUTES.forbidden} replace />;}
   return <Outlet />;
 }

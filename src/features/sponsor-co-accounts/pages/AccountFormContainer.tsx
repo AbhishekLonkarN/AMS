@@ -11,6 +11,6 @@ interface AccountFormContainerProps {
 /** Drawer content container: wires the form hook to the drawer form view. */
 export function AccountFormContainer({ mode, userId, onDone }: AccountFormContainerProps) {
   const { isNotFound, ...model } = useAccountForm({ mode, userId, onDone });
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <AccountFormView {...model} />;
 }

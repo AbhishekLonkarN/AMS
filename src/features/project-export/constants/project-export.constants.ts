@@ -6,6 +6,7 @@ export const PROJECT_EXPORT_LABELS = {
   emptyDescription: 'Projects created by sponsors will appear here.',
   itemLabel: 'projects',
   exportButton: 'Export',
+  hubExportButton: 'Export database',
   exportAria: (name: string) => `Export project ${name}`,
   exported: (name: string) => `Project ${name} has been exported.`,
 } as const;

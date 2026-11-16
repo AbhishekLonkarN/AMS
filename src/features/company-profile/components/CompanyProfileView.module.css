@@ -1,14 +1,30 @@
 @reference "@/styles/index.css";
 
-/* Two columns split by a hairline; stacks on small screens. */
-.columns {
-  @apply grid gap-4 md:grid-cols-2 md:gap-0 md:divide-x md:divide-base-300;
+/* Read-only profile: a tidy two-column grid of label-over-value pairs, the same in every card. */
+.grid {
+  @apply grid grid-cols-1 gap-x-gutter gap-y-5 md:grid-cols-2;
 }
 
-.column {
-  @apply flex min-w-0 flex-col gap-4 md:px-6 md:first:pl-0 md:last:pr-0;
+.item {
+  @apply flex min-w-0 flex-col gap-1;
+}
+
+.wide {
+  @apply md:col-span-2;
+}
+
+.label {
+  @apply text-label text-ink-500;
+}
+
+.value {
+  @apply min-h-6 border-b border-base-300 pb-2 text-body break-words whitespace-pre-line text-base-content;
 }
 
 .emphasis {
   @apply font-semibold;
+}
+
+.empty {
+  @apply text-ink-400;
 }

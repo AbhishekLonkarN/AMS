@@ -5,10 +5,10 @@ import { SITE_FIELDS as F } from './sites.constants';
 export const buildSiteColumns = (statusLabel: (id?: string) => string): DataGridColumn<Site>[] => [
   createSrNoColumn<Site>(),
   { id: 'investigatorName', header: F.investigatorName, accessorKey: 'investigatorName', meta: { className: 'font-medium' } },
-  { id: 'investigatorEmail', header: F.investigatorEmail, accessorKey: 'investigatorEmail' },
+  { id: 'investigatorEmail', header: F.investigatorEmail, accessorKey: 'investigatorEmail', meta: { isTruncated: true } },
   { id: 'siteCode', header: F.siteCode, accessorKey: 'siteCode', meta: { className: 'font-semibold whitespace-nowrap' } },
   { id: 'siteName', header: F.siteName, accessorKey: 'siteName' },
-  { id: 'location', header: F.location, accessorKey: 'location' },
+  { id: 'location', header: F.location, accessorKey: 'location', meta: { isTruncated: true } },
   { id: 'expected', header: F.expectedRecruitment, accessorKey: 'expectedRecruitment', meta: { className: 'text-right' } },
   { id: 'actual', header: F.actualRecruitment, accessorKey: 'actualRecruitment', meta: { className: 'text-right' } },
   {

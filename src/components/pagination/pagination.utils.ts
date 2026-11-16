@@ -7,9 +7,9 @@ export type PageItem = number | 'gap-start' | 'gap-end';
  */
 export function getPageItems(pageIndex: number, pageCount: number): PageItem[] {
   const current = pageIndex + 1;
-  if (pageCount <= 7) return Array.from({ length: pageCount }, (_, i) => i + 1);
+  if (pageCount <= 7) {return Array.from({ length: pageCount }, (_, i) => i + 1);}
 
-  if (current <= 4) return [1, 2, 3, 4, 5, 'gap-end', pageCount];
-  if (current >= pageCount - 3) return [1, 'gap-start', ...Array.from({ length: 5 }, (_, i) => pageCount - 4 + i)];
+  if (current <= 4) {return [1, 2, 3, 4, 5, 'gap-end', pageCount];}
+  if (current >= pageCount - 3) {return [1, 'gap-start', ...Array.from({ length: 5 }, (_, i) => pageCount - 4 + i)];}
   return [1, 'gap-start', current - 1, current, current + 1, 'gap-end', pageCount];
 }

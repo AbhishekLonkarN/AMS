@@ -12,7 +12,7 @@ interface RequireMasterKeyProps {
 /** `/masters/:masterKey` — the key must be a known master and the user needs its view right. */
 export function RequireMasterKey({ children }: RequireMasterKeyProps) {
   const { masterKey } = useParams();
-  if (!MASTER_KEYS.includes(masterKey as MasterKey)) return <NotFoundPage />;
+  if (!MASTER_KEYS.includes(masterKey as MasterKey)) {return <NotFoundPage />;}
 
   const permission = `${MASTER_META[masterKey as MasterKey].permissionModule}.view` as PermissionKey;
   return <RequirePermission permission={permission}>{children}</RequirePermission>;

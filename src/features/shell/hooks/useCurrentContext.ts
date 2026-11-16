@@ -17,7 +17,7 @@ export function useCurrentContext() {
 
   const roleLabel = useMemo(() => {
     const user = principal?.user;
-    if (!user) return '';
+    if (!user) {return '';}
     const isActive = (a: { userId: string; status: string }) => a.userId === user.id && a.status === 'active';
 
     switch (user.userType) {

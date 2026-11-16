@@ -29,7 +29,7 @@ export function useSponsorUserDetail(projectId: string, affiliationId?: string) 
     project?.name ?? '',
   );
 
-  if (!affiliation) return { isNotFound: true as const };
+  if (!affiliation) {return { isNotFound: true as const };}
 
   const user = users.find((u) => u.id === affiliation.userId);
   const isActive = affiliation.status === 'active';

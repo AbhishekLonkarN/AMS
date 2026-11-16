@@ -37,15 +37,15 @@ export function UiKitView(vm: UiKitViewModel) {
           <StatusBadge status="customised" />
           <StatusBadge status="draft" />
           <Tooltip content={L.tooltipText}>
-            <button type="button" className="btn btn-sm">
+            <button type="button" className="btn btn-secondary btn-sm">
               {L.tooltipTrigger}
             </button>
           </Tooltip>
-          <Popover trigger={<button type="button" className="btn btn-sm">{L.popoverTrigger}</button>}>
+          <Popover trigger={<button type="button" className="btn btn-secondary btn-sm">{L.popoverTrigger}</button>}>
             {(close) => (
               <div className="flex flex-col gap-2">
                 <p className="text-label">{L.popoverText}</p>
-                <button type="button" className="btn btn-xs self-end" onClick={close}>
+                <button type="button" className="btn btn-ghost btn-xs self-end" onClick={close}>
                   {L.popoverClose}
                 </button>
               </div>
@@ -62,7 +62,7 @@ export function UiKitView(vm: UiKitViewModel) {
           <button type="button" className="btn btn-sm btn-error" onClick={vm.toast.error}>
             {L.toastError}
           </button>
-          <button type="button" className="btn btn-sm" onClick={vm.toast.phase2}>
+          <button type="button" className="btn btn-secondary btn-sm" onClick={vm.toast.phase2}>
             {L.toastPhase2}
           </button>
           <button type="button" className="btn btn-sm btn-primary" onClick={vm.openModal}>

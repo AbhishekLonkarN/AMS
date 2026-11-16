@@ -5,13 +5,13 @@ import type { NavContext, NavItemConfig, NavSectionConfig } from '../constants/n
 type Checker = (permission: PermissionKey | PermissionKey[], scope?: Scope | 'any') => boolean;
 
 export function sectionScope(section: NavSectionConfig, ctx: NavContext): Scope | 'any' | null {
-  if (section.context === 'none') return 'any';
-  if (section.context === 'project') return ctx.projectId ? { type: 'project', projectId: ctx.projectId } : null;
+  if (section.context === 'none') {return 'any';}
+  if (section.context === 'project') {return ctx.projectId ? { type: 'project', projectId: ctx.projectId } : null;}
   return ctx.projectId && ctx.siteId ? { type: 'site', projectId: ctx.projectId, siteId: ctx.siteId } : null;
 }
 
 function isItemVisible(item: NavItemConfig, userType: UserType, check: Checker, scope: Scope | 'any') {
-  if (item.audiences && !item.audiences.includes(userType)) return false;
+  if (item.audiences && !item.audiences.includes(userType)) {return false;}
   return !item.permission || check(item.permission, scope);
 }
 

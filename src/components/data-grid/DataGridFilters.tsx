@@ -23,11 +23,11 @@ export function DataGridFilters({ filters, activeCount, onFilterChange, onClearF
       trigger={
         <button
           type="button"
-          className={clsx('btn btn-sm', activeCount > 0 && styles.filterButtonActive)}
+          className={clsx('btn btn-sm btn-ghost', styles.filterButton, activeCount > 0 && styles.filterButtonActive)}
           aria-label={activeCount > 0 ? DATA_GRID_LABELS.filtersApplied(activeCount) : DATA_GRID_LABELS.filters}
         >
           <SlidersHorizontal className="size-4" aria-hidden /> {DATA_GRID_LABELS.filters}
-          {activeCount > 0 && <span className="badge badge-primary badge-xs">{activeCount}</span>}
+          {activeCount > 0 && <span className={styles.filterCount}>{activeCount}</span>}
         </button>
       }
     >
@@ -36,7 +36,7 @@ export function DataGridFilters({ filters, activeCount, onFilterChange, onClearF
           <div className={styles.filterPanelHeader}>
             <span className={styles.filterPanelTitle}>{DATA_GRID_LABELS.filters}</span>
             {activeCount > 0 && (
-              <button type="button" className="btn btn-link btn-xs" onClick={onClearFilters}>
+              <button type="button" className="btn btn-ghost btn-xs" onClick={onClearFilters}>
                 {DATA_GRID_LABELS.clearAll}
               </button>
             )}

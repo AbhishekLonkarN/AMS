@@ -69,9 +69,9 @@ export function useSiteUserForm({ mode, projectId, siteId, membershipId, onDone 
       nameError: (name) => (siteMembers.some((m) => isSameText(nameOf(m.userId), name)) ? V.nameTakenInSite : null),
       emailError: (email) => {
         const owner = users.find((u) => u.id !== identity?.id && isSameText(u.email, email));
-        if (!owner) return null;
-        if (owner.userType !== 'site') return V.emailNotSiteAccount;
-        if (siteMembers.some((m) => m.userId === owner.id)) return V.emailTakenInSite;
+        if (!owner) {return null;}
+        if (owner.userType !== 'site') {return V.emailNotSiteAccount;}
+        if (siteMembers.some((m) => m.userId === owner.id)) {return V.emailTakenInSite;}
         // Editing cannot merge two existing logins; creating re-uses the other login.
         return mode === 'edit' ? V.emailTaken : null;
       },
@@ -111,9 +111,9 @@ export function useSiteUserForm({ mode, projectId, siteId, membershipId, onDone 
 
   // Fill the person's details once when an existing login is recognised.
   useEffect(() => {
-    if (!reuseIdentity) return;
-    if (!form.getValues('name')) form.setValue('name', reuseIdentity.name, { shouldValidate: true });
-    if (!form.getValues('prefix')) form.setValue('prefix', reuseIdentity.prefix, { shouldValidate: true });
+    if (!reuseIdentity) {return;}
+    if (!form.getValues('name')) {form.setValue('name', reuseIdentity.name, { shouldValidate: true });}
+    if (!form.getValues('prefix')) {form.setValue('prefix', reuseIdentity.prefix, { shouldValidate: true });}
   }, [reuseIdentity, form]);
 
   const handleSubmit = form.handleSubmit((values) => {
@@ -127,7 +127,7 @@ export function useSiteUserForm({ mode, projectId, siteId, membershipId, onDone 
     } else {
       let userId = reuseIdentity?.id;
       if (reuseIdentity) {
-        if (reuseIdentity.prefix !== prefix || reuseIdentity.name !== name) updateUser(reuseIdentity.id, { prefix, name });
+        if (reuseIdentity.prefix !== prefix || reuseIdentity.name !== name) {updateUser(reuseIdentity.id, { prefix, name });}
       } else {
         userId = addUser({
           prefix,

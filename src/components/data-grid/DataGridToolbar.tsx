@@ -57,10 +57,10 @@ export function DataGridToolbar({
       <div className={styles.toolbarEnd}>
         {exportActions && (
           <div className="join">
-            <button type="button" className="btn btn-sm join-item" onClick={exportActions.onExcel}>
+            <button type="button" className="btn btn-secondary btn-sm join-item" onClick={exportActions.onExcel}>
               <FileSpreadsheet className="size-4 text-success" aria-hidden /> {DATA_GRID_LABELS.exportExcel}
             </button>
-            <button type="button" className="btn btn-sm join-item" onClick={exportActions.onPdf}>
+            <button type="button" className="btn btn-secondary btn-sm join-item" onClick={exportActions.onPdf}>
               <FileText className="size-4 text-error" aria-hidden /> {DATA_GRID_LABELS.exportPdf}
             </button>
           </div>
@@ -83,7 +83,7 @@ export function DataGridToolbar({
               </button>
             </span>
           ))}
-          <button type="button" className="btn btn-link btn-xs" onClick={onClearFilters}>
+          <button type="button" className="btn btn-ghost btn-xs" onClick={onClearFilters}>
             {DATA_GRID_LABELS.clearAll}
           </button>
         </div>

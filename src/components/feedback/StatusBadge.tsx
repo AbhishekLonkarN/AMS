@@ -14,7 +14,7 @@ const STATUS_STYLE: Record<StatusKind, { className: string; icon: LucideIcon }> 
   active: { className: 'badge-success', icon: CircleCheck },
   inactive: { className: 'badge-neutral', icon: CircleMinus },
   deaffiliated: { className: 'badge-error', icon: CircleSlash },
-  customised: { className: 'badge-warning', icon: PencilLine },
+  customised: { className: 'border-brand-200 bg-brand-100 text-brand-800', icon: PencilLine },
   draft: { className: 'badge-info', icon: FileClock },
 };
 

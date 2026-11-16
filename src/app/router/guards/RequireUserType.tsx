@@ -12,6 +12,6 @@ interface RequireUserTypeProps {
 /** For portal pages with no single permission (homes, hubs, dashboards). */
 export function RequireUserType({ types, children }: RequireUserTypeProps) {
   const principal = useCurrentPrincipal();
-  if (!principal || !types.includes(principal.user.userType)) return <Navigate to={ROUTES.forbidden} replace />;
+  if (!principal || !types.includes(principal.user.userType)) {return <Navigate to={ROUTES.forbidden} replace />;}
   return <>{children ?? <Outlet />}</>;
 }

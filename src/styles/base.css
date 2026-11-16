@@ -49,6 +49,27 @@
 }
 
 /*
+ * Text typed or chosen inside a field is always black, everywhere in the app. Placeholders keep their lighter colour.
+ * Unlayered on purpose, so it wins over daisyUI's own field colours.
+ */
+:is(
+    input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'], [type='color'], [type='submit'], [type='button'], [type='reset']),
+    textarea,
+    select,
+    .input,
+    .select,
+    .textarea
+  ) {
+  color: #000;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #000;
+}
+
+/*
  * Shared visual patterns. Declared as @utility so they work both as classes in
  * JSX and inside @apply in CSS modules.
  */
@@ -62,4 +83,68 @@
 
 @utility form-grid {
   @apply grid grid-cols-1 gap-x-gutter gap-y-4 md:grid-cols-2;
+}
+
+/*
+ * Buttons: exactly three kinds.
+ *   Primary   btn btn-primary  filled action colour; one per page / dialog / drawer.
+ *   Secondary btn btn-secondary outlined; supporting actions (Export, Edit, Excel / PDF ...).
+ *   Tertiary  btn btn-ghost    text only; low-emphasis actions (Cancel, Filters, Clear all ...).
+ * Destructive confirms keep btn-error.
+ */
+.btn.btn-secondary {
+  --btn-bg: var(--color-base-100);
+  --btn-fg: var(--color-action);
+  --btn-border: var(--color-action);
+  --btn-shadow: none;
+  background-image: none;
+  box-shadow: none;
+  color: var(--color-action);
+  background-color: var(--color-base-100);
+  border-color: var(--color-action);
+}
+
+.btn.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-brand-50);
+  border-color: var(--color-action);
+}
+
+.btn.btn-ghost {
+  --btn-fg: var(--color-ink-700);
+  color: var(--color-ink-700);
+}
+
+.btn.btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-ink-100);
+  border-color: transparent;
+}
+
+/* Anything clickable shows the hand cursor (Tailwind's reset sets buttons to the arrow). */
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+summary {
+  cursor: pointer;
+}
+
+/* Button micro-interactions: smooth colour changes, a tiny press, no jump. */
+.btn {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease,
+    transform 120ms ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn:active:not(:disabled) {
+    transition: none;
+    transform: none;
+  }
 }

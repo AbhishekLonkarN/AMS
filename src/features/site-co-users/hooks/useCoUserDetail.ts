@@ -27,7 +27,7 @@ export function useCoUserDetail(projectId: string, siteId: string, affiliationId
     site?.siteCode ?? '',
   );
 
-  if (!affiliation) return { isNotFound: true as const };
+  if (!affiliation) {return { isNotFound: true as const };}
 
   const user = users.find((u) => u.id === affiliation.userId);
   const isActive = affiliation.status === 'active';

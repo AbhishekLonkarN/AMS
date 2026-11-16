@@ -2,10 +2,10 @@ import type { NavSectionKey } from './navigation.constants';
 
 export const SECTION_TITLES: Record<NavSectionKey, string | undefined> = {
   admin: undefined, // the Admin sidebar has no section heading
-  sponsor: 'Sponsor portal',
+  sponsor: undefined,
   mySites: undefined,
-  project: 'Project',
-  site: 'Site',
+  project: undefined, // the project name is still shown as the sub-heading
+  site: undefined, // likewise the site code and name
 };
 
 /** The product shown in the Admin sidebar, with the logo from the login page. */

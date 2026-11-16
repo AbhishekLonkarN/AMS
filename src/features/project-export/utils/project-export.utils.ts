@@ -1,7 +1,7 @@
 import type { Project, Site } from '@/types';
 import type { CsvCell } from '@/utils/download.utils';
 import { formatDate } from '@/utils/date.utils';
-import { PROJECT_FIELDS as F } from '@/features/projects';
+import { PROJECT_FIELDS as F } from '@/features/projects/constants/projects.constants';
 import { PROJECT_EXPORT_SECTIONS as S } from '../constants/project-export.constants';
 
 interface ExportLookups {

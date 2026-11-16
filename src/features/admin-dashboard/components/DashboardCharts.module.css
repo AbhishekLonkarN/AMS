@@ -88,7 +88,7 @@
 
 .line {
   fill: none;
-  stroke: var(--color-brand-600);
+  stroke: var(--color-brand-700);
   stroke-width: 2.5;
   stroke-linejoin: round;
   stroke-linecap: round;

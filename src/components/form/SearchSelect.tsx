@@ -7,6 +7,7 @@ import {
   size,
   useDismiss,
   useFloating,
+  useTransitionStyles,
   useInteractions,
   useListNavigation,
   useRole,
@@ -51,6 +52,7 @@ export function SearchSelect({
   const filtered = options.filter((o) => `${o.label} ${o.description ?? ''}`.toLowerCase().includes(needle));
 
   const { refs, floatingStyles, context } = useFloating({
+    transform: false, // top/left positioning, so the open animation can use transform
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: 'bottom-start',
@@ -66,6 +68,12 @@ export function SearchSelect({
     ],
   });
 
+  // Fades and settles in from the trigger on open, and fades out before unmounting.
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(context, {
+    duration: { open: 160, close: 110 },
+    initial: ({ side }) => ({ opacity: 0, transform: `translateY(${side === 'top' ? '6px' : '-6px'}) scale(0.98)` }),
+  });
+
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
     useRole(context, { role: 'listbox' }),
     useDismiss(context),
@@ -73,7 +81,7 @@ export function SearchSelect({
   ]);
 
   const select = (option: SelectOption) => {
-    if (option.isDisabled) return;
+    if (option.isDisabled) {return;}
     onChange(option.value);
     setQuery('');
     setIsOpen(false);
@@ -114,9 +122,9 @@ export function SearchSelect({
         />
       </label>
 
-      {isOpen && (
+      {isMounted && (
         <FloatingPortal root={portalRoot}>
-          <ul ref={refs.setFloating} style={floatingStyles} className={styles.list} {...getFloatingProps()}>
+          <ul ref={refs.setFloating} style={{ ...floatingStyles, ...transitionStyles }} className={styles.list} {...getFloatingProps()}>
             {filtered.length === 0 && <li className={styles.empty}>{emptyLabel}</li>}
             {filtered.map((option, index) => (
               <li

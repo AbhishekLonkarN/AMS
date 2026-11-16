@@ -50,14 +50,14 @@ export function useAccessRightsField({ form, userType, scopeType }: AccessRights
   const handleTemplateChange = (id: string) => {
     form.setValue('templateId', id, { shouldDirty: true, shouldValidate: true });
     const slice = templateSlice(id);
-    if (slice) form.setValue('permissions', slice, { shouldDirty: true });
+    if (slice) {form.setValue('permissions', slice, { shouldDirty: true });}
   };
 
   const handlePermissionsChange = (next: PermissionKey[]) =>
     form.setValue('permissions', next, { shouldDirty: true });
 
   const handleReset = () => {
-    if (templatePermissions) form.setValue('permissions', templatePermissions, { shouldDirty: true });
+    if (templatePermissions) {form.setValue('permissions', templatePermissions, { shouldDirty: true });}
   };
 
   return {

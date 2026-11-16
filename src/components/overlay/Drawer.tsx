@@ -4,7 +4,7 @@ import { DrawerContext } from './drawer.context';
 import { useAnimatedDialog, useDialogEscape } from './useAnimatedDialog';
 import styles from './Drawer.module.css';
 
-export type DrawerSize = 'md' | 'lg';
+export type DrawerSize = 'md' | 'lg' | 'xl';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -17,6 +17,7 @@ interface DrawerProps {
 const SIZE_CLASS: Record<DrawerSize, string> = {
   md: styles.sizeMd,
   lg: styles.sizeLg,
+  xl: styles.sizeXl,
 };
 
 /** Right-hand panel that slides in over a lightly dimmed page. Native <dialog>: focus trap, Esc. */

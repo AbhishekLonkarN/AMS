@@ -6,7 +6,7 @@
 }
 
 .kpi {
-  @apply flex items-center gap-3.5 rounded-card border border-base-300 bg-base-100 p-4 shadow-card transition-shadow duration-200 hover:shadow-raised;
+  @apply flex items-center gap-3.5 rounded-card bg-base-100 p-4 shadow-card transition-shadow duration-200 hover:shadow-raised;
 }
 
 .kpiIcon {
@@ -17,19 +17,19 @@
   @apply bg-brand-50 text-brand-700;
 }
 .kpiIcon[data-tone='green'] {
-  @apply bg-tone-green-soft text-tone-green;
+  @apply bg-sage-100 text-brand-900;
 }
 .kpiIcon[data-tone='red'] {
-  @apply bg-status-error-soft text-status-error;
+  @apply bg-brand-50 text-brand-700;
 }
 .kpiIcon[data-tone='violet'] {
-  @apply bg-tone-violet-soft text-tone-violet;
+  @apply bg-sage-100 text-brand-900;
 }
 .kpiIcon[data-tone='orange'] {
-  @apply bg-tone-orange-soft text-tone-orange;
+  @apply bg-brand-50 text-brand-700;
 }
 .kpiIcon[data-tone='sky'] {
-  @apply bg-tone-sky-soft text-tone-sky;
+  @apply bg-sage-100 text-brand-900;
 }
 
 .kpiLabel {
@@ -37,7 +37,7 @@
 }
 
 .kpiValue {
-  @apply text-[1.375rem] font-bold leading-tight text-ink-900;
+  @apply text-[1.375rem] font-bold leading-tight text-brand-700;
 }
 
 /* ---------- Rows ---------- */
@@ -51,7 +51,7 @@
 
 /* ---------- Card ---------- */
 .card {
-  @apply flex min-w-0 flex-col gap-5 rounded-card border border-base-300 bg-base-100 p-5 shadow-card;
+  @apply flex min-w-0 flex-col gap-5 rounded-card bg-base-100 p-5 shadow-card;
 }
 
 .cardHeader {
@@ -59,7 +59,7 @@
 }
 
 .cardTitle {
-  @apply text-[0.9375rem] font-semibold text-ink-900;
+  @apply text-[0.9375rem] font-semibold text-brand-700;
 }
 
 .cardSubtitle {
@@ -134,20 +134,20 @@
   @apply grid size-7 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-700;
 }
 .feedIcon[data-kind='create'] {
-  @apply bg-tone-green-soft text-tone-green;
+  @apply bg-sage-100 text-brand-900;
 }
 .feedIcon[data-kind='edit'] {
-  @apply bg-tone-sky-soft text-tone-sky;
+  @apply bg-sage-100 text-brand-900;
 }
 .feedIcon[data-kind='status'] {
-  @apply bg-tone-orange-soft text-tone-orange;
+  @apply bg-brand-50 text-brand-700;
 }
 .feedIcon[data-kind='rights'] {
-  @apply bg-tone-violet-soft text-tone-violet;
+  @apply bg-brand-50 text-brand-700;
 }
 
 .feedEvent {
-  @apply truncate text-body font-medium text-ink-800;
+  @apply truncate text-body font-medium text-brand-700;
 }
 
 .feedMeta {
@@ -168,11 +168,11 @@
 }
 
 .actionIcon {
-  @apply grid size-7 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-700;
+  @apply grid size-7 shrink-0 place-items-center rounded-lg bg-brand-700 text-white;
 }
 
 .actionLabel {
-  @apply block truncate text-body font-semibold text-ink-900;
+  @apply block truncate text-body font-semibold text-brand-700;
 }
 
 .actionDescription {
@@ -201,7 +201,7 @@
 }
 
 .userName {
-  @apply truncate text-body font-medium text-ink-800;
+  @apply truncate text-body font-medium text-brand-700;
 }
 
 .userStatus {

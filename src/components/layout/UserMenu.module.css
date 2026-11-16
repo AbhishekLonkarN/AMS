@@ -48,3 +48,13 @@
 .footer {
   @apply mt-2 w-full border-t border-base-300 p-0 pt-2;
 }
+
+/* ---------- Admin look: teal avatar and name, as in the wireframe ---------- */
+:global([data-shell-variant='admin']) .avatar {
+  color: #fff;
+  background: var(--color-action);
+}
+
+:global([data-shell-variant='admin']) .trigger .name {
+  color: #005872;
+}

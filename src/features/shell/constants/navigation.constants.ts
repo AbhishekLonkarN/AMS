@@ -3,7 +3,6 @@ import {
   Building2,
   ClipboardList,
   Contact,
-  Database,
   FileArchive,
   FileDown,
   FileStack,
@@ -11,7 +10,6 @@ import {
   FolderOpen,
   Gauge,
   History,
-  Home,
   Hospital,
   KeyRound,
   LayoutDashboard,
@@ -58,23 +56,21 @@ export interface NavSectionConfig {
   audiences: UserType[];
   /** Which route context the section needs; its items are checked against that scope. */
   context: 'none' | 'project' | 'site';
+  /** Not shown in the sidebar; its items are reached from the hub tiles and the breadcrumbs. */
+  isSidebarHidden?: boolean;
   items: NavItemConfig[];
 }
 
 const fixed = (path: string) => () => path;
 
+/** Submenu labels drop the "Master-" prefix (the parent is already "Masters"); page titles keep it. */
+const masterLabel = (title: string) => title.replace(/^Master-/, '');
+
+/** Order as in the AMS User PDF (Masters screen and the access-rights matrix). */
 const MASTER_ITEMS: NavItemConfig[] = [
   {
-    key: 'master-access-rights',
-    label: PAGE_TITLES.accessRights,
-    description: PAGE_DESCRIPTIONS.accessRights,
-    icon: KeyRound,
-    to: fixed(ROUTES.accessRights),
-    permission: 'masterDefaultAccessRights.view',
-  },
-  {
     key: 'master-product-group',
-    label: MASTER_META.productGroup.title,
+    label: masterLabel(MASTER_META.productGroup.title),
     description: PAGE_DESCRIPTIONS.productGroup,
     icon: Tags,
     to: () => paths.master('productGroup'),
@@ -82,15 +78,23 @@ const MASTER_ITEMS: NavItemConfig[] = [
   },
   {
     key: 'master-project-status',
-    label: MASTER_META.projectStatus.title,
+    label: masterLabel(MASTER_META.projectStatus.title),
     description: PAGE_DESCRIPTIONS.projectStatus,
     icon: Tags,
     to: () => paths.master('projectStatus'),
     permission: 'masterProjectStatus.view',
   },
   {
+    key: 'master-access-rights',
+    label: masterLabel(PAGE_TITLES.accessRights),
+    description: PAGE_DESCRIPTIONS.accessRights,
+    icon: KeyRound,
+    to: fixed(ROUTES.accessRights),
+    permission: 'masterDefaultAccessRights.view',
+  },
+  {
     key: 'master-site-status',
-    label: MASTER_META.siteStatus.title,
+    label: masterLabel(MASTER_META.siteStatus.title),
     description: PAGE_DESCRIPTIONS.siteStatus,
     icon: Tags,
     to: () => paths.master('siteStatus'),
@@ -98,7 +102,7 @@ const MASTER_ITEMS: NavItemConfig[] = [
   },
   {
     key: 'master-participant-status',
-    label: MASTER_META.participantStatus.title,
+    label: masterLabel(MASTER_META.participantStatus.title),
     description: PAGE_DESCRIPTIONS.participantStatus,
     icon: Tags,
     to: () => paths.master('participantStatus'),
@@ -166,7 +170,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
     audiences: ['sponsor'],
     context: 'none',
     items: [
-      { key: 'sponsor-home', label: PAGE_TITLES.home, icon: Home, to: fixed(ROUTES.home), isHubHidden: true, isEnd: true },
       {
         key: 'personal-dashboard',
         label: PAGE_TITLES.personalDashboard,
@@ -181,7 +184,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         icon: Library,
         to: fixed(ROUTES.masters),
         permission: MASTER_VIEW_PERMISSIONS,
-        isEnd: true,
         children: MASTER_ITEMS,
       },
       {
@@ -202,14 +204,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         isEnd: true,
       },
       {
-        key: 'sponsor-db-export',
-        label: PAGE_TITLES.databaseExport,
-        description: PAGE_DESCRIPTIONS.databaseExport,
-        icon: FileDown,
-        to: fixed(ROUTES.databaseExport),
-        permission: 'projectDatabase.export',
-      },
-      {
         key: 'sponsor-audit',
         label: PAGE_TITLES.auditTrail,
         description: PAGE_DESCRIPTIONS.auditTrail,
@@ -225,7 +219,16 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
     key: 'mySites',
     audiences: ['co', 'site'],
     context: 'none',
-    items: [{ key: 'my-sites', label: PAGE_TITLES.selectContext, icon: LayoutGrid, to: fixed(ROUTES.selectContext) }],
+    items: [
+      {
+        key: 'co-site-dashboard',
+        label: PAGE_TITLES.personalDashboard,
+        description: PAGE_DESCRIPTIONS.personalDashboard,
+        icon: Gauge,
+        to: fixed(ROUTES.personalDashboard),
+      },
+      { key: 'my-sites', label: PAGE_TITLES.selectContext, icon: LayoutGrid, to: fixed(ROUTES.selectContext) },
+    ],
   },
 
   // ---------------- Project hub ----------------
@@ -233,6 +236,7 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
     key: 'project',
     audiences: ['sponsor'],
     context: 'project',
+    isSidebarHidden: true,
     items: [
       {
         key: 'project-overview',
@@ -307,14 +311,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         permission: 'selectiveParticipantData.export',
       },
       {
-        key: 'project-db-export',
-        label: PAGE_TITLES.databaseExport,
-        description: PAGE_DESCRIPTIONS.databaseExport,
-        icon: Database,
-        to: (c) => paths.projectDatabaseExport(c.projectId),
-        permission: 'projectDatabase.export',
-      },
-      {
         key: 'project-support-contacts',
         label: PAGE_TITLES.supportContacts,
         description: PAGE_DESCRIPTIONS.supportContacts,
@@ -338,6 +334,7 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
     key: 'site',
     audiences: ['sponsor', 'co', 'site'],
     context: 'site',
+    isSidebarHidden: true,
     items: [
       {
         key: 'site-overview',

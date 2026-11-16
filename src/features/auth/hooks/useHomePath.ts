@@ -1,22 +1,17 @@
-import { ROUTES, paths } from '@/app/router/route-paths.constants';
-import { useAccessibleSites, useCurrentPrincipal } from '@/rbac';
+import { ROUTES } from '@/app/router/route-paths.constants';
+import { useCurrentPrincipal } from '@/rbac';
 
-/**
- * Landing page per user type. CO and site users with exactly one site go
- * straight to that site; with several they get the project/site picker.
- */
+/** Landing page per user type: admins the admin dashboard, everyone else their own dashboard. */
 export function useHomePath(): string {
   const principal = useCurrentPrincipal();
-  const sites = useAccessibleSites();
 
   switch (principal?.user.userType) {
     case 'admin':
       return ROUTES.adminHome;
     case 'sponsor':
-      return ROUTES.home;
     case 'co':
     case 'site':
-      return sites.length === 1 ? paths.siteHub(sites[0].projectId, sites[0].id) : ROUTES.selectContext;
+      return ROUTES.personalDashboard;
     default:
       return ROUTES.login;
   }

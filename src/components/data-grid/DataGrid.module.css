@@ -18,8 +18,19 @@
 }
 
 /* ---- Filters popover ---- */
-.filterButtonActive {
-  @apply border-primary text-primary;
+/* Neutral outline so it never reads as the primary (filled teal) action. */
+/* Tertiary (ghost): no border, never reads as the primary action. */
+.filterButton:global(.btn-ghost) {
+  @apply bg-ink-100 font-medium;
+}
+
+.filterButtonActive:global(.btn-ghost),
+.filterButtonActive:global(.btn-ghost):hover:not(:disabled) {
+  @apply border-brand-500 bg-brand-50 text-brand-700;
+}
+
+.filterCount {
+  @apply grid h-4 min-w-4 place-items-center rounded-full bg-brand-500 px-1 text-[0.625rem] leading-none font-semibold text-ink-0;
 }
 
 /* Header and Done stay put; the field list scrolls when the popover is height-capped. */
@@ -79,7 +90,7 @@
 /* Thin scrollbar for the table's horizontal (and vertical) scroll. */
 .scroll {
   scrollbar-width: thin;
-  scrollbar-color: #c3cddb transparent;
+  scrollbar-color: #b3cdd5 transparent;
 }
 
 .scroll::-webkit-scrollbar {
@@ -92,12 +103,12 @@
 }
 
 .scroll::-webkit-scrollbar-thumb {
-  background: #c3cddb;
+  background: #b3cdd5;
   border-radius: 9999px;
 }
 
 .scroll::-webkit-scrollbar-thumb:hover {
-  background: #a9b6c8;
+  background: #99bcc7;
 }
 
 .table {
@@ -113,11 +124,36 @@
 }
 
 .sortButton {
-  @apply inline-flex items-center gap-1.5 font-semibold hover:text-primary;
+  @apply inline-flex cursor-pointer items-center gap-1.5 font-semibold transition-colors duration-150 hover:text-primary;
+}
+
+.sortIconWrap {
+  @apply relative inline-grid size-3.5 shrink-0 place-items-center;
 }
 
 .sortIcon {
-  @apply size-3.5 text-ink-400;
+  @apply col-start-1 row-start-1 size-3.5 text-ink-400 transition-[opacity,rotate,color] duration-200 ease-out;
+}
+
+.sortIconIdle {
+  @apply opacity-100;
+}
+
+.sortIconHidden {
+  @apply opacity-0;
+}
+
+/* The arrow is invisible until sorted; descending turns it over. */
+.sortIconArrow {
+  @apply opacity-0;
+}
+
+.sortIconShown {
+  @apply opacity-100;
+}
+
+.sortIconFlipped {
+  rotate: 180deg;
 }
 
 .sortIconActive {

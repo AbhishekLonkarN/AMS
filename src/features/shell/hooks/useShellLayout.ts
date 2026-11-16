@@ -39,7 +39,7 @@ export function useShellLayout() {
   };
 
   const handleSwitchUser = (userId: string) => {
-    if (switchUser(userId).isSuccess) navigate(ROUTES.root);
+    if (switchUser(userId).isSuccess) {navigate(ROUTES.root);}
   };
 
   const handleLogout = () => {
@@ -48,11 +48,9 @@ export function useShellLayout() {
   };
 
   return {
-    variant: user?.userType === 'admin' ? ('admin' as const) : ('default' as const),
-    brand:
-      user?.userType === 'admin'
-        ? { name: PLATFORM_BRAND_NAME, subtitle: profile.ownerDisplayName, logo: clintechLogo }
-        : { name: profile.softwareName, subtitle: profile.ownerDisplayName, logo: undefined },
+    // All four user types (Admin, Sponsor, CO, Site) share the same teal look and the ClinTech logo.
+    variant: 'admin' as const,
+    brand: { name: PLATFORM_BRAND_NAME, subtitle: profile.ownerDisplayName, logo: clintechLogo },
     sections,
     pageKey,
     projectChip,

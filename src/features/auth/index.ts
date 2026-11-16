@@ -1,4 +1,8 @@
 export { LoginPage } from './pages/LoginPage';
+export { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+export { CheckEmailPage } from './pages/CheckEmailPage';
+export { ResetPasswordPage } from './pages/ResetPasswordPage';
+export { PasswordUpdatedPage } from './pages/PasswordUpdatedPage';
 export { ContextPickerPage } from './pages/ContextPickerPage';
 export { HomeRedirectPage } from './pages/HomeRedirectPage';
 export { useDemoUsers } from './hooks/useDemoUsers';

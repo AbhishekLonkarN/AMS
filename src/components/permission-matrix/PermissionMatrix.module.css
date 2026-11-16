@@ -69,9 +69,9 @@
   @apply text-center;
 }
 
-/* Marks a cell that differs from the selected template (shape + colour). */
+/* Marks a cell that differs from the selected template: a light tint, no border. */
 .changedCell {
-  @apply bg-status-warning-soft outline outline-1 -outline-offset-4 outline-dashed outline-status-warning;
+  @apply bg-brand-50;
 }
 
 /* Read-only (View mode): keep ticks legible instead of daisyUI's faded disabled look. */

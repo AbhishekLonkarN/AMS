@@ -11,7 +11,7 @@ import {
   type ColumnFiltersState,
   type SortingState,
 } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
+import { ArrowUp, ArrowUpDown } from 'lucide-react';
 import clsx from 'clsx';
 import { EmptyState } from '@/components/feedback';
 import { Tooltip } from '@/components/overlay';
@@ -19,6 +19,7 @@ import type { DataGridColumn, DataGridProps, ToolbarSelectFilter } from './data-
 import { Pagination, DEFAULT_PAGE_SIZE } from '@/components/pagination';
 import { DATA_GRID_LABELS, MAX_VISIBLE_ROWS } from './data-grid.constants';
 import { DataGridToolbar } from './DataGridToolbar';
+import { TruncatedCell } from './TruncatedCell';
 import styles from './DataGrid.module.css';
 
 const ACTIONS_COLUMN_ID = '__actions';
@@ -30,8 +31,8 @@ const ACTIONS_COLUMN_ID = '__actions';
 function withFilterFns<T>(columns: DataGridColumn<T>[]): DataGridColumn<T>[] {
   return columns.map((c) => {
     const group = c as DataGridColumn<T> & { columns?: DataGridColumn<T>[] };
-    if (group.columns) return { ...group, columns: withFilterFns(group.columns) } as DataGridColumn<T>;
-    if (c.meta?.filterVariant === 'select') return { ...c, filterFn: 'equalsString' as const, enableGlobalFilter: false };
+    if (group.columns) {return { ...group, columns: withFilterFns(group.columns) } as DataGridColumn<T>;}
+    if (c.meta?.filterVariant === 'select') {return { ...c, filterFn: 'equalsString' as const, enableGlobalFilter: false };}
     return c;
   });
 }
@@ -59,7 +60,7 @@ export function DataGrid<T>({
 
   const allColumns = useMemo<DataGridColumn<T>[]>(() => {
     const prepared = withFilterFns(columns);
-    if (!rowActions) return prepared;
+    if (!rowActions) {return prepared;}
     return [
       ...prepared,
       {
@@ -124,7 +125,7 @@ export function DataGrid<T>({
   useLayoutEffect(() => {
     const scroller = scrollRef.current;
     const tableEl = scroller?.querySelector('table');
-    if (!scroller || !tableEl) return;
+    if (!scroller || !tableEl) {return;}
     const measure = () => {
       const firstHidden = tableEl.tBodies[0]?.rows[MAX_VISIBLE_ROWS];
       // offsetHeight − clientHeight = the horizontal scrollbar, which also takes room inside the cap.
@@ -183,7 +184,8 @@ export function DataGrid<T>({
                 {headerGroup.headers.map((header) => {
                   const isSortable = header.column.getCanSort() && !header.isPlaceholder && header.subHeaders.length === 0;
                   const sortDir = header.column.getIsSorted();
-                  const SortIcon = sortDir === 'asc' ? ArrowUp : sortDir === 'desc' ? ArrowDown : ArrowUpDown;
+                  const nextSort = header.column.getNextSortingOrder();
+                  const sortHint = nextSort === 'asc' ? DATA_GRID_LABELS.sortAsc : nextSort === 'desc' ? DATA_GRID_LABELS.sortDesc : DATA_GRID_LABELS.sortClear;
                   const content = header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext());
                   const isGroup = header.subHeaders.length > 0;
                   const thClassName = clsx(styles.th, isGroup && styles.groupTh, header.column.columnDef.meta?.className);
@@ -195,10 +197,24 @@ export function DataGrid<T>({
                       aria-sort={sortDir === 'asc' ? 'ascending' : sortDir === 'desc' ? 'descending' : undefined}
                     >
                       {isSortable ? (
-                        <button type="button" className={styles.sortButton} onClick={header.column.getToggleSortingHandler()}>
-                          {content}
-                          <SortIcon className={clsx(styles.sortIcon, sortDir && styles.sortIconActive)} aria-hidden />
-                        </button>
+                        <Tooltip content={sortHint}>
+                          <button type="button" className={styles.sortButton} onClick={header.column.getToggleSortingHandler()}>
+                            {content}
+                            {/* Two stacked icons cross-fade; the arrow turns over for descending. */}
+                            <span className={styles.sortIconWrap} aria-hidden>
+                              <ArrowUpDown className={clsx(styles.sortIcon, styles.sortIconIdle, sortDir && styles.sortIconHidden)} />
+                              <ArrowUp
+                                className={clsx(
+                                  styles.sortIcon,
+                                  styles.sortIconActive,
+                                  styles.sortIconArrow,
+                                  sortDir && styles.sortIconShown,
+                                  sortDir === 'desc' && styles.sortIconFlipped,
+                                )}
+                              />
+                            </span>
+                          </button>
+                        </Tooltip>
                       ) : (
                         content
                       )}
@@ -213,7 +229,13 @@ export function DataGrid<T>({
               <tr key={row.id} className={clsx(styles.row, isRowMuted?.(row.original) && styles.mutedRow)}>
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className={clsx(styles.td, cell.column.columnDef.meta?.className)}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.columnDef.meta?.isTruncated ? (
+                      <TruncatedCell text={String(cell.getValue() ?? '')}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TruncatedCell>
+                    ) : (
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
                   </td>
                 ))}
               </tr>

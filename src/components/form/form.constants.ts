@@ -5,6 +5,7 @@ export const FORM_LABELS = {
   create: 'Create',
   submit: 'Submit',
   cancel: 'Cancel',
+  enterPrefix: 'Enter',
   selectPlaceholder: 'Select…',
   searchPlaceholder: 'Search…',
   noMatches: 'No matches',

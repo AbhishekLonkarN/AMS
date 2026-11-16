@@ -63,7 +63,7 @@ export function UserDetailDrawerView({
           <button
             key={key}
             type="button"
-            className={clsx('btn btn-sm border-base-300 bg-base-100', tone === 'danger' && 'text-error')}
+            className={clsx('btn btn-secondary btn-sm', tone === 'danger' && 'text-error')}
             onClick={onClick}
           >
             <Icon className="size-4" aria-hidden /> {label}

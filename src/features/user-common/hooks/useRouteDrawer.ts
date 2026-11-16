@@ -44,7 +44,7 @@ export function useRouteDrawer({ createPath, viewPattern, editPattern, paramKey,
         : null;
 
   const lastRef = useRef<DrawerTarget | null>(current);
-  if (current) lastRef.current = current;
+  if (current) {lastRef.current = current;}
   const target = lastRef.current;
 
   return {

@@ -13,13 +13,13 @@ export function useHubTiles(hub: HubKey): TileView[] {
   const check = usePermissionChecker();
 
   return useMemo(() => {
-    if (!user) return [];
+    if (!user) {return [];}
     const sectionKey = hub === 'masters' ? 'sponsor' : hub;
     const section = NAV_SECTIONS.find((s) => s.key === sectionKey);
-    if (!section) return [];
+    if (!section) {return [];}
 
     const scope = sectionScope(section, { projectId: project?.id, siteId: site?.id });
-    if (!scope) return [];
+    if (!scope) {return [];}
     const items = hub === 'masters' ? (section.items.find((i) => i.key === 'masters')?.children ?? []) : section.items;
     return toTiles(items, user.userType, check, scope, { projectId: project?.id ?? '', siteId: site?.id ?? '' });
   }, [hub, user, project, site, check]);

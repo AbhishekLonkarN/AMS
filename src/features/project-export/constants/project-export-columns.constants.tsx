@@ -12,7 +12,7 @@ export const buildProjectExportColumns = ({ userName, onExport }: ProjectExportC
   createSrNoColumn<Project>(),
   { id: 'name', header: C.name, accessorKey: 'name', meta: { className: 'font-semibold' } },
   { id: 'testProduct', header: C.testProduct, accessorKey: 'testProduct' },
-  { id: 'description', header: C.description, accessorKey: 'description', meta: { className: 'max-w-xs truncate' } },
+  { id: 'description', header: C.description, accessorKey: 'description', meta: { isTruncated: true } },
   { id: 'sponsor', header: C.sponsor, accessorKey: 'sponsor', meta: { filterVariant: 'select' } },
   { id: 'projectManager', header: C.projectManager, accessorFn: (p) => userName(p.projectManagerId) },
   {
@@ -25,7 +25,7 @@ export const buildProjectExportColumns = ({ userName, onExport }: ProjectExportC
     cell: ({ row }) => (
       <button
         type="button"
-        className="btn btn-sm border-primary bg-ink-100 text-primary hover:bg-brand-50"
+        className="btn btn-secondary btn-sm"
         aria-label={L.exportAria(row.original.name)}
         onClick={() => onExport(row.original)}
       >

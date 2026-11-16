@@ -64,3 +64,107 @@
 .icon {
   @apply size-4 shrink-0;
 }
+
+/* Dropdown: slides open and closed (height is set inline from the content); hidden items are not focusable. */
+.submenu {
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    max-height 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 250ms ease,
+    visibility 0s linear 300ms;
+}
+
+.submenuOpen {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    max-height 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 250ms ease,
+    visibility 0s;
+}
+
+.chevron {
+  @apply ml-auto size-4 shrink-0 transition-transform duration-200;
+}
+
+.chevronOpen {
+  @apply rotate-180;
+}
+
+/*
+ * ---------- Admin look (the teal admin dashboard wireframe) ----------
+ * Sidebar in the action colour (#00465B, the same as every button), menu text #B3CDD5, hover #005872 with white text, active tab mint mist #D9EFEB with teal text and icon.
+ */
+:global([data-shell-variant='admin']) .sidebar {
+  background: var(--color-action);
+  color: #b3cdd5;
+}
+
+/* same height as the top bar, so the logo row and the bar sit on one line */
+:global([data-shell-variant='admin']) .brand {
+  height: 56px;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+:global([data-shell-variant='admin']) .sectionTitle {
+  color: #99bcc7;
+}
+
+/* the Admin sidebar shows the product name only, without the organisation line under it */
+:global([data-shell-variant='admin']) .brandSubtitle {
+  display: none;
+}
+
+/* the logo tile shows the cross only: the "ClinTech" text under it in the picture is cropped away (the name sits beside the tile) */
+:global([data-shell-variant='admin']) .brandMark:has(.brandLogo) {
+  background: #d9efeb; /* the same mint as the active tab */
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+:global([data-shell-variant='admin']) .brandMark .brandLogo {
+  width: 129%;
+  height: auto;
+  max-width: none;
+  margin: -2.3% 0 0 -14.5%;
+  object-fit: fill;
+}
+
+/* room between the tabs: taller rows with a gap between them */
+:global([data-shell-variant='admin']) .menu {
+  gap: 3px;
+}
+
+:global([data-shell-variant='admin']) .sections {
+  padding-top: 1.25rem;
+}
+
+:global([data-shell-variant='admin']) .link {
+  padding-block: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #b3cdd5;
+  border-radius: 4px;
+}
+
+:global([data-shell-variant='admin']) .link:hover {
+  color: #fff;
+  background: #005872;
+}
+
+:global([data-shell-variant='admin']) .link:global(.menu-active) {
+  color: #005872;
+  background: #d9efeb; /* mint mist */
+}
+
+:global([data-shell-variant='admin']) .link:global(.menu-active) .icon {
+  color: #005872;
+}
+
+:global([data-shell-variant='admin']) .link:focus-visible {
+  outline: 2px solid #a0c9a7;
+  outline-offset: 2px;
+}

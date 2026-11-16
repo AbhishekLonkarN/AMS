@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Drawer } from '@/components/overlay';
 import { ROUTES, paths } from '@/app/router/route-paths.constants';
 import { HubSummaryView, NotFoundPage } from '@/features/shell';
+import { PROJECT_EXPORT_LABELS } from '@/features/project-export';
 import { useRouteDrawer } from '@/features/user-common';
 import { PROJECT_LABELS as L } from '../constants/projects.constants';
 import { useProjectHub } from '../hooks/useProjectHub';
@@ -15,12 +16,12 @@ export function ProjectHubPage() {
     paramKey: 'projectId',
     listPath: paths.projectHub(model?.id ?? ''),
   });
-  if (!model) return <NotFoundPage />;
+  if (!model) {return <NotFoundPage />;}
 
-  const { id, ...hub } = model;
+  const { id, onExport, ...hub } = model;
   return (
     <>
-      <HubSummaryView {...hub} editLabel={L.hubEdit} tilesTitle={L.modulesTitle} />
+      <HubSummaryView {...hub} editLabel={L.hubEdit} onExport={onExport} exportLabel={PROJECT_EXPORT_LABELS.hubExportButton} tilesTitle={L.modulesTitle} />
       <Drawer isOpen={drawer.isOpen} onClose={drawer.close}>
         {drawer.mode === 'edit' && (
           <ProjectFormContainer key={drawer.contentKey} mode="edit" projectId={id} onDone={drawer.close} />

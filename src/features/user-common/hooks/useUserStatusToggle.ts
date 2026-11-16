@@ -13,7 +13,7 @@ export function useUserStatusToggle() {
   const name = pending ? fullName(pending.prefix, pending.name) : '';
 
   const handleConfirm = () => {
-    if (!pending) return;
+    if (!pending) {return;}
     setUserStatus(pending.id, isDeactivating ? 'inactive' : 'active');
     notify.success(isDeactivating ? L.deactivated(name) : L.reactivated(name));
     setPending(null);

@@ -64,7 +64,7 @@ const timeZoneLabel = (tz?: string) => TIME_ZONE_OPTIONS.find((o) => o.value ===
 /** Permissions the template would give in this context (sponsor affiliations get the project part only). */
 function templatePermissionsFor(userType: UserType, templateId: Id): PermissionKey[] {
   const template = useAccessRightsStore.getState().templates.find((t) => t.id === templateId);
-  if (!template) return [];
+  if (!template) {return [];}
   return sanitizePermissions(userType, template.permissions, userType === 'sponsor' ? 'project' : undefined);
 }
 
@@ -103,7 +103,7 @@ export const useAffiliationsStore = createAppStore<AffiliationsState>('affiliati
 
   updateSponsorAffiliation: (id, input) => {
     const before = get().sponsorAffiliations.find((a) => a.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after: SponsorAffiliation = { ...before, ...input, isCustomised: isCustomised('sponsor', input) };
     set((s) => ({ sponsorAffiliations: s.sponsorAffiliations.map((a) => (a.id === id ? after : a)) }));
     const email = emailOf(before.userId);
@@ -115,7 +115,7 @@ export const useAffiliationsStore = createAppStore<AffiliationsState>('affiliati
 
   deaffiliateSponsorUser: (id) => {
     const affiliation = get().sponsorAffiliations.find((a) => a.id === id);
-    if (!affiliation || affiliation.status !== 'active') return;
+    if (!affiliation || affiliation.status !== 'active') {return;}
     set((s) => ({
       sponsorAffiliations: s.sponsorAffiliations.map((a) =>
         a.id === id ? { ...a, status: 'deaffiliated', deaffiliatedAt: nowIso() } : a,
@@ -150,7 +150,7 @@ export const useAffiliationsStore = createAppStore<AffiliationsState>('affiliati
 
   updateCoAffiliation: (id, input) => {
     const before = get().coAffiliations.find((a) => a.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after: CoAffiliation = { ...before, ...input, isCustomised: isCustomised('co', input) };
     set((s) => ({ coAffiliations: s.coAffiliations.map((a) => (a.id === id ? after : a)) }));
     const email = emailOf(before.userId);
@@ -162,7 +162,7 @@ export const useAffiliationsStore = createAppStore<AffiliationsState>('affiliati
 
   deaffiliateCoUser: (id) => {
     const affiliation = get().coAffiliations.find((a) => a.id === id);
-    if (!affiliation || affiliation.status !== 'active') return;
+    if (!affiliation || affiliation.status !== 'active') {return;}
     set((s) => ({
       coAffiliations: s.coAffiliations.map((a) =>
         a.id === id ? { ...a, status: 'deaffiliated', deaffiliatedAt: nowIso() } : a,
@@ -196,7 +196,7 @@ export const useAffiliationsStore = createAppStore<AffiliationsState>('affiliati
 
   updateSiteMembership: (id, input) => {
     const before = get().siteMemberships.find((m) => m.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after: SiteMembership = { ...before, ...input, isCustomised: isCustomised('site', input) };
     set((s) => ({ siteMemberships: s.siteMemberships.map((m) => (m.id === id ? after : m)) }));
     const email = emailOf(before.userId);
@@ -208,7 +208,7 @@ export const useAffiliationsStore = createAppStore<AffiliationsState>('affiliati
 
   setSiteMembershipStatus: (id, status) => {
     const membership = get().siteMemberships.find((m) => m.id === id);
-    if (!membership || membership.status === status) return;
+    if (!membership || membership.status === status) {return;}
     set((s) => ({ siteMemberships: s.siteMemberships.map((m) => (m.id === id ? { ...m, status } : m)) }));
     recordAudit({
       siteId: membership.siteId,

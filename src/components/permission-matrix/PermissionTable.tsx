@@ -161,7 +161,7 @@ export function PermissionTable({
                       <td key={action} className={styles.cell}>
                         <input
                           type="checkbox"
-                          className={clsx('checkbox checkbox-xs checkbox-primary', styles.box, isChanged && styles.changed)}
+                          className={clsx('checkbox checkbox-xs checkbox-primary', styles.box)}
                           aria-label={L.cell(label, ACTION_LABELS[action])}
                           title={isChanged ? L.changedFromTemplate : undefined}
                           checked={selected.has(key)}

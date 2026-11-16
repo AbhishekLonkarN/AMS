@@ -42,18 +42,18 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(funct
   // re-rendering us through props; mirror whatever it holds after every render.
   useLayoutEffect(() => {
     const next = nativeRef.current?.value ?? '';
-    if (next !== current) setCurrent(next);
+    if (next !== current) {setCurrent(next);}
   });
 
   const setNativeRef = (node: HTMLSelectElement | null) => {
     nativeRef.current = node;
-    if (typeof ref === 'function') ref(node);
-    else if (ref) ref.current = node;
+    if (typeof ref === 'function') {ref(node);}
+    else if (ref) {ref.current = node;}
   };
 
   const handleChange = (next: string) => {
     const select = nativeRef.current;
-    if (!select) return;
+    if (!select) {return;}
     select.value = next;
     // A real change event, so register()'s onChange and controlled onChange(e) both fire.
     select.dispatchEvent(new Event('change', { bubbles: true }));

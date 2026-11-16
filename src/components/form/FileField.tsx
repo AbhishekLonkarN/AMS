@@ -16,7 +16,7 @@ export function FileField({ fileName, accept, isDisabled, onFileNameChange, hint
   const inputId = useId();
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.files?.[0]?.name;
-    if (name) onFileNameChange?.(name);
+    if (name) {onFileNameChange?.(name);}
   };
 
   return (

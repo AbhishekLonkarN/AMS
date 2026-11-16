@@ -1,6 +1,7 @@
 export { AppShell } from './AppShell';
 export { Sidebar } from './Sidebar';
 export { ContextHeader } from './ContextHeader';
+export { Breadcrumbs } from './Breadcrumbs';
 export { UserMenu } from './UserMenu';
 export { PageHeader } from './PageHeader';
 export { TileGrid } from './TileGrid';

@@ -35,3 +35,8 @@
 .sizeLg {
   @apply max-w-4xl;
 }
+
+/* Side-by-side editors (e.g. the form builder with its live preview). */
+.sizeXl {
+  @apply max-w-[min(96rem,96vw)];
+}

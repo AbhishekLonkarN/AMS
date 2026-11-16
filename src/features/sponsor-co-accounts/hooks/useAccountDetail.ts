@@ -28,7 +28,7 @@ export function useAccountDetail(userId?: string) {
   const user = users.find((u) => u.id === userId && (u.userType === 'sponsor' || u.userType === 'co'));
   const affiliations = useAccountAffiliations(user);
 
-  if (!user) return { isNotFound: true as const };
+  if (!user) {return { isNotFound: true as const };}
 
   const isSponsor = user.accountType === 'sponsor';
   const isActive = user.status === 'active';

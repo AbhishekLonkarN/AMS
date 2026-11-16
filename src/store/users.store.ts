@@ -59,7 +59,7 @@ export const useUsersStore = createAppStore<UsersState>('users', (set, get) => (
 
   updateUser: (id, patch) => {
     const before = get().users.find((u) => u.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after: User = { ...before, ...patch };
     set((s) => ({ users: s.users.map((u) => (u.id === id ? after : u)) }));
 
@@ -72,7 +72,7 @@ export const useUsersStore = createAppStore<UsersState>('users', (set, get) => (
 
   setUserStatus: (id, status) => {
     const user = get().users.find((u) => u.id === id);
-    if (!user || user.status === status) return;
+    if (!user || user.status === status) {return;}
     set((s) => ({ users: s.users.map((u) => (u.id === id ? { ...u, status } : u)) }));
     recordAudit({
       page: PAGE_BY_TYPE[user.userType],

@@ -35,9 +35,9 @@ export function useEndAction(endAction: EndAction, whereLabel: string) {
   /** The button for a record, or null when not allowed (ended, own record, no right). */
   const actionFor = (target: EndTarget): EndActionButton | null => {
     // Nobody can end their own access from here.
-    if (!endAction.isAllowed || target.statusKind === 'deaffiliated' || target.userId === currentUserId) return null;
+    if (!endAction.isAllowed || target.statusKind === 'deaffiliated' || target.userId === currentUserId) {return null;}
     const onClick = () => setPending(target);
-    if (isDeaffiliate) return { key: 'end', label: L.deaffiliate, icon: Unlink, tone: 'danger', onClick };
+    if (isDeaffiliate) {return { key: 'end', label: L.deaffiliate, icon: Unlink, tone: 'danger', onClick };}
     const isActive = target.statusKind === 'active';
     return {
       key: 'end',
@@ -57,7 +57,7 @@ export function useEndAction(endAction: EndAction, whereLabel: string) {
         confirmLabel: L.deaffiliate,
         tone: 'danger',
         onConfirm: () => {
-          if (!pending) return;
+          if (!pending) {return;}
           endAction.run(pending.id);
           notify.success(L.deaffiliated(name));
           setPending(null);
@@ -71,7 +71,7 @@ export function useEndAction(endAction: EndAction, whereLabel: string) {
         confirmLabel: isActivating ? A.reactivate : A.deactivate,
         tone: isActivating ? 'primary' : 'danger',
         onConfirm: () => {
-          if (!pending || endAction.kind !== 'toggleStatus') return;
+          if (!pending || endAction.kind !== 'toggleStatus') {return;}
           endAction.run(pending.id, isActivating);
           notify.success(isActivating ? A.reactivated(name) : A.deactivated(name));
           setPending(null);

@@ -73,7 +73,7 @@ export function useProjectForm({ mode, projectId, onDone }: ProjectFormOptions) 
   /** Creator is auto-affiliated so the new project shows up in their list (prototype assumption). */
   const affiliateCreator = (newProjectId: string) => {
     const user = principal?.user;
-    if (!user) return;
+    if (!user) {return;}
     const template = templates.find((t) => t.id === user.globalTemplateId);
     affiliateSponsorUser({
       userId: user.id,

@@ -22,7 +22,7 @@ export type CheckState = 'all' | 'some' | 'none';
 
 export function getCheckState(keys: PermissionKey[], selected: Set<PermissionKey>): CheckState {
   const count = keys.filter((k) => selected.has(k)).length;
-  if (count === 0) return 'none';
+  if (count === 0) {return 'none';}
   return count === keys.length ? 'all' : 'some';
 }
 

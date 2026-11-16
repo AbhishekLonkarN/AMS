@@ -2,11 +2,12 @@ import { forwardRef, useId, type TextareaHTMLAttributes } from 'react';
 import clsx from 'clsx';
 import type { FieldChromeProps } from './form.types';
 import { FormField } from './FormField';
+import { requiredPlaceholder } from './form.utils';
 
 type TextAreaFieldProps = FieldChromeProps & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'children'>;
 
 export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(function TextAreaField(
-  { label, hint, error, isRequired, isFullWidth, id, className, rows = 3, ...textareaProps },
+  { label, hint, error, isRequired, isFullWidth, id, className, rows = 3, placeholder, ...textareaProps },
   ref,
 ) {
   const autoId = useId();
@@ -21,6 +22,7 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>
         aria-invalid={!!error}
         aria-required={isRequired}
         aria-describedby={error || hint ? `${inputId}-message` : undefined}
+        placeholder={placeholder ?? (isRequired ? requiredPlaceholder(label) : undefined)}
         {...textareaProps}
       />
     </FormField>

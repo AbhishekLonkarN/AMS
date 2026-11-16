@@ -11,7 +11,7 @@ export const buildProjectColumns = ({ statusLabel, userName }: ProjectColumnLook
   createSrNoColumn<Project>(),
   { id: 'name', header: F.name, accessorKey: 'name', meta: { className: 'font-semibold' } },
   { id: 'testProduct', header: F.testProduct, accessorKey: 'testProduct' },
-  { id: 'description', header: F.description, accessorKey: 'description', meta: { className: 'max-w-xs truncate' } },
+  { id: 'description', header: F.description, accessorKey: 'description', meta: { isTruncated: true } },
   { id: 'sponsor', header: F.sponsor, accessorKey: 'sponsor', meta: { filterVariant: 'select' } },
   {
     id: 'status',

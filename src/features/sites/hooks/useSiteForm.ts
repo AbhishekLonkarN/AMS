@@ -50,7 +50,7 @@ export function useSiteForm({ mode, projectId, siteId, onDone }: SiteFormOptions
         others.some(
           (s) => isSameText(s.investigatorName, values.investigatorName) && isSameText(s.investigatorEmail, values.investigatorEmail),
         );
-      if (!isComboTaken || result.errors.investigatorEmail) return result;
+      if (!isComboTaken || result.errors.investigatorEmail) {return result;}
       return {
         values: {},
         errors: { ...result.errors, investigatorEmail: { type: 'unique', message: SITE_VALIDATION.investigatorTaken } },

@@ -12,6 +12,6 @@ interface SponsorUserFormContainerProps {
 /** Drawer content container: wires the form hook to the shared affiliation drawer form. */
 export function SponsorUserFormContainer(props: SponsorUserFormContainerProps) {
   const { isNotFound, ...model } = useSponsorUserForm(props);
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <AffiliationFormView {...model} />;
 }

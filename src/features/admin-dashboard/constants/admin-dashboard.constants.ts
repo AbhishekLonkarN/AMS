@@ -26,14 +26,14 @@ export const RECENT_ACTIVITY_COUNT = 30;
 export const RECENT_USERS_COUNT = 15;
 
 /** Avatar colours for the recently added users; each user keeps the same one (picked from the email). */
-export const AVATAR_COLORS = ['#059669', '#ea580c', '#9333ea', '#4338ca', '#2563eb', '#475569', '#0d9488', '#db2777'];
+export const AVATAR_COLORS = ['#005872', '#33798e', '#0f98b8', '#506554', '#68567a', '#16667e', '#1a6980', '#257086'];
 
 /** Chart colours per user type (design tokens). */
 export const USER_TYPE_COLORS: Record<UserType, string> = {
   admin: 'var(--color-brand-700)',
-  sponsor: 'var(--color-accent-500)',
-  co: 'var(--color-tone-violet)',
-  site: 'var(--color-tone-orange)',
+  sponsor: 'var(--color-sage-300)',
+  co: 'var(--color-accent-500)',
+  site: 'var(--color-status-warning)',
 };
 
 export interface QuickActionConfig {

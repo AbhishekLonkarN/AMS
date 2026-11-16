@@ -12,7 +12,7 @@ const required = () => z.string().trim().min(1, V.required);
 
 const check = (fn: (value: string) => string | null) => (value: string, ctx: z.RefinementCtx) => {
   const message = fn(value);
-  if (message) ctx.addIssue({ code: z.ZodIssueCode.custom, message });
+  if (message) {ctx.addIssue({ code: z.ZodIssueCode.custom, message });}
 };
 
 /** Name and Email ID are unique within the site (PDF p.34); template mandatory. */

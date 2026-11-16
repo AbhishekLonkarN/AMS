@@ -9,7 +9,7 @@ export function useAccountAffiliations(user: User | undefined) {
   const sites = useSitesStore((s) => s.sites);
 
   return useMemo(() => {
-    if (!user) return [];
+    if (!user) {return [];}
     const projectName = (id: string) => projects.find((p) => p.id === id)?.name ?? id;
 
     if (user.accountType === 'sponsor') {

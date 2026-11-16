@@ -6,7 +6,7 @@ import { useAdminUserDetail } from '../hooks/useAdminUserDetail';
 /** Drawer content container for View mode (+ its Deactivate / Re-activate confirm). */
 export function AdminUserViewContainer({ userId }: { userId?: string }) {
   const model = useAdminUserDetail(userId);
-  if (model.isNotFound) return <NotFoundPage />;
+  if (model.isNotFound) {return <NotFoundPage />;}
   const { confirm, isNotFound, ...view } = model;
   return (
     <>

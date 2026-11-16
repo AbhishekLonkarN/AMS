@@ -4,6 +4,7 @@ import { usePermission } from '@/rbac';
 import { paths } from '@/app/router/route-paths.constants';
 import { useHubTiles } from '@/features/shell';
 import { useMasterLabel } from '@/features/masters';
+import { useExportProjectDatabase } from '@/features/project-export';
 import { userNameById, type DetailField } from '@/features/user-common';
 import { PROJECT_FIELDS as F, PROJECT_LABELS as L } from '../constants/projects.constants';
 
@@ -16,8 +17,10 @@ export function useProjectHub() {
   const masterLabel = useMasterLabel();
   const tiles = useHubTiles('project');
   const canEdit = usePermission('project.edit');
+  const canExport = usePermission('projectDatabase.export');
+  const { exportProject } = useExportProjectDatabase();
 
-  if (!project) return null;
+  if (!project) {return null;}
 
   const projectSites = sites.filter((s) => s.projectId === project.id);
   const enrolled = projectSites.reduce((sum, s) => sum + s.actualRecruitment, 0);
@@ -40,6 +43,7 @@ export function useProjectHub() {
     description: project.description,
     status: masterLabel(project.statusId),
     editTo: canEdit ? paths.projectEdit(project.id) : undefined,
+    onExport: canExport ? () => exportProject(project) : undefined,
     facts,
     progress: {
       label: L.enrolment,

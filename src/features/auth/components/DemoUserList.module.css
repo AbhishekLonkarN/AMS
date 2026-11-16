@@ -1,6 +1,6 @@
 /*
  * Quick demo sign-in, restyled to the ClinTech login wireframe palette.
- * Sizes are in em so the list scales with the login page unit (see LoginView.module.css).
+ * Sizes are in em so the list scales with the login page unit (see AuthPage.module.css).
  */
 
 .wrap {
@@ -13,8 +13,8 @@
   display: flex;
   align-items: center;
   gap: 0.9em;
-  font-size: 0.8125em;
-  color: #6b7a8a;
+  font-size: 0.875em;
+  color: #859aa0;
 }
 
 .divider::before,
@@ -22,7 +22,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: #e8edf3;
+  background: #e6eef1;
 }
 
 .grid {
@@ -41,8 +41,8 @@
   width: 100%;
   padding: 0.4em 0.7em;
   cursor: pointer;
-  background: #f8fafc;
-  border: 1.5px solid #d6dee8;
+  background: #fff;
+  border: 1.5px solid #e6eef1;
   border-radius: 0.75em;
   transition:
     border-color 0.15s,
@@ -51,9 +51,9 @@
 }
 
 .option:hover {
-  background: #fff;
-  border-color: #1f5f99;
-  box-shadow: 0 0 0 0.2em #e8f0f8;
+  background: #f8fafb;
+  border-color: #005872;
+  box-shadow: 0 0 0 0.2em #e6eef1;
 }
 
 .avatar {
@@ -65,9 +65,25 @@
   height: 2.2em;
   font-size: 0.75em;
   font-weight: 700;
-  color: #1f5f99;
-  background: #e8f0f8;
+  color: #fff;
+  background: #005872;
   border-radius: 999px;
+}
+
+/* each of the four quick sign-in options gets its own palette colour */
+.grid > li:nth-child(2) .avatar {
+  color: #003e50;
+  background: #a0c9a7;
+}
+
+.grid > li:nth-child(3) .avatar {
+  color: #fff;
+  background: #33798e;
+}
+
+.grid > li:nth-child(4) .avatar {
+  color: #003e50;
+  background: #ffc75a;
 }
 
 .text {
@@ -78,10 +94,10 @@
 .role {
   display: block;
   overflow: hidden;
-  font-size: 0.84em;
+  font-size: 0.9em;
   font-weight: 600;
   line-height: 1.3;
-  color: #26384a;
+  color: #005872;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -89,17 +105,17 @@
 .name {
   display: block;
   overflow: hidden;
-  font-size: 0.75em;
+  font-size: 0.8125em;
   line-height: 1.3;
-  color: #6b7a8a;
+  color: #859aa0;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .hint {
   margin: 0;
-  font-size: 0.75em;
-  color: #6b7a8a;
+  font-size: 0.8125em;
+  color: #859aa0;
 }
 
 /* very short screens: drop the explanatory hint to keep the page on one screen */

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import type { AuditEntry, MasterItem, Project, RecordStatus, User, UserType } from '@/types';
+import type { AuditEntry, MasterItem, RecordStatus, User, UserType } from '@/types';
 import { formatDate } from '@/utils/date.utils';
 import { AVATAR_COLORS } from '../constants/admin-dashboard.constants';
 
@@ -8,17 +8,17 @@ export type ActivityKind = 'login' | 'create' | 'edit' | 'status' | 'rights' | '
 /** Groups an audit event into one of a few kinds, used for the icon in the activity feed. */
 export function classifyEvent(event: string): ActivityKind {
   const e = event.toLowerCase();
-  if (e.startsWith('log-in') || e.startsWith('logged')) return 'login';
-  if (e.includes('access rights')) return 'rights';
-  if (/^(created|affiliated)/.test(e)) return 'create';
-  if (/^(deactivated|re-activated|deaffiliated)/.test(e)) return 'status';
-  if (e.startsWith('edited')) return 'edit';
+  if (e.startsWith('log-in') || e.startsWith('logged')) {return 'login';}
+  if (e.includes('access rights')) {return 'rights';}
+  if (/^(created|affiliated)/.test(e)) {return 'create';}
+  if (/^(deactivated|re-activated|deaffiliated)/.test(e)) {return 'status';}
+  if (e.startsWith('edited')) {return 'edit';}
   return 'other';
 }
 
 export function countUsersByType(users: User[]): Record<UserType, number> {
   const counts: Record<UserType, number> = { admin: 0, sponsor: 0, co: 0, site: 0 };
-  for (const user of users) counts[user.userType] += 1;
+  for (const user of users) {counts[user.userType] += 1;}
   return counts;
 }
 
@@ -64,10 +64,10 @@ export const countRecentEvents = (points: DayPoint[], days = 7) =>
 
 export function relativeTime(iso: string, now = dayjs()) {
   const minutes = now.diff(iso, 'minute');
-  if (minutes < 1) return 'Just now';
-  if (minutes < 60) return `${minutes} min ago`;
+  if (minutes < 1) {return 'Just now';}
+  if (minutes < 60) {return `${minutes} min ago`;}
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} h ago`;
+  if (hours < 24) {return `${hours} h ago`;}
   const days = Math.floor(hours / 24);
   return days < 7 ? `${days} d ago` : formatDate(iso);
 }
@@ -78,9 +78,9 @@ export interface StatusCount {
   count: number;
 }
 
-export function projectsByStatus(projects: Project[], masters: MasterItem[]): StatusCount[] {
+export function projectsByStatus(projects: { statusId: string }[], masters: MasterItem[]): StatusCount[] {
   const counts = new Map<string, number>();
-  for (const p of projects) counts.set(p.statusId, (counts.get(p.statusId) ?? 0) + 1);
+  for (const p of projects) {counts.set(p.statusId, (counts.get(p.statusId) ?? 0) + 1);}
   return [...counts.entries()]
     .map(([id, count]) => ({ id, count, label: masters.find((m) => m.id === id)?.label ?? '—' }))
     .sort((a, b) => b.count - a.count);
@@ -93,7 +93,7 @@ export const recentlyAdded = (users: User[], limit: number) =>
 /** Stable colour per user, so the same person always gets the same avatar colour. */
 export const avatarColor = (key: string) => {
   let hash = 0;
-  for (const char of key) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  for (const char of key) {hash = (hash * 31 + char.charCodeAt(0)) >>> 0;}
   return AVATAR_COLORS[hash % AVATAR_COLORS.length];
 };
 

@@ -71,7 +71,7 @@ export function UserListView<T>({
                 <ChevronDown className="size-4" aria-hidden />
               </button>
               <ul
-                tabIndex={0}
+                tabIndex={-1}
                 className="dropdown-content menu z-(--z-dropdown) mt-1 w-44 rounded-control border border-base-300 bg-base-100 p-1 shadow-raised"
               >
                 {createMenu.options.map((option) => (

@@ -13,6 +13,8 @@ declare module '@tanstack/react-table' {
     filterVariant?: 'text' | 'select' | 'none';
     /** Extra classes for header + cells (e.g. width, alignment). */
     className?: string;
+    /** Long text: one line with an ellipsis, and the full value in a tooltip on hover. */
+    isTruncated?: boolean;
   }
 }
 

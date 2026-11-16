@@ -1,0 +1,899 @@
+/*
+ * Shared look of the signed-out pages: login, forgot password and reset password (login-wireframe.html).
+ *
+ * The page never scrolls: it is exactly one viewport tall and every size is
+ * expressed in `em` of a single unit (--u) that is derived from the viewport
+ * width AND height, so the whole layout scales to fit any monitor, laptop,
+ * tablet or phone. 1em == 16px of the 1672px wireframe reference.
+ */
+
+.page {
+  --text: #005872;
+  --muted: #859aa0;
+  --panel: #e6eef1; /* soft tint behind the login box */
+  --accent: #005872; /* primary teal, the same as the sidebar and buttons in the app */
+  --accent-soft: #d9e9dc;
+
+  /* desktop unit: limited by width (card must fit its column) and by height (card must fit the screen) */
+  --u: clamp(8px, min(0.98vw, 1.7vh), 22px);
+
+  display: grid;
+  grid-template-columns: 59.45fr 40.55fr; /* 994 : 678 of the 1672px reference */
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--u);
+  color: var(--text);
+  background: var(--panel);
+}
+
+/* ---------- left: background image ---------- */
+.hero {
+  position: relative;
+  z-index: 0;
+  margin-right: -5em; /* runs 5em under the panel so the panel's rounded top-left corner reveals it */
+  overflow: hidden;
+  background-color: #005872;
+}
+
+/* the photo is turned greyscale, then tinted with the teal palette so it matches the app colours */
+.heroPhoto {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: grayscale(1) contrast(1.02) brightness(1.08);
+}
+
+.heroTint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(160deg, #33798e 0%, #16667e 55%, #005872 100%);
+  mix-blend-mode: color;
+  opacity: 0.8;
+}
+
+.heroTint::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(160, 201, 167, 0.14) 0%, rgba(0, 88, 114, 0) 60%);
+  mix-blend-mode: soft-light;
+}
+
+
+/* the bottom ends in a deeper shade of the Login button teal (#00465B) and gives the copy a calm ground */
+.hero::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  height: 50%;
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 70, 91, 1) 0%,
+    rgba(0, 70, 91, 0.92) 42%,
+    rgba(0, 76, 98, 0.5) 74%,
+    rgba(0, 88, 114, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(90deg, #000 55%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 55%, transparent 100%);
+}
+
+.intro {
+  position: absolute;
+  z-index: 3;
+  left: 4.25em;
+  bottom: 3.5em;
+  width: 35em;
+  color: #fff;
+}
+
+.introTitle {
+  margin: 0;
+  font-family: Georgia, 'Palatino Linotype', 'Times New Roman', serif;
+  font-size: 2.25em;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.introTitle em {
+  font-style: italic;
+  color: #a0c9a7;
+}
+
+.introRule {
+  display: block;
+  width: 3.5em;
+  height: 1.5px;
+  margin: 1.25em 0 1.125em;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.introText {
+  max-width: 25.8em;
+  margin: 0;
+  font-size: 1.03em;
+  line-height: 1.75;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+/* ---------- right: soft panel with the curved partition ---------- */
+.panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 1.5em 0;
+  background: var(--panel);
+  border-top-left-radius: 5em; /* top: panel curves into the image */
+}
+
+/*
+ * bottom: image's corner is rounded with the same radius as the top (S-shaped partition).
+ * A transparent quarter-circle whose spread shadow paints the panel colour around it,
+ * clipped to its own box, leaves a concave corner.
+ */
+.panel::after {
+  content: '';
+  position: absolute;
+  left: -5em;
+  bottom: 0;
+  width: 5em;
+  height: 5em;
+  pointer-events: none;
+  border-bottom-right-radius: 5em;
+  box-shadow: 0 0 0 5em var(--panel);
+  clip-path: inset(2px 0 0 2px); /* inset from the box edge so no light hairline shows along it */
+}
+
+/* ---------- login box ---------- */
+.card {
+  position: relative;
+  width: min(36.25em, 92%);
+  overflow: hidden;
+  background: #fff;
+  border-radius: 1.625em;
+  box-shadow:
+    0 1em 2.5em -1.5em rgba(0, 88, 114, 0.18),
+    0 0.1em 0.5em rgba(0, 88, 114, 0.05);
+}
+
+.cardBody {
+  padding: 2.6em 2.875em 1.5em;
+}
+
+/* stacked on desktop/phone portrait; become side-by-side columns on landscape phones (see bottom) */
+.mainCol,
+.sideCol {
+  min-width: 0;
+}
+
+/* header: small logo on the left, welcome text beside it */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 1.125em;
+  padding-bottom: 1.4em;
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid #e6eef1;
+}
+
+.logo {
+  display: block;
+  width: 4.375em;
+  flex: none;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.625em;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.sub {
+  margin: 0.33em 0 0;
+  font-size: 1em;
+  font-weight: 600;
+  color: #005872;
+}
+
+.desc {
+  margin: 0.23em 0 0;
+  font-size: 0.9em;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.alert {
+  margin-bottom: 1em;
+  padding: 0.7em 1em;
+  font-size: 0.9em;
+  color: #9b1c1c;
+  background: #fdecec;
+  border: 1px solid #f5c2c2;
+  border-radius: 0.75em;
+}
+
+/* ---------- inputs ---------- */
+.label {
+  display: block;
+  margin: 0 0 0.5em;
+  font-size: 1em;
+  font-weight: 600;
+  color: #005872;
+}
+
+/* red star on required fields */
+.required {
+  margin-left: 0.2em;
+  font-weight: 700;
+  color: #c0392b;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 1.4em;
+}
+
+.fieldCompact {
+  margin-bottom: 0;
+}
+
+/* inline validation message, sits in the gap under the input so the layout never shifts */
+.fieldError {
+  position: absolute;
+  left: 0.25em;
+  top: calc(100% + 0.2em);
+  font-size: 0.8125em;
+  color: #c0392b;
+}
+
+.input {
+  width: 100%;
+  height: 3.5em;
+  padding: 0 3.25em 0 3.5em;
+  font: inherit;
+  font-size: 1.0625em;
+  color: #000;
+  background: #f8fafb;
+  border: 1px solid #cbdce2; /* thin border at rest */
+  border-radius: 0.75em;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
+}
+
+.input::placeholder {
+  color: #99bcc7;
+}
+
+/* hover and focus only darken the border, with no shadow */
+.input:hover,
+.input:focus {
+  box-shadow: none;
+}
+
+.input:hover {
+  border-color: #669baa;
+}
+
+.input:focus {
+  background: #fff;
+  border-color: var(--accent);
+}
+
+.input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.ico {
+  position: absolute;
+  left: 1.19em;
+  top: 50%;
+  width: 1.375em;
+  height: 1.375em;
+  transform: translateY(-50%);
+  pointer-events: none;
+  stroke: #859aa0;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eye {
+  position: absolute;
+  right: 0.7em;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25em;
+  height: 2.25em;
+  padding: 0;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: 0.5em;
+}
+
+.eye .ico {
+  position: static;
+  transform: none;
+  stroke: #005872;
+}
+
+.eye:hover .ico {
+  stroke: #16667e;
+}
+
+.btn {
+  width: 100%;
+  height: 3.5em;
+  margin-top: 0.25em;
+  font: inherit;
+  font-size: 1.125em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  cursor: pointer;
+  background: var(--color-action);
+  border: 0;
+  border-radius: 0.75em;
+  box-shadow: 0 0.4em 0.8em -0.5em rgba(0, 70, 91, 0.3);
+}
+
+.btn:hover {
+  background: var(--color-action-hover);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent-soft);
+  outline-offset: 2px;
+}
+
+.forgot {
+  display: block;
+  width: fit-content;
+  margin: 0.9em 0 0 auto;
+  font-size: 0.9375em;
+  font-weight: 500;
+  text-align: right;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+.demo {
+  margin-top: 1em;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  margin-top: 1.1em;
+  padding-top: 0.9em;
+  border-top: 1px solid #e6eef1;
+  font-size: 0.8em;
+  color: var(--muted);
+}
+
+.footer img {
+  display: block;
+  width: 4.9em;
+}
+
+/* ---------- tablet + phone: one scrolling column, the photo becomes a banner above the card ---------- */
+@media (max-width: 1024px) {
+  .page {
+    --u: clamp(14px, 2.1vw, 17px);
+
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .hero {
+    height: clamp(9.5em, 24vh, 15em);
+    margin: 0;
+    border-bottom-left-radius: 1.75em;
+    border-bottom-right-radius: 1.75em;
+  }
+
+  .heroPhoto {
+    background-position: center 35%;
+  }
+
+  .hero::before {
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0, 70, 91, 0.94) 0%, rgba(0, 76, 98, 0.58) 55%, rgba(0, 88, 114, 0) 100%);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .intro {
+    left: 1.5em;
+    right: 1.5em;
+    bottom: 3.25em;
+    width: auto;
+  }
+
+  .introTitle {
+    font-size: 1.6em;
+    white-space: normal;
+  }
+
+  .introRule,
+  .introText {
+    display: none;
+  }
+
+  /* the card overlaps the bottom of the banner */
+  .panel {
+    justify-content: flex-start;
+    margin-top: -2.5em;
+    padding: 0 0.75em calc(1.5em + env(safe-area-inset-bottom, 0px));
+    background: transparent;
+    border-top-left-radius: 0;
+  }
+
+  .panel::after {
+    display: none;
+  }
+
+  .card {
+    width: min(33em, 100%);
+  }
+
+  .cardBody {
+    padding: 1.75em 1.5em 1em;
+  }
+
+  /* 16px or more stops iOS Safari from zooming the page when a field is focused */
+  .input {
+    font-size: max(16px, 0.9375em);
+  }
+}
+
+/*
+ * ---------- landscape phones / very short tablets ----------
+ * Not enough height for one tall column, so the banner is dropped and the card becomes two columns:
+ * sign-in form on the left, quick demo sign-in + footer on the right. The page scrolls if it still does not fit.
+ */
+@media (max-width: 1024px) and (max-height: 520px) {
+  .page {
+    --u: clamp(11px, 1.9vw, 14px);
+
+    grid-template-rows: 1fr;
+  }
+
+  .hero {
+    display: none;
+  }
+
+  .panel {
+    margin-top: 0;
+    padding-top: 0.75em;
+  }
+
+  .card {
+    width: min(64em, 100%);
+  }
+
+  .cardBody {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 2em;
+    align-items: center;
+    padding: 1.6em 1.8em 1.2em;
+  }
+
+  .head {
+    padding-bottom: 0.8em;
+    margin-bottom: 1em;
+  }
+
+  .field {
+    margin-bottom: 1em;
+  }
+
+  .sideCol {
+    padding-left: 2em;
+    border-left: 1px solid #e6eef1;
+  }
+
+  /* the forgot / reset steps are one column, not two */
+  .cardBody:has(> .flowCol) {
+    display: block;
+  }
+
+  .demo {
+    margin-top: 0;
+  }
+}
+
+/* ---------- short screens (landscape phones, small laptops): reclaim vertical space ---------- */
+@media (max-height: 560px) {
+  .desc {
+    display: none;
+  }
+}
+
+/*
+ * ---------- Forgot password, check email, new password, password updated ----------
+ * Same card, fields and button as the login page. The pieces below are only for those steps.
+ */
+.flowCol {
+  min-width: 0;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.25em;
+  border-bottom: 1px solid #e6eef1;
+}
+
+.cardTopLogo {
+  display: block;
+  width: 3.375em;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.9375em;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.backLink svg {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.stateHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5em 0;
+  text-align: center;
+}
+
+/* round mint badge with a teal icon */
+.badge {
+  display: grid;
+  place-items: center;
+  width: 4.25em;
+  height: 4.25em;
+  color: #005872;
+  background: #d9efeb;
+  border-radius: 50%;
+}
+
+.badge svg {
+  width: 2em;
+  height: 2em;
+  stroke-width: 1.8;
+}
+
+.successOuter {
+  display: grid;
+  place-items: center;
+  width: 5.25em;
+  height: 5.25em;
+  background: #d9efeb;
+  border-radius: 50%;
+}
+
+.successInner {
+  display: grid;
+  place-items: center;
+  width: 3.5em;
+  height: 3.5em;
+  color: #fff;
+  background: #005872;
+  border-radius: 50%;
+}
+
+.successInner svg {
+  width: 1.9em;
+  height: 1.9em;
+  stroke-width: 2.4;
+}
+
+.stateTitle {
+  margin: 0.7em 0 0;
+  font-size: 1.75em;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #005872;
+}
+
+.stateText {
+  max-width: 27em;
+  margin: 0.6em 0 0;
+  font-size: 1em;
+  line-height: 1.6;
+  color: #5e7479;
+}
+
+.maskedEmail {
+  margin: 0.45em 0 0;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  font-weight: 600;
+  color: #005872;
+  background: #f8fafb;
+  border: 1px solid #e6eef1;
+  border-radius: 999px;
+}
+
+/* a link that looks like the Login button */
+.btnLink {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.btnSecondary {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 3.25em;
+  margin-top: 0.75em;
+  font-size: 1.0625em;
+  font-weight: 600;
+  color: #005872;
+  text-decoration: none;
+  background: #fff;
+  border: 1px solid #cbdce2;
+  border-radius: 0.75em;
+}
+
+.btnSecondary:hover {
+  background: #f8fafb;
+  border-color: #669baa;
+}
+
+.helpBox {
+  margin-top: 1.4em;
+  padding: 1em 1.1em;
+  background: #f8fafb;
+  border: 1px solid #e6eef1;
+  border-radius: 0.75em;
+}
+
+.helpTitle {
+  margin: 0 0 0.5em;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #005872;
+}
+
+.helpList {
+  margin: 0;
+  padding-left: 1.1em;
+  list-style: disc;
+  font-size: 0.875em;
+  line-height: 1.7;
+  color: #5e7479;
+}
+
+.resendRow {
+  margin: 0.75em 0 0;
+  font-size: 0.9em;
+  color: #5e7479;
+}
+
+.resendLink {
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+.resendLink:hover {
+  text-decoration: underline;
+}
+
+.resendMuted {
+  font-weight: 600;
+  color: #859aa0;
+}
+
+.resendWait {
+  color: #859aa0;
+}
+
+.noteBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75em;
+  margin-top: 1.4em;
+  padding: 0.9em 1em;
+  background: #f8fafb;
+  border: 1px solid #e6eef1;
+  border-radius: 0.75em;
+}
+
+.noteBox svg {
+  flex: none;
+  width: 1.25em;
+  height: 1.25em;
+  margin-top: 0.05em;
+  color: #005872;
+  stroke-width: 1.8;
+}
+
+.noteText {
+  margin: 0;
+  font-size: 0.875em;
+  line-height: 1.55;
+  color: #5e7479;
+}
+
+.altLine {
+  margin: 1.25em 0 0;
+  font-size: 0.9375em;
+  color: #5e7479;
+  text-align: center;
+}
+
+.altLine a {
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.altLine a:hover {
+  text-decoration: underline;
+}
+
+/* new password: strength meter and the rules checklist */
+.strength {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  margin-top: 1.3em;
+}
+
+.strengthBars {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.375em;
+}
+
+.strengthBar {
+  height: 0.375em;
+  background: #e6eef1;
+  border-radius: 0.2em;
+  transition: background 0.15s;
+}
+
+.strengthBarOn {
+  background: #005872;
+}
+
+.strengthLabel {
+  min-width: 3.5em;
+  font-size: 0.875em;
+  font-weight: 600;
+  color: #005872;
+  text-align: right;
+}
+
+.rules {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6em 1em;
+  margin: 0.9em 0 1.4em;
+  padding: 0.9em 1em;
+  font-size: 0.875em;
+  color: #5e7479;
+  list-style: none;
+  background: #f8fafb;
+  border: 1px solid #e6eef1;
+  border-radius: 0.75em;
+}
+
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.ruleMark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  box-sizing: border-box;
+  width: 1.125em;
+  height: 1.125em;
+  color: #fff;
+  border: 1.5px solid #99bcc7;
+  border-radius: 50%;
+}
+
+.ruleMark svg {
+  width: 0.75em;
+  height: 0.75em;
+  stroke-width: 3.2;
+}
+
+.ruleMet {
+  color: #005872;
+}
+
+.ruleMet .ruleMark {
+  background: #005872;
+  border-color: #005872;
+}
+
+/* the line of explanation under a header title (forgot password) */
+.headText {
+  margin: 0.4em 0 0;
+  font-size: 0.9375em;
+  line-height: 1.5;
+  color: #5e7479;
+}
+
+/* the masked address and the "Change email" link sit on one row (check email) */
+.emailRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em 1em;
+  margin: 0.6em 0 0.2em;
+}
+
+.emailRow .maskedEmail {
+  margin: 0;
+}

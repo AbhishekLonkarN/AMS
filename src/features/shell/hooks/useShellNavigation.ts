@@ -12,14 +12,14 @@ export function useShellNavigation(): NavSectionView[] {
   const check = usePermissionChecker();
 
   return useMemo(() => {
-    if (!user) return [];
+    if (!user) {return [];}
     const ctx = { projectId: project?.id ?? '', siteId: site?.id ?? '' };
 
-    return NAV_SECTIONS.filter((section) => section.audiences.includes(user.userType)).flatMap((section) => {
+    return NAV_SECTIONS.filter((section) => section.audiences.includes(user.userType) && !section.isSidebarHidden).flatMap((section) => {
       const scope = sectionScope(section, { projectId: project?.id, siteId: site?.id });
-      if (!scope) return [];
+      if (!scope) {return [];}
       const items = toNavItems(section.items, user.userType, check, scope, ctx);
-      if (!items.length) return [];
+      if (!items.length) {return [];}
 
       const subtitle =
         section.key === 'project' ? project?.name : section.key === 'site' ? `${site?.siteCode} · ${site?.siteName}` : undefined;

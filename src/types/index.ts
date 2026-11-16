@@ -9,3 +9,4 @@ export * from './master.types';
 export * from './audit.types';
 export * from './company-profile.types';
 export * from './auth.types';
+export * from './ecrf-template.types';

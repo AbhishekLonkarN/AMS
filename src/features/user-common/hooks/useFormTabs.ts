@@ -12,7 +12,7 @@ export function useFormTabs<TTab extends string>(tabs: readonly TTab[], fieldTab
   const showFirstError = (errors: FieldErrors) => {
     const tabsWithErrors = new Set(Object.keys(errors).map((field) => fieldTabs[field]));
     const target = tabs.find((tab) => tabsWithErrors.has(tab));
-    if (target) setActiveTab(target);
+    if (target) {setActiveTab(target);}
   };
 
   return {

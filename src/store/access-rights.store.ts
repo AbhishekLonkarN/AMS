@@ -44,7 +44,7 @@ export const useAccessRightsStore = createAppStore<AccessRightsState>('access-ri
 
   updateTemplate: (id, input) => {
     const before = get().templates.find((t) => t.id === id);
-    if (!before) return;
+    if (!before) {return;}
     const after = { ...before, ...input };
     set((s) => ({ templates: s.templates.map((t) => (t.id === id ? after : t)) }));
     const subject = `access rights set ${before.name}`;
@@ -54,7 +54,7 @@ export const useAccessRightsStore = createAppStore<AccessRightsState>('access-ri
 
   toggleTemplateStatus: (id) => {
     const template = get().templates.find((t) => t.id === id);
-    if (!template) return;
+    if (!template) {return;}
     const status = template.status === 'active' ? 'inactive' : 'active';
     set((s) => ({ templates: s.templates.map((t) => (t.id === id ? { ...t, status } : t)) }));
     recordAudit({

@@ -13,6 +13,6 @@ interface CoUserFormContainerProps {
 /** Drawer content container: wires the form hook to the shared affiliation drawer form. */
 export function CoUserFormContainer(props: CoUserFormContainerProps) {
   const { isNotFound, ...model } = useCoUserForm(props);
-  if (isNotFound) return <NotFoundPage />;
+  if (isNotFound) {return <NotFoundPage />;}
   return <AffiliationFormView {...model} />;
 }

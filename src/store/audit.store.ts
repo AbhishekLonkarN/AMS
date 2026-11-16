@@ -84,7 +84,7 @@ export function recordFieldChanges<T extends object>(args: {
   for (const field of fields) {
     const from = before[field.key] as AuditValue;
     const to = after[field.key] as AuditValue;
-    if (from === to) continue;
+    if (from === to) {continue;}
     recordAudit({
       ...context,
       page,
@@ -104,7 +104,7 @@ export function recordPermissionChange(args: {
   context?: AuditContext;
 }) {
   const { added, removed } = diffPermissions(args.before, args.after);
-  if (!added.length && !removed.length) return;
+  if (!added.length && !removed.length) {return;}
   recordAudit({
     ...args.context,
     page: args.page,
