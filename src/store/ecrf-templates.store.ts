@@ -1,59 +1,82 @@
-import type { EcrfTemplate, Id } from '@/types';
-import { ECRF_TEMPLATES_SEED } from '@/data/ecrf-templates.seed';
-import { AUDIT_PAGES } from '@/constants/audit.constants';
-import { createId } from '@/utils/id.utils';
-import { nowIso } from '@/utils/date.utils';
-import { statusText } from '@/utils/status.utils';
-import { createAppStore } from './store.config';
-import { recordAudit } from './audit.store';
-import { useSessionStore } from './session.store';
-
-export type EcrfTemplateInput = Pick<EcrfTemplate, 'name' | 'productGroupId' | 'description' | 'status' | 'config'>;
+import { create } from 'zustand';
+import type { FormBuilderConfig } from '@/components/dynamic-form';
+import type { EcrfDesign, EcrfTemplate, Id } from '@/types';
+import {
+  ApiError,
+  createEcrfTemplate,
+  deleteEcrfTemplate,
+  listEcrfTemplates,
+  publishEcrfTemplateDesign,
+  saveEcrfTemplateDesign,
+  setEcrfTemplateActive,
+  updateEcrfTemplate,
+  type EcrfTemplateCreateInput,
+  type EcrfTemplateDetailsInput,
+} from '@/api';
+import type { LoadState } from './access-rights-sets.store';
 
 interface EcrfTemplatesState {
+  /** Newest first, as the backend lists them. */
   templates: EcrfTemplate[];
-  addEcrfTemplate: (input: EcrfTemplateInput) => EcrfTemplate;
-  updateEcrfTemplate: (id: Id, input: EcrfTemplateInput) => void;
-  toggleEcrfTemplateStatus: (id: Id) => void;
+  loadState: LoadState;
+  loadError: string | null;
+  /** Fetches every template again. */
+  load: () => Promise<void>;
+  /** The mutations throw `ApiError`; the backend writes the audit trail. */
+  create: (input: EcrfTemplateCreateInput) => Promise<EcrfTemplate>;
+  updateDetails: (id: Id, input: EcrfTemplateDetailsInput) => Promise<EcrfTemplate>;
+  setActive: (id: Id, isActive: boolean) => Promise<EcrfTemplate>;
+  saveDesign: (id: Id, config: FormBuilderConfig, draftRevision: number | null) => Promise<EcrfDesign>;
+  publish: (id: Id) => Promise<EcrfDesign>;
+  remove: (id: Id) => Promise<void>;
 }
 
-/** Stands in for the eCRF template API: the form config is stored as-is, as JSON. */
-export const useEcrfTemplatesStore = createAppStore<EcrfTemplatesState>('ecrf-templates', (set, get) => ({
-  templates: ECRF_TEMPLATES_SEED,
+/** eCRF templates from the backend. Server data, so never persisted. */
+export const useEcrfTemplatesStore = create<EcrfTemplatesState>((set) => {
+  const upsert = (saved: EcrfTemplate) => {
+    set((s) =>
+      s.templates.some((t) => t.id === saved.id)
+        ? { templates: s.templates.map((t) => (t.id === saved.id ? saved : t)) }
+        : { templates: [saved, ...s.templates] },
+    );
+    return saved;
+  };
+  const patch = (id: Id, changes: Partial<EcrfTemplate>) =>
+    set((s) => ({ templates: s.templates.map((t) => (t.id === id ? { ...t, ...changes } : t)) }));
 
-  addEcrfTemplate: (input) => {
-    const template: EcrfTemplate = {
-      ...input,
-      id: createId('ecrf'),
-      createdBy: useSessionStore.getState().currentUserId ?? undefined,
-      updatedAt: nowIso(),
-    };
-    set((s) => ({ templates: [...s.templates, template] }));
-    recordAudit({ page: AUDIT_PAGES.ecrfTemplates, event: `Created eCRF template ${template.name}`, changedTo: template.name });
-    return template;
-  },
+  return {
+    templates: [],
+    loadState: 'idle',
+    loadError: null,
 
-  updateEcrfTemplate: (id, input) => {
-    const before = get().templates.find((t) => t.id === id);
-    if (!before) {
-      return;
-    }
-    set((s) => ({ templates: s.templates.map((t) => (t.id === id ? { ...t, ...input, updatedAt: nowIso() } : t)) }));
-    recordAudit({ page: AUDIT_PAGES.ecrfTemplates, event: `Edited eCRF template ${input.name}` });
-  },
+    load: async () => {
+      set({ loadState: 'loading', loadError: null });
+      try {
+        set({ templates: await listEcrfTemplates(), loadState: 'loaded' });
+      } catch (error) {
+        set({ loadState: 'failed', loadError: error instanceof ApiError ? error.message : String(error) });
+      }
+    },
 
-  toggleEcrfTemplateStatus: (id) => {
-    const template = get().templates.find((t) => t.id === id);
-    if (!template) {
-      return;
-    }
-    const status = template.status === 'active' ? 'inactive' : 'active';
-    set((s) => ({ templates: s.templates.map((t) => (t.id === id ? { ...t, status, updatedAt: nowIso() } : t)) }));
-    recordAudit({
-      page: AUDIT_PAGES.ecrfTemplates,
-      event: `${status === 'active' ? 'Activated' : 'Deactivated'} eCRF template ${template.name}`,
-      originalValue: statusText(template.status),
-      changedTo: statusText(status),
-    });
-  },
-}));
+    create: async (input) => upsert(await createEcrfTemplate(input)),
+    updateDetails: async (id, input) => upsert(await updateEcrfTemplate(id, input)),
+    setActive: async (id, isActive) => upsert(await setEcrfTemplateActive(id, isActive)),
+
+    saveDesign: async (id, config, draftRevision) => {
+      const design = await saveEcrfTemplateDesign(id, config, draftRevision);
+      patch(id, { hasDraft: true });
+      return design;
+    },
+
+    publish: async (id) => {
+      const design = await publishEcrfTemplateDesign(id);
+      patch(id, { hasDraft: false, publishedVersionNo: design.versionNo });
+      return design;
+    },
+
+    remove: async (id) => {
+      await deleteEcrfTemplate(id);
+      set((s) => ({ templates: s.templates.filter((t) => t.id !== id) }));
+    },
+  };
+});

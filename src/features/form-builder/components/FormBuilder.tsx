@@ -13,6 +13,7 @@ import {
   DynamicForm,
   type FieldConfig,
   type FieldPosition,
+  type FieldType,
   type FormBuilderConfig,
   type LookupResolver,
   type SectionConfig,
@@ -20,7 +21,7 @@ import {
 import { ConfirmDialog, EmptyState } from '@/components/feedback';
 import type { SelectOption } from '@/components/form';
 import { Tooltip } from '@/components/overlay';
-import { FORM_BUILDER_LABELS as L } from '../constants/form-builder.constants';
+import { FIELD_TYPE_OPTIONS, FORM_BUILDER_LABELS as L } from '../constants/form-builder.constants';
 import type {
   FormBuilderHandle,
   IncompleteItem,
@@ -72,6 +73,8 @@ export interface FormBuilderProps {
   lookupSources?: SelectOption[];
   /** Options of each data source, for the preview. */
   resolveLookup?: LookupResolver;
+  /** Field types offered in the Type dropdown. Defaults to every type. */
+  fieldTypes?: readonly FieldType[];
 }
 
 interface PendingConfirm {
@@ -98,10 +101,18 @@ export const FormBuilder = forwardRef<FormBuilderHandle, FormBuilderProps>(funct
     onRevertField,
     lookupSources = [],
     resolveLookup,
+    fieldTypes,
   },
   ref
 ) {
   const idPrefix = useId();
+  const typeOptions = useMemo(
+    () =>
+      fieldTypes
+        ? FIELD_TYPE_OPTIONS.filter((o) => fieldTypes.includes(o.value as FieldType))
+        : FIELD_TYPE_OPTIONS,
+    [fieldTypes]
+  );
   const config = useMemo(() => normalizeConfig(value), [value]);
   const { sections } = config;
   const sectionListRef = useFlipAnimation<HTMLDivElement>(
@@ -426,6 +437,7 @@ export const FormBuilder = forwardRef<FormBuilderHandle, FormBuilderProps>(funct
               removed={removed[sectionId(section)] ?? []}
               domId={(fieldIndex) => domId(index, fieldIndex)}
               lookupSources={lookupSources}
+              typeOptions={typeOptions}
               fieldId={(fieldIndex) => fieldIdAt(sections, index, fieldIndex)}
               openFieldId={openFieldId}
               flashFieldId={flashFieldId}

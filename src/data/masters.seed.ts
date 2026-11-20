@@ -10,12 +10,8 @@ const item = (
   status: RecordStatus = 'active',
 ): MasterItem => ({ id, masterKey, label, description, status, createdBy: 'usr-jpatel', updatedAt: UPDATED_AT });
 
+/** Product Group comes from the backend (`product-groups.store`), so it has no demo values here. */
 export const MASTERS_SEED: MasterItem[] = [
-  // ---- Product Group ----
-  item('productGroup', 'ms-pg-ic', 'IC', 'Interventional Cardiology'),
-  item('productGroup', 'ms-pg-cs', 'CS', 'Cardiovascular Surgery'),
-  item('productGroup', 'ms-pg-wc-endo', 'WC-Endo', 'Wound Closure and Endo Surgery', 'inactive'),
-
   // ---- Project Status ----
   item('projectStatus', 'ms-ps-under-planning', 'Under Planning', 'Confirmed to initiate, but CIP under final touch.'),
   item('projectStatus', 'ms-ps-cdsco-approved', 'CDSCO Approved', 'CIP is approved by CDSCO.'),

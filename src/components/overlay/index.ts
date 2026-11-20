@@ -4,5 +4,6 @@ export { DrawerPanel } from './DrawerPanel';
 export { DrawerSection } from './DrawerSection';
 export { DrawerActions } from './DrawerActions';
 export { useDrawerClose } from './drawer.context';
+export { OVERLAY_TRANSITION_MS } from './useAnimatedDialog';
 export { Tooltip } from './Tooltip';
 export { Popover } from './Popover';

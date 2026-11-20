@@ -20,9 +20,13 @@ export const MASTER_LABELS = {
   reactivated: (label: string) => `“${label}” has been activated.`,
   searchPlaceholder: 'Search…',
   inactiveSuffix: '(In-active)',
+  loading: 'Loading…',
+  loadFailed: 'The values could not be loaded.',
+  saveFailed: 'The changes could not be saved.',
 } as const;
 
 export const MASTER_VALIDATION = {
   required: 'This field is required.',
   taken: (itemName: string) => `This ${itemName} already exists.`,
+  tooLong: (max: number) => `Use at most ${max} characters.`,
 } as const;

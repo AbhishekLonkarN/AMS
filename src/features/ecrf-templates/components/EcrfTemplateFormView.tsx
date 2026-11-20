@@ -12,7 +12,7 @@ import {
 } from '../constants/ecrf-templates.constants';
 import type { EcrfTemplateFormModel } from '../hooks/useEcrfTemplateForm';
 
-type EcrfTemplateFormViewProps = Omit<EcrfTemplateFormModel, 'isNotFound'>;
+type EcrfTemplateFormViewProps = EcrfTemplateFormModel;
 
 const TAB_ITEMS = [
   { key: 'details', label: L.tabDetails, icon: FileText },
@@ -31,14 +31,14 @@ export function EcrfTemplateFormView({
   draft,
   setDraft,
   builderRef,
+  fieldTypes,
   keyMode,
   sectionKeyCatalog,
-  lookupSources,
-  resolveLookup,
   primaryLabel,
   handlePrimary,
   confirm,
   isDirty,
+  isSaving,
   recovery,
   leaveConfirm,
 }: EcrfTemplateFormViewProps) {
@@ -67,7 +67,9 @@ export function EcrfTemplateFormView({
           idPrefix={tabs.idPrefix}
         />
       }
-      footer={<DrawerActions primaryLabel={primaryLabel} onPrimary={() => void handlePrimary()} />}
+      footer={
+        <DrawerActions primaryLabel={primaryLabel} onPrimary={() => void handlePrimary()} isBusy={isSaving} />
+      }
     >
       {recovery && (
         <div
@@ -125,10 +127,11 @@ export function EcrfTemplateFormView({
                 {...register('status')}
               />
               <TextAreaField
-                label={F.description}
+                label={F.suitableFor}
+                isRequired
                 isFullWidth
-                error={errors.description?.message}
-                {...register('description')}
+                error={errors.suitableFor?.message}
+                {...register('suitableFor')}
               />
             </div>
           </DrawerSection>
@@ -143,8 +146,7 @@ export function EcrfTemplateFormView({
           onChange={setDraft}
           keyMode={keyMode}
           sectionKeyCatalog={sectionKeyCatalog}
-          lookupSources={lookupSources}
-          resolveLookup={resolveLookup}
+          fieldTypes={fieldTypes}
         />
       </TabPanel>
 

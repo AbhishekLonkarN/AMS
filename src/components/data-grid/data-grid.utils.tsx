@@ -11,7 +11,7 @@ export function createSrNoColumn<T>(header: string = DATA_GRID_LABELS.srNo): Dat
     enableSorting: false,
     enableColumnFilter: false,
     enableGlobalFilter: false,
-    meta: { filterVariant: 'none', className: 'w-16' },
+    meta: { filterVariant: 'none', className: 'w-16', hideBelow: 'sm' },
     cell: ({ row, table }) => {
       const { pageIndex, pageSize } = table.getState().pagination;
       return table.getRowModel().rows.findIndex((r) => r.id === row.id) + 1 + pageIndex * pageSize;
@@ -28,7 +28,7 @@ export function createStatusColumn<T>(
     id: 'status',
     header,
     accessorFn: (row) => STATUS_BADGE_LABELS[getStatus(row)],
-    meta: { filterVariant: 'select', className: 'w-36' },
+    meta: { filterVariant: 'select', className: 'sm:w-36' },
     cell: ({ row }) => <StatusBadge status={getStatus(row.original)} size="sm" />,
   };
 }

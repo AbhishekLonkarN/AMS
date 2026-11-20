@@ -15,6 +15,7 @@ import {
   LayoutDashboard,
   LayoutGrid,
   Library,
+  LibraryBig,
   Lock,
   MessageSquareWarning,
   Settings,
@@ -192,6 +193,15 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         description: PAGE_DESCRIPTIONS.ecrfTemplates,
         icon: FileStack,
         to: fixed(ROUTES.ecrfTemplates),
+        permission: 'ecrfTemplate.view',
+      },
+      {
+        // Pre-sets are building blocks of eCRF designs, so they share the eCRF Template rights.
+        key: 'preset-library',
+        label: PAGE_TITLES.presetLibrary,
+        description: PAGE_DESCRIPTIONS.presetLibrary,
+        icon: LibraryBig,
+        to: fixed(ROUTES.presetLibrary),
         permission: 'ecrfTemplate.view',
       },
       {

@@ -36,6 +36,9 @@ export const ACCESS_RIGHTS_LABELS = {
   deactivated: (name: string) => `“${name}” has been deactivated.`,
   reactivated: (name: string) => `“${name}” has been activated.`,
   searchPlaceholder: 'Search set name…',
+  loading: 'Loading access rights sets…',
+  loadFailed: 'Access rights sets could not be loaded.',
+  saveFailed: 'The access rights set could not be saved.',
 } as const;
 
 export const ACCESS_RIGHTS_FIELDS = {

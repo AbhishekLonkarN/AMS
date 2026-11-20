@@ -34,6 +34,10 @@ export const LOGIN_ERRORS: Record<LoginErrorCode, string> = {
   notFound: 'Invalid email address or password.',
   inactive: 'This user account is In-active. Contact your administrator.',
   noActiveMembership: 'You are not an active member of any site. Contact your sponsor or CRO.',
+  invalidCredentials: 'Invalid email or password.',
+  noAccess: 'You do not have access to ClinTech. Contact your administrator.',
+  unavailable: 'Sign-in is unavailable right now. Please try again later.',
+  notInDemoData: 'Signed in, but this email has no sample data in the prototype yet.',
 };
 
 /** Longest valid email address (RFC 5321). */

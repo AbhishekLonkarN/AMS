@@ -10,7 +10,7 @@ export function buildEcrfTemplateSchema(isNameTaken: (name: string) => boolean) 
       .max(100, V.nameTooLong)
       .refine((name) => !isNameTaken(name), V.nameTaken),
     productGroupId: z.string().min(1, V.productGroupRequired),
-    description: z.string().trim().max(500, V.descriptionTooLong),
+    suitableFor: z.string().trim().min(1, V.suitableForRequired).max(500, V.suitableForTooLong),
     status: z.enum(['active', 'inactive']),
   });
 }

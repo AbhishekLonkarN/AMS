@@ -11,3 +11,16 @@ export interface AccessRightsTemplate {
   createdBy: Id;
   createdAt: IsoDateTime;
 }
+
+/** A Default Access Rights set as the backend returns it (Masters › Default Access Rights). */
+export interface AccessRightsSet {
+  id: Id;
+  name: string;
+  userType: UserType;
+  permissions: PermissionKey[];
+  status: RecordStatus;
+  createdByName: string;
+  createdAt: IsoDateTime;
+}
+
+export type AccessRightsSetInput = Pick<AccessRightsSet, 'name' | 'userType' | 'permissions' | 'status'>;

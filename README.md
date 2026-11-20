@@ -1,9 +1,12 @@
 # ClinTech (AdvaClin) — Phase 1 wireframe
 
 Clickable, coded wireframe of the ClinTech EDC for AMS, focused on **role-based access control (RBAC)**.
-There is no backend: all data is seed data held in in-memory Zustand stores.
+The login form checks email + password with the backend (`ams-backend`). Everything else is seed data held in
+in-memory Zustand stores.
 
 ## Run
+
+Start the backend first. `npm run dev` proxies `/api` to it on <http://localhost:8020>; see the `ams-backend` readme.
 
 ```bash
 npm install
@@ -11,8 +14,16 @@ npm run dev        # http://localhost:5173
 npm run build      # production build (optional)
 ```
 
-Sign in with any seeded email and **any password**, or use **Quick demo sign-in** on the login page.
-Switch role at any time from the user menu (top right) — the switch keeps the current in-memory data.
+To sign in with the form, the email needs a backend account **and** a seeded user below. In `ams-backend`:
+
+```bash
+uv run python -m scripts.create_dev_user abcd.pqrs@amsltd.com "Abcd Pqrs" --category ADMIN --prefix Mr
+```
+
+The page and data for that user come from the seed. **Quick demo sign-in** on the login page and the switcher in the
+user menu skip the password and don't call the backend. The switch keeps the current in-memory data.
+
+A deployed build calls the backend at `VITE_API_BASE_URL`.
 
 | Role | User | Email |
 |---|---|---|

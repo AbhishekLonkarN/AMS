@@ -1,19 +1,31 @@
 import type { FieldConfig, SectionConfig } from '@/components/dynamic-form';
 
-export const KEY_MAX_LENGTH = 100;
+/** The backend's key rule: `^[a-z][a-z0-9_]{0,63}$`. */
+export const KEY_MAX_LENGTH = 64;
 export const NEW_FIELD_KEY = 'new_field';
 export const NEW_SECTION_KEY = 'new_section';
 
-/** "Date of Birth (DOB)" → "date_of_birth_dob". Falls back when nothing usable is left. */
-export function toKey(label: string, fallback = 'field'): string {
-  const key = label
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '')
+const cutToLength = (key: string) =>
+  key
     .slice(0, KEY_MAX_LENGTH)
     // Cutting at the limit can leave a trailing separator.
     .replace(/_+$/, '');
-  return key || fallback;
+
+/**
+ * "Date of Birth (DOB)" → "date_of_birth_dob". Falls back when nothing usable is left. A key must
+ * start with a letter, so "2nd visit" becomes "field_2nd_visit" (the fallback is the prefix).
+ */
+export function toKey(label: string, fallback = 'field'): string {
+  const key = cutToLength(
+    label
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, ''),
+  );
+  if (!key) {
+    return fallback;
+  }
+  return /^[0-9]/.test(key) && fallback ? cutToLength(`${fallback}_${key}`) : key;
 }
 
 /** Appends _2, _3… until the key is free among `siblings`. */

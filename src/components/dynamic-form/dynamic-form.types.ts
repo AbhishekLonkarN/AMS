@@ -59,6 +59,8 @@ export interface FieldConfig {
   uid?: string;
   /** Catalog entry this field is mapped to ('' = deliberately cleared). Persisted. */
   catalogFieldKey?: string;
+  /** Saved settings the builder doesn't edit (e.g. validation rules), kept as they are. */
+  meta?: Record<string, unknown>;
 }
 
 export interface SectionConfig {
@@ -68,6 +70,8 @@ export interface SectionConfig {
   collapsible?: boolean;
   fields: FieldConfig[];
   catalogKey?: string;
+  /** Saved settings the builder doesn't edit (e.g. the clinical stage), kept as they are. */
+  meta?: Record<string, unknown>;
   /** Editor-only stable React identity. */
   uid?: string;
 }

@@ -33,7 +33,7 @@ export function MasterFormModal({ model }: MasterFormModalProps) {
           error={errors.status?.message}
           {...register('status')}
         />
-        <FormActions submitLabel={model.submitLabel} onCancel={model.close} />
+        <FormActions submitLabel={model.submitLabel} onCancel={model.close} isSubmitting={model.isSubmitting} />
       </form>
     </Modal>
   );

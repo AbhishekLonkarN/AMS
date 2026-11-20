@@ -2,23 +2,23 @@ import { useMemo, useState } from 'react';
 import { Ban, Pencil, RotateCcw } from 'lucide-react';
 import type { MasterItem, MasterKey } from '@/types';
 import type { RowAction } from '@/components/data-grid';
-import { notify, useMastersStore } from '@/store';
+import { notify } from '@/store';
 import { usePermissionChecker } from '@/rbac';
 import { MASTERS_CONFIG } from '../masters.config';
 import { MASTER_LABELS as L } from '../constants/masters.constants';
 import { buildMasterColumns } from '../constants/master-columns.constants';
+import { saveErrorMessage } from '../utils/masters.utils';
 import { useMasterForm } from './useMasterForm';
+import { useMasterSource } from './useMasterSource';
 
 /** Everything the generic master screen needs, driven by `MASTERS_CONFIG[masterKey]`. */
 export function useMasterList(masterKey: MasterKey) {
   const config = MASTERS_CONFIG[masterKey];
-  const allItems = useMastersStore((s) => s.items);
-  const toggleMasterItemStatus = useMastersStore((s) => s.toggleMasterItemStatus);
+  const source = useMasterSource(masterKey);
   const can = usePermissionChecker();
-  const formModel = useMasterForm(config);
+  const formModel = useMasterForm(config, source);
   const [pendingToggle, setPendingToggle] = useState<MasterItem | null>(null);
 
-  const items = useMemo(() => allItems.filter((i) => i.masterKey === masterKey), [allItems, masterKey]);
   const columns = useMemo(() => buildMasterColumns(config.itemName), [config]);
 
   const canAdd = can(config.permissions.new);
@@ -44,17 +44,23 @@ export function useMasterList(masterKey: MasterKey) {
   const isDeactivating = pendingToggle?.status === 'active';
   const pendingLabel = pendingToggle?.label ?? '';
 
-  const handleConfirmToggle = () => {
+  const handleConfirmToggle = async () => {
     if (!pendingToggle) {return;}
-    toggleMasterItemStatus(pendingToggle.id);
-    notify.success(isDeactivating ? L.deactivated(pendingLabel) : L.reactivated(pendingLabel));
     setPendingToggle(null);
+    try {
+      await source.setActive(pendingToggle, !isDeactivating);
+      notify.success(isDeactivating ? L.deactivated(pendingLabel) : L.reactivated(pendingLabel));
+    } catch (error) {
+      notify.error(saveErrorMessage(error));
+    }
   };
 
   return {
     title: config.title,
     description: config.description,
-    items,
+    items: source.items,
+    emptyTitle: source.emptyTitle,
+    emptyDescription: source.emptyDescription,
     columns,
     rowActions: canEdit || canToggle ? rowActions : undefined,
     canAdd,
@@ -67,7 +73,7 @@ export function useMasterList(masterKey: MasterKey) {
       message: isDeactivating ? L.confirmDeactivate(pendingLabel) : L.confirmReactivate(pendingLabel),
       confirmLabel: isDeactivating ? L.deactivate : L.reactivate,
       tone: isDeactivating ? ('danger' as const) : ('primary' as const),
-      onConfirm: handleConfirmToggle,
+      onConfirm: () => void handleConfirmToggle(),
       onCancel: () => setPendingToggle(null),
     },
   };

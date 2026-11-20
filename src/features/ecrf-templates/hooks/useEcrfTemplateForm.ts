@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { EcrfTemplate } from '@/types';
+import type { EcrfDesign, EcrfTemplate } from '@/types';
 import type { FormBuilderConfig } from '@/components/dynamic-form';
 import { notify, useEcrfTemplatesStore } from '@/store';
 import { isSameText } from '@/utils/string.utils';
@@ -17,19 +17,22 @@ import {
 import {
   CATALOG_LAYER_NAMES,
   ECRF_TEMPLATE_LABELS as L,
+  ECRF_TEMPLATE_VALIDATION as V,
 } from '../constants/ecrf-templates.constants';
 import {
   buildEcrfTemplateSchema,
   type EcrfTemplateFormValues,
 } from '../schemas/ecrf-template.schema';
-import { useLookupSources } from './useLookupSources';
+import { isNameTaken, templateErrorMessage } from '../utils/ecrf-template-errors.utils';
+import type { EcrfFormMode } from './useEcrfTemplateEditor';
+import { useSupportedFieldTypes } from './useSupportedFieldTypes';
 import { useUnsavedDraft } from './useUnsavedDraft';
-
-export type EcrfFormMode = 'create' | 'edit';
 
 interface EcrfTemplateFormOptions {
   mode: EcrfFormMode;
-  templateId?: string;
+  /** Edit only: the template and its design as loaded. */
+  template?: EcrfTemplate;
+  design?: EcrfDesign;
   /** Called after a successful save (closes the drawer). */
   onDone: () => void;
 }
@@ -38,29 +41,38 @@ const TABS = ['details', 'builder'] as const;
 const FIELD_TABS = {
   name: 'details',
   productGroupId: 'details',
-  description: 'details',
+  suitableFor: 'details',
   status: 'details',
 } as const;
 
 const toFormValues = (t?: EcrfTemplate): EcrfTemplateFormValues => ({
   name: t?.name ?? '',
   productGroupId: t?.productGroupId ?? '',
-  description: t?.description ?? '',
+  suitableFor: t?.suitableFor ?? '',
   status: t?.status ?? 'active',
 });
 
+/** The saved design as builder config, plus its JSON to tell whether anything changed. */
+const seedFrom = (design?: EcrfDesign) => {
+  const draft = dbConfigToBuilderConfig(design?.config ?? null);
+  return { draft, baseline: JSON.stringify(toDbConfig(draft)) };
+};
+
 /** Details tab (react-hook-form) + Form Builder tab (a controlled draft), saved together. */
-export function useEcrfTemplateForm({ mode, templateId, onDone }: EcrfTemplateFormOptions) {
+export function useEcrfTemplateForm({ mode, template: loaded, design, onDone }: EcrfTemplateFormOptions) {
   const templates = useEcrfTemplatesStore((s) => s.templates);
-  const addTemplate = useEcrfTemplatesStore((s) => s.addEcrfTemplate);
-  const updateTemplate = useEcrfTemplatesStore((s) => s.updateEcrfTemplate);
-  const template = templates.find((t) => t.id === templateId);
+  const { create, updateDetails, setActive, saveDesign } = useEcrfTemplatesStore.getState();
+  // The list's copy is kept up to date by every save, so a retry after a partial failure
+  // only sends what is still different.
+  const template = templates.find((t) => t.id === loaded?.id) ?? loaded;
   const productGroupOptions = useMasterOptions('productGroup', template?.productGroupId);
-  const { lookupSources, resolveLookup } = useLookupSources();
+  const fieldTypes = useSupportedFieldTypes();
   const tabs = useFormTabs(TABS, FIELD_TABS);
   const builderRef = useRef<FormBuilderHandle>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
+  // An early hint only; the backend has the final say on unique names.
   const schema = useMemo(
     () =>
       buildEcrfTemplateSchema((name) =>
@@ -73,24 +85,12 @@ export function useEcrfTemplateForm({ mode, templateId, onDone }: EcrfTemplateFo
     defaultValues: toFormValues(template),
   });
 
-  // Seeded once per template: a later store update (e.g. another tab saving) must not wipe
-  // edits the user hasn't saved yet. `baseline` is the saved form JSON, to tell if anything changed.
+  // The drawer remounts per template, so the design is seeded once from what was loaded.
   const entityId = template?.id ?? 'new';
-  const seededIdRef = useRef(entityId);
-  const [seed, setSeed] = useState(() => {
-    const config = dbConfigToBuilderConfig(template?.config ?? null);
-    return { draft: config, baseline: JSON.stringify(toDbConfig(config)) };
-  });
+  const [seed, setSeed] = useState(() => seedFrom(design));
   const [draft, setDraft] = useState<FormBuilderConfig>(seed.draft);
-  useEffect(() => {
-    if (seededIdRef.current === entityId) {
-      return;
-    }
-    seededIdRef.current = entityId;
-    const config = dbConfigToBuilderConfig(template?.config ?? null);
-    setSeed({ draft: config, baseline: JSON.stringify(toDbConfig(config)) });
-    setDraft(config);
-  }, [entityId, template]);
+  // Sent with each design save; the backend refuses it if someone else saved in between.
+  const [draftRevision, setDraftRevision] = useState(design?.draftRevision ?? null);
 
   const isDraftDirty = useMemo(
     () => JSON.stringify(toDbConfig(draft)) !== seed.baseline,
@@ -99,22 +99,25 @@ export function useEcrfTemplateForm({ mode, templateId, onDone }: EcrfTemplateFo
   const isDirty = form.formState.isDirty || isDraftDirty;
   const unsaved = useUnsavedDraft({ entityId, form, draft, setDraft, isDirty });
 
-  // Reusable keys come from saved records, not the draft, so the dropdowns don't shift while editing.
+  // Reusable keys: the system default plus this template's saved design. Only field types the
+  // backend can store are offered, since picking a key copies its type.
   const sectionKeyCatalog = useMemo(() => {
     if (mode !== 'edit') {
       return undefined;
     }
+    const system = dbConfigToBuilderConfig(SYSTEM_DEFAULT_ECRF);
+    const savable = {
+      ...system,
+      sections: system.sections.map((s) => ({
+        ...s,
+        fields: s.fields.filter((f) => f.type !== '' && fieldTypes.includes(f.type)),
+      })),
+    };
     return buildSectionKeyCatalog([
-      { name: CATALOG_LAYER_NAMES.system, config: dbConfigToBuilderConfig(SYSTEM_DEFAULT_ECRF) },
-      ...templates
-        .filter((t) => t.id !== template?.id)
-        .map((t) => ({
-          name: CATALOG_LAYER_NAMES.template(t.name),
-          config: dbConfigToBuilderConfig(t.config),
-        })),
-      { name: CATALOG_LAYER_NAMES.own, config: dbConfigToBuilderConfig(template?.config ?? null) },
+      { name: CATALOG_LAYER_NAMES.system, config: savable },
+      { name: CATALOG_LAYER_NAMES.own, config: seed.draft },
     ]);
-  }, [mode, templates, template]);
+  }, [mode, fieldTypes, seed.draft]);
 
   const handleNext = async () => {
     if (await form.trigger()) {
@@ -135,31 +138,78 @@ export function useEcrfTemplateForm({ mode, templateId, onDone }: EcrfTemplateFo
     setIsConfirmOpen(true);
   };
 
-  const handleConfirmSave = () => {
-    const values = form.getValues();
-    const input = {
-      name: values.name.trim(),
+  /** Create: the details and design in one call, then the status if it isn't the default. */
+  const createTemplate = async (values: EcrfTemplateFormValues, config: FormBuilderConfig) => {
+    const created = await create({
+      name: values.name,
       productGroupId: values.productGroupId,
-      description: values.description.trim() || undefined,
-      status: values.status,
-      config: toDbConfig(draft),
-    };
-    if (mode === 'create') {
-      addTemplate(input);
-      notify.success(L.created(input.name));
-    } else if (template) {
-      updateTemplate(template.id, input);
-      notify.success(L.saved(input.name));
+      suitableFor: values.suitableFor,
+      config,
+    });
+    if (values.status === 'inactive') {
+      // The template exists by now, so a failure here must not offer to create it again.
+      try {
+        await setActive(created.id, false);
+      } catch {
+        notify.error(L.statusFailed(values.name));
+        return;
+      }
     }
-    setIsConfirmOpen(false);
-    unsaved.markSaved();
-    onDone();
+    notify.success(L.created(values.name));
+  };
+
+  /** Edit: each part is saved only if it changed (the backend audits every call). */
+  const updateTemplate = async (
+    current: EcrfTemplate,
+    values: EcrfTemplateFormValues,
+    config: FormBuilderConfig
+  ) => {
+    const productGroupId = values.productGroupId !== current.productGroupId ? values.productGroupId : undefined;
+    const suitableFor = values.suitableFor !== current.suitableFor ? values.suitableFor : undefined;
+    if (productGroupId !== undefined || suitableFor !== undefined) {
+      await updateDetails(current.id, { productGroupId, suitableFor });
+    }
+    if (isDraftDirty) {
+      const saved = await saveDesign(current.id, config, draftRevision);
+      setDraftRevision(saved.draftRevision);
+      setSeed((s) => ({ ...s, baseline: JSON.stringify(config) }));
+    }
+    if (values.status !== current.status) {
+      await setActive(current.id, values.status === 'active');
+    }
+    notify.success(L.saved(values.name));
+  };
+
+  const handleConfirmSave = async () => {
+    const raw = form.getValues();
+    const values = { ...raw, name: raw.name.trim(), suitableFor: raw.suitableFor.trim() };
+    const config = toDbConfig(draft);
+    setIsSaving(true);
+    try {
+      if (mode === 'create') {
+        await createTemplate(values, config);
+      } else if (template) {
+        await updateTemplate(template, values, config);
+      }
+      setIsConfirmOpen(false);
+      unsaved.markSaved();
+      onDone();
+    } catch (error) {
+      setIsConfirmOpen(false);
+      if (isNameTaken(error)) {
+        form.setError('name', { type: 'unique', message: V.nameTaken });
+        tabs.setActiveTab('details');
+      } else {
+        notify.error(templateErrorMessage(error, config));
+      }
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const name = form.watch('name')?.trim() || template?.name || '';
 
   return {
-    isNotFound: mode === 'edit' && !template,
     title: mode === 'create' ? L.createTitle : L.editTitle,
     subtitle: mode === 'edit' ? template?.name : L.createDescription,
     // The name is read-only on edit (AMS p.17); the edit screen states that changes don't reach projects (BR-TPL-11).
@@ -171,12 +221,12 @@ export function useEcrfTemplateForm({ mode, templateId, onDone }: EcrfTemplateFo
     draft,
     setDraft,
     builderRef,
+    fieldTypes,
     // A new template has no saved answers yet: keys simply follow the labels.
     keyMode: mode === 'create' ? ('auto' as const) : undefined,
     sectionKeyCatalog,
-    lookupSources,
-    resolveLookup,
     isDirty,
+    isSaving,
     recovery: unsaved.recovery,
     leaveConfirm: {
       ...unsaved.leaveConfirm,
@@ -191,7 +241,11 @@ export function useEcrfTemplateForm({ mode, templateId, onDone }: EcrfTemplateFo
       isOpen: isConfirmOpen,
       title: L.confirmSaveTitle,
       message: mode === 'create' ? L.confirmSave(name) : L.confirmSaveEdit(name),
-      onConfirm: handleConfirmSave,
+      onConfirm: () => {
+        if (!isSaving) {
+          void handleConfirmSave();
+        }
+      },
       onCancel: () => setIsConfirmOpen(false),
     },
   };

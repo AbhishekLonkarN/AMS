@@ -44,6 +44,11 @@ export const ROUTES = {
   ecrfTemplates: '/ecrf-templates',
   ecrfTemplateNew: '/ecrf-templates/new',
   ecrfTemplateEdit: '/ecrf-templates/:templateId/edit',
+  presetLibrary: '/preset-library',
+  /** `?from=<presetId>` opens it as a copy of that pre-set (Duplicate). */
+  presetNew: '/preset-library/new',
+  presetView: '/preset-library/:presetId',
+  presetEdit: '/preset-library/:presetId/edit',
   projects: '/projects',
   projectNew: '/projects/new',
   projectListEdit: '/projects/edit/:projectId',
@@ -87,6 +92,9 @@ export const ROUTES = {
   siteContacts: '/projects/:projectId/sites/:siteId/contacts',
 } as const;
 
+/** Query parameter on `presetNew` naming the pre-set to copy. */
+export const PRESET_COPY_PARAM = 'from';
+
 type P = { projectId: string };
 type S = P & { siteId: string };
 
@@ -102,6 +110,9 @@ export const paths = {
   accessRightsEdit: (templateId: string) => generatePath(ROUTES.accessRightsEdit, { templateId }),
   master: (masterKey: MasterKey) => generatePath(ROUTES.master, { masterKey }),
   ecrfTemplateEdit: (templateId: string) => generatePath(ROUTES.ecrfTemplateEdit, { templateId }),
+  presetView: (presetId: string) => generatePath(ROUTES.presetView, { presetId }),
+  presetEdit: (presetId: string) => generatePath(ROUTES.presetEdit, { presetId }),
+  presetDuplicate: (presetId: string) => `${ROUTES.presetNew}?${PRESET_COPY_PARAM}=${encodeURIComponent(presetId)}`,
 
   projectListEdit: project(ROUTES.projectListEdit),
   projectHub: project(ROUTES.projectHub),

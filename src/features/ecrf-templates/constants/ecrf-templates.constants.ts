@@ -18,14 +18,26 @@ export const ECRF_TEMPLATE_LABELS = {
   next: 'Next',
   save: 'Save',
   confirmSaveTitle: 'Save eCRF template?',
-  confirmSave: (name: string) => `“${name}” will be saved with its current form design.`,
+  confirmSave: (name: string) =>
+    `“${name}” will be saved as a draft. Publish it from the list to make it available to projects.`,
   confirmSaveEdit: (name: string) =>
-    `Changes to “${name}” will be saved. Projects that have already loaded this template are not changed. Field keys that are already saved stay the same, so existing answers are kept.`,
-  created: (name: string) => `“${name}” has been added.`,
+    `Changes to “${name}” will be saved as a draft. Projects that have already loaded this template are not changed. Field keys that are already saved stay the same, so existing answers are kept.`,
+  created: (name: string) => `“${name}” has been added as a draft.`,
   saved: (name: string) => `Changes to “${name}” have been saved.`,
+  statusFailed: (name: string) => `“${name}” was saved, but its status could not be changed.`,
   edit: 'Edit',
+  publish: 'Publish',
+  delete: 'Delete',
   deactivate: 'Deactivate',
   reactivate: 'Activate',
+  confirmPublishTitle: 'Publish eCRF template?',
+  confirmPublish: (name: string) =>
+    `The saved draft of “${name}” becomes the version projects can load. Projects that have already loaded this template keep their copy.`,
+  published: (name: string, version: number) => `“${name}” version ${version} has been published.`,
+  confirmDeleteTitle: 'Delete eCRF template?',
+  confirmDelete: (name: string) =>
+    `“${name}” will be deleted. A template that a project has already loaded cannot be deleted.`,
+  deleted: (name: string) => `“${name}” has been deleted.`,
   confirmDeactivateTitle: 'Deactivate eCRF template?',
   confirmReactivateTitle: 'Activate eCRF template?',
   confirmDeactivate: (name: string) => `“${name}” will no longer be offered for new projects.`,
@@ -47,21 +59,33 @@ export const ECRF_TEMPLATE_LABELS = {
   searchPlaceholder: 'Search template name…',
   emptyTitle: 'No eCRF templates yet',
   emptyDescription: 'Add a template to design a reusable eCRF.',
+  loading: 'Loading eCRF templates…',
+  loadFailed: 'eCRF templates could not be loaded.',
+  loadingTemplate: 'Loading the template…',
+  loadTemplateFailed: 'The template could not be loaded.',
+  retry: 'Try again',
+  saveFailed: 'The template could not be saved.',
+  designConflict:
+    'Someone else saved this template while you were editing. Close it and open it again to see their changes.',
+  moreIssues: (n: number) => ` (and ${n} more problem${n === 1 ? '' : 's'})`,
   itemLabel: 'templates',
+  versionUnpublished: 'Draft (not published)',
+  versionPublished: (n: number) => `v${n}`,
+  versionWithDraft: (n: number) => `v${n} + unpublished changes`,
 } as const;
 
 export const ECRF_TEMPLATE_FIELDS = {
   name: 'eCRF Template Name',
   productGroup: 'Product Group',
-  description: 'Description',
+  suitableFor: 'Suitable For',
   status: 'Status',
 } as const;
 
 export const ECRF_TEMPLATE_COLUMNS = {
   name: 'eCRF Template Name',
   productGroup: 'Product Group',
-  sections: 'Sections',
-  fields: 'Fields',
+  suitableFor: 'Suitable For',
+  version: 'Version',
   createdBy: 'Created By',
   status: 'Status',
 } as const;
@@ -71,12 +95,12 @@ export const ECRF_TEMPLATE_VALIDATION = {
   nameTaken: 'A template with this name already exists.',
   nameTooLong: 'Use at most 100 characters.',
   productGroupRequired: 'Choose a product group.',
-  descriptionTooLong: 'Use at most 500 characters.',
+  suitableForRequired: 'Describe what the template is suitable for.',
+  suitableForTooLong: 'Use at most 500 characters.',
 } as const;
 
 /** Names of the key-catalog layers, least specific first. */
 export const CATALOG_LAYER_NAMES = {
   system: 'System default',
-  template: (name: string) => `Template: ${name}`,
   own: 'This template',
 } as const;

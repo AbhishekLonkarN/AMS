@@ -115,6 +115,11 @@
   @apply text-body;
 }
 
+/* Tighter cells on a phone (daisyUI pads 1rem each side), so more columns fit before the table scrolls. */
+.table :is(th, td) {
+  @apply px-2.5 sm:px-4;
+}
+
 .th {
   @apply bg-base-200 text-label font-semibold whitespace-nowrap text-ink-700;
 }
@@ -166,6 +171,27 @@
 
 .td {
   @apply align-middle;
+}
+
+/*
+ * Actions stay in view when a narrow screen scrolls the table sideways. A soft edge on the left
+ * shows that content slides underneath. The cell colour follows the row's hover.
+ */
+.pinnedEndTh,
+.pinnedEndTd {
+  @apply sticky right-0;
+}
+
+.pinnedEndTh {
+  @apply z-1 shadow-[-6px_0_6px_-6px_rgb(0_48_61/0.18)];
+}
+
+.pinnedEndTd {
+  @apply bg-base-100 shadow-[-6px_0_6px_-6px_rgb(0_48_61/0.18)];
+}
+
+.row:hover .pinnedEndTd {
+  @apply bg-base-200;
 }
 
 .mutedRow {

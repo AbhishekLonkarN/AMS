@@ -134,6 +134,17 @@
   --root-font-size: 93.75%;
 }
 
+/*
+ * Phones scale the whole UI down one step: every rem-based token (type, spacing, controls, drawer and
+ * modal padding) follows, so no component needs its own small-screen sizes. Not lower than this:
+ * the admin / sponsor text is already 0.85rem, and smaller controls get hard to read and tap.
+ */
+@media (max-width: 639.98px) {
+  :root {
+    --root-font-size: 90%;
+  }
+}
+
 /* z-index scale (Tailwind v4 has no z namespace; use as z-(--z-header)) */
 :root {
   --z-base: 0;

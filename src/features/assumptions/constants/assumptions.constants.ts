@@ -10,7 +10,8 @@ export const ASSUMPTIONS_LABELS = {
   description:
     'Decisions taken where the AMS drafts leave things open. Please review; anything here can change before the real build.',
   demoTitle: 'Demo users',
-  demoDescription: 'Use the switcher in the user menu (top right) to change role without logging out. Any password works.',
+  demoDescription:
+    'Use the switcher in the user menu (top right) to change role without logging out. The switcher skips the password; the login form checks it with the backend.',
   demoColumns: { role: 'Role', user: 'User', tryThis: 'Try this' },
   phase2Title: 'Coming in Phase 2',
   phase2Description: 'These modules have pages and access control already; their content is not built yet.',

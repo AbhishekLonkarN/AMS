@@ -2,29 +2,30 @@ import { useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { MasterItem } from '@/types';
-import { notify, useMastersStore } from '@/store';
+import { notify } from '@/store';
 import { isSameText } from '@/utils/string.utils';
 import type { MasterConfig } from '../masters.config';
-import { MASTER_LABELS as L } from '../constants/masters.constants';
+import { MASTER_LABELS as L, MASTER_VALIDATION as V } from '../constants/masters.constants';
 import { buildMasterItemSchema, type MasterItemFormValues } from '../schemas/master-item.schema';
+import { isValueTaken, saveErrorMessage } from '../utils/masters.utils';
+import type { MasterSource } from './useMasterSource';
 
 const EMPTY: MasterItemFormValues = { label: '', description: '', status: 'active' };
 
 /** Add / Edit modal state + form for one master. */
-export function useMasterForm(config: MasterConfig) {
-  const addMasterItem = useMastersStore((s) => s.addMasterItem);
-  const updateMasterItem = useMastersStore((s) => s.updateMasterItem);
+export function useMasterForm(config: MasterConfig, source: MasterSource) {
   const [isOpen, setIsOpen] = useState(false);
   const [editing, setEditing] = useState<MasterItem | null>(null);
 
   // Read at validation time so one schema serves add and every edit.
   const editingIdRef = useRef<string | null>(null);
+  const itemsRef = useRef(source.items);
+  itemsRef.current = source.items;
+  // An early hint only; for Product Group the backend has the final say on unique values.
   const schema = useMemo(
     () =>
       buildMasterItemSchema(config.itemName, (label) =>
-        useMastersStore
-          .getState()
-          .items.some((i) => i.masterKey === config.key && i.id !== editingIdRef.current && isSameText(i.label, label)),
+        itemsRef.current.some((i) => i.id !== editingIdRef.current && isSameText(i.label, label)),
       ),
     [config],
   );
@@ -46,21 +47,30 @@ export function useMasterForm(config: MasterConfig) {
 
   const close = () => setIsOpen(false);
 
-  const handleSubmit = form.handleSubmit((values) => {
+  const handleSubmit = form.handleSubmit(async (values) => {
     const input = { ...values, label: values.label.trim(), description: values.description.trim() };
-    if (editing) {
-      updateMasterItem(editing.id, input);
-      notify.success(L.saved(input.label));
-    } else {
-      addMasterItem(config.key, input);
-      notify.success(L.added(input.label));
+    try {
+      if (editing) {
+        await source.update(editing, input);
+        notify.success(L.saved(input.label));
+      } else {
+        await source.add(input);
+        notify.success(L.added(input.label));
+      }
+      close();
+    } catch (error) {
+      if (isValueTaken(error)) {
+        form.setError('label', { type: 'unique', message: V.taken(config.itemName) });
+      } else {
+        notify.error(saveErrorMessage(error));
+      }
     }
-    close();
   });
 
   return {
     isOpen,
     isEdit: !!editing,
+    isSubmitting: form.formState.isSubmitting,
     title: editing ? L.editTitle(config.itemName) : L.addTitle(config.itemName),
     submitLabel: editing ? L.save : L.add,
     itemName: config.itemName,

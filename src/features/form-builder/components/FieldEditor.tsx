@@ -45,6 +45,8 @@ interface FieldEditorProps {
   /** The validation problem on this field, if it is the one `validate()` stopped at. */
   invalid: IncompleteItem | null;
   lookupSources: SelectOption[];
+  /** Field types offered in the Type dropdown. */
+  typeOptions: SelectOption[];
   /** Only one card is expanded at a time; the rest show a one-line summary. */
   isOpen: boolean;
   /** Its field is hovered in the preview (or this card is hovered). */
@@ -72,6 +74,7 @@ export function FieldEditor({
   hasCatalog,
   invalid,
   lookupSources,
+  typeOptions,
   isOpen,
   isLinked,
   isFlashing,
@@ -95,7 +98,12 @@ export function FieldEditor({
   const shownKey = isFollowing ? liveKey : effectiveFieldKey(field);
   const isCatalogKey = hasCatalog && keyMode !== 'auto';
   const width = field.width ?? 24;
-  const errorFor = (...reasons: IncompleteItem['reason'][]) =>
+  // A type no longer offered is still shown (not silently blanked), so the user can see and change it.
+  const shownTypeOptions =
+    !field.type || typeOptions.some((o) => o.value === field.type)
+      ? typeOptions
+      : [...typeOptions, ...FIELD_TYPE_OPTIONS.filter((o) => o.value === field.type)];
+  const errorFor =(...reasons: IncompleteItem['reason'][]) =>
     invalid && reasons.includes(invalid.reason) ? invalid.message : undefined;
 
   const update = (patch: Partial<FieldConfig>) => onChange({ ...field, ...patch });
@@ -269,7 +277,7 @@ export function FieldEditor({
             <DropdownSelect
               id={`${idPrefix}-type`}
               value={field.type}
-              options={FIELD_TYPE_OPTIONS}
+              options={shownTypeOptions}
               isDisabled={isTypeLocked}
               isInvalid={!!errorFor('fieldType')}
               isRequired

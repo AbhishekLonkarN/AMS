@@ -42,6 +42,8 @@ interface SectionEditorProps {
   removed: RemovedField[];
   domId: (fieldIndex?: number) => string;
   lookupSources: SelectOption[];
+  /** Field types offered in each field's Type dropdown. */
+  typeOptions: SelectOption[];
   /** Stable id of a field card (open / flash state is keyed by it). */
   fieldId: (fieldIndex: number) => string;
   openFieldId: string | null;
@@ -81,6 +83,7 @@ export function SectionEditor({
   removed,
   domId,
   lookupSources,
+  typeOptions,
   fieldId,
   openFieldId,
   flashFieldId,
@@ -270,6 +273,7 @@ export function SectionEditor({
                     hasCatalog={!!catalog}
                     invalid={invalid?.fieldIndex === fieldIndex ? invalid : null}
                     lookupSources={lookupSources}
+                    typeOptions={typeOptions}
                     isOpen={openFieldId === fieldId(fieldIndex)}
                     isLinked={linkedFieldIndex === fieldIndex}
                     isFlashing={flashFieldId === fieldId(fieldIndex)}

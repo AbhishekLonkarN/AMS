@@ -37,6 +37,7 @@ import { SiteUserListPage } from '@/features/site-users';
 import { AuditTrailPage } from '@/features/audit-trail';
 import { AssumptionsPage } from '@/features/assumptions';
 import { EcrfTemplateListPage } from '@/features/ecrf-templates';
+import { PresetLibraryPage } from '@/features/preset-library';
 import { RequireAuth, RequireMasterKey, RequireProjectAccess, RequireSiteAccess, RequireUserType } from './guards';
 import { ROUTES } from './route-paths.constants';
 import { RouteErrorPage } from './RouteErrorPage';
@@ -106,6 +107,12 @@ const sponsorRoutes: RouteObject[] = [
   page(ROUTES.ecrfTemplates, 'ecrfTemplate.view', <EcrfTemplateListPage />, [
     guardOnly(ROUTES.ecrfTemplateNew, 'ecrfTemplate.new'),
     guardOnly(ROUTES.ecrfTemplateEdit, 'ecrfTemplate.edit'),
+  ]),
+  // Pre-sets are building blocks of eCRF designs, so they share the eCRF Template rights.
+  page(ROUTES.presetLibrary, 'ecrfTemplate.view', <PresetLibraryPage />, [
+    guardOnly(ROUTES.presetNew, 'ecrfTemplate.new'),
+    guardOnly(ROUTES.presetView, 'ecrfTemplate.view'),
+    guardOnly(ROUTES.presetEdit, 'ecrfTemplate.edit'),
   ]),
   page(ROUTES.projects, 'project.view', <ProjectListPage />, [
     guardOnly(ROUTES.projectNew, 'project.new'),

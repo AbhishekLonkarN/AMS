@@ -9,10 +9,10 @@ interface ProjectColumnLookups {
 
 export const buildProjectColumns = ({ statusLabel, userName }: ProjectColumnLookups): DataGridColumn<Project>[] => [
   createSrNoColumn<Project>(),
-  { id: 'name', header: F.name, accessorKey: 'name', meta: { className: 'font-semibold' } },
-  { id: 'testProduct', header: F.testProduct, accessorKey: 'testProduct' },
-  { id: 'description', header: F.description, accessorKey: 'description', meta: { isTruncated: true } },
-  { id: 'sponsor', header: F.sponsor, accessorKey: 'sponsor', meta: { filterVariant: 'select' } },
+  { id: 'name', header: F.name, accessorKey: 'name', meta: { className: 'font-semibold sm:min-w-28' } },
+  { id: 'testProduct', header: F.testProduct, accessorKey: 'testProduct', meta: { hideBelow: 'sm' } },
+  { id: 'description', header: F.description, accessorKey: 'description', meta: { isTruncated: true, hideBelow: 'lg' } },
+  { id: 'sponsor', header: F.sponsor, accessorKey: 'sponsor', meta: { filterVariant: 'select', hideBelow: 'md' } },
   {
     id: 'status',
     header: F.statusId,
@@ -20,5 +20,5 @@ export const buildProjectColumns = ({ statusLabel, userName }: ProjectColumnLook
     meta: { filterVariant: 'select' },
     cell: ({ getValue }) => <span className="badge badge-soft badge-primary whitespace-nowrap">{getValue()}</span>,
   },
-  { id: 'projectManager', header: F.projectManagerId, accessorFn: (p) => userName(p.projectManagerId) },
+  { id: 'projectManager', header: F.projectManagerId, accessorFn: (p) => userName(p.projectManagerId), meta: { hideBelow: 'lg' } },
 ];

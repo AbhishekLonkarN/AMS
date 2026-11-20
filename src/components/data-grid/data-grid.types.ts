@@ -2,6 +2,9 @@ import type { ReactNode } from 'react';
 import type { ColumnDef, RowData, SortingState } from '@tanstack/react-table';
 import type { LucideIcon } from 'lucide-react';
 
+/** Breakpoint a column stays visible from (matches Tailwind's sm / md / lg). */
+export type GridBreakpoint = 'sm' | 'md' | 'lg';
+
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
     /**
@@ -15,6 +18,13 @@ declare module '@tanstack/react-table' {
     className?: string;
     /** Long text: one line with an ellipsis, and the full value in a tooltip on hover. */
     isTruncated?: boolean;
+    /**
+     * Hide this column on screens narrower than the breakpoint (sm 640, md 768, lg 1024). Use it for
+     * secondary columns so a phone or tablet shows the essentials instead of a sideways scroll.
+     */
+    hideBelow?: GridBreakpoint;
+    /** Stay stuck to the right edge while the table scrolls sideways (the Actions column). */
+    isPinnedEnd?: boolean;
   }
 }
 

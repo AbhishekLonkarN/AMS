@@ -19,6 +19,7 @@ export const PAGE_TITLES = {
   masters: 'Masters',
   accessRights: 'Master-Default Access Rights',
   ecrfTemplates: 'eCRF Templates',
+  presetLibrary: 'Pre-set Library',
   projects: 'Projects',
 
   projectOverview: 'Project Overview',
@@ -56,6 +57,7 @@ export const PAGE_DESCRIPTIONS = {
   personalDashboard: 'Your active projects at a glance',
   masters: 'Reference lists used across the system',
   ecrfTemplates: 'Reusable eCRF designs by product group',
+  presetLibrary: 'Ready-made data fields for eCRF forms',
   projects: 'Studies you are affiliated to',
   accessRights: 'Access-rights templates per user type',
   productGroup: 'Device / therapeutic categories',

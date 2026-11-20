@@ -9,5 +9,6 @@ export interface MasterItem {
   description: string;
   status: RecordStatus;
   createdBy?: Id;
-  updatedAt: IsoDateTime;
+  /** Not sent by the backend-backed masters (Product Group). */
+  updatedAt?: IsoDateTime;
 }

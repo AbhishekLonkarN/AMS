@@ -1,4 +1,5 @@
-import type { Id, LoginResult, User } from '@/types';
+import type { Id, LoginErrorCode, LoginResult, User } from '@/types';
+import { loginRequest, setRequestHeaders } from '@/api';
 import { AUDIT_PAGES } from '@/constants/audit.constants';
 import { isSameText } from '@/utils/string.utils';
 import { createSessionStore } from './store.config';
@@ -8,8 +9,8 @@ import { useAffiliationsStore } from './affiliations.store';
 
 interface SessionState {
   currentUserId: Id | null;
-  /** Email + any password (dummy auth). */
-  login: (email: string) => LoginResult;
+  /** The backend checks email + password; the user's data comes from the prototype stores. */
+  login: (email: string, password: string) => Promise<LoginResult>;
   /** Demo user switcher. Same checks and audit as a real login. */
   switchUser: (userId: Id) => LoginResult;
   logout: () => void;
@@ -35,8 +36,8 @@ function auditLogin(email: string, isSuccess: boolean) {
 }
 
 export const useSessionStore = createSessionStore<SessionState>('session', (set, get) => {
-  const attempt = (email: string, user: User | undefined): LoginResult => {
-    const result: LoginResult = user ? checkCanLogin(user) : { isSuccess: false, error: 'notFound' };
+  const attempt = (email: string, user: User | undefined, missingError: LoginErrorCode = 'notFound'): LoginResult => {
+    const result: LoginResult = user ? checkCanLogin(user) : { isSuccess: false, error: missingError };
     auditLogin(user?.email ?? email.trim(), result.isSuccess);
     if (result.isSuccess) {set({ currentUserId: result.user.id });}
     return result;
@@ -45,9 +46,14 @@ export const useSessionStore = createSessionStore<SessionState>('session', (set,
   return {
     currentUserId: null,
 
-    login: (email) => {
-      const user = useUsersStore.getState().users.find((u) => isSameText(u.email, email));
-      return attempt(email, user);
+    login: async (email, password) => {
+      const backend = await loginRequest(email, password);
+      if (!backend.isSuccess) {
+        auditLogin(email.trim(), false);
+        return backend;
+      }
+      const user = useUsersStore.getState().users.find((u) => isSameText(u.email, backend.user.email));
+      return attempt(backend.user.email, user, 'notInDemoData');
     },
 
     switchUser: (userId) => {
@@ -61,4 +67,11 @@ export const useSessionStore = createSessionStore<SessionState>('session', (set,
       set({ currentUserId: null });
     },
   };
+});
+
+// Read at request time, so it follows logins, the demo switcher and page reloads.
+setRequestHeaders((): Record<string, string> => {
+  const userId = useSessionStore.getState().currentUserId;
+  const email = useUsersStore.getState().users.find((u) => u.id === userId)?.email;
+  return email ? { 'X-Dev-User-Email': email } : {};
 });

@@ -147,6 +147,8 @@
 
 .widthChip {
   @apply shrink-0 rounded-pill bg-ink-100 px-2 py-0.5 font-mono text-caption text-ink-500;
+  /* Phone: the name needs the room; type and width are in the expanded card. */
+  @apply max-sm:hidden;
 }
 
 /* Linked to the field under the pointer in the preview. */
@@ -252,6 +254,8 @@
 
 .typeBadge {
   @apply shrink-0 rounded-pill bg-ink-100 px-2 py-0.5 text-caption text-ink-600;
+  /* Phone: the name needs the room; type and width are in the expanded card. */
+  @apply max-sm:hidden;
 }
 
 .fieldGrid {

@@ -78,8 +78,9 @@ export function useUnsavedDraft({ entityId, form, draft, setDraft, isDirty }: Un
       return;
     }
     setDraft(recoverable.draft);
-    // keepDefaultValues: the restored values still count as unsaved changes.
-    form.reset(recoverable.details, { keepDefaultValues: true });
+    // keepDefaultValues: the restored values still count as unsaved changes. Merged over the
+    // current values so a draft stored by an older version (missing a field) still fills the form.
+    form.reset({ ...form.getValues(), ...recoverable.details }, { keepDefaultValues: true });
     setRecoverable(null);
   };
 

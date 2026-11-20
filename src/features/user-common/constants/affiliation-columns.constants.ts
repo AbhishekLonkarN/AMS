@@ -25,11 +25,11 @@ const C = AFFILIATION_COLUMN_LABELS;
 export function buildAffiliationColumns({ hasOrganization }: { hasOrganization: boolean }): DataGridColumn<AffiliationRow>[] {
   return [
     createSrNoColumn<AffiliationRow>(),
-    { id: 'name', header: C.name, accessorKey: 'name', meta: { className: 'font-medium' } },
-    { id: 'email', header: C.email, accessorKey: 'email' },
-    { id: 'designation', header: C.designation, accessorKey: 'designation', meta: { filterVariant: 'select' } },
+    { id: 'name', header: C.name, accessorKey: 'name', meta: { className: 'font-medium sm:min-w-36' } },
+    { id: 'email', header: C.email, accessorKey: 'email', meta: { hideBelow: 'sm' } },
+    { id: 'designation', header: C.designation, accessorKey: 'designation', meta: { filterVariant: 'select', hideBelow: 'md' } },
     ...(hasOrganization
-      ? [{ id: 'organization', header: C.organization, accessorKey: 'organization', meta: { filterVariant: 'select' } } as const]
+      ? [{ id: 'organization', header: C.organization, accessorKey: 'organization', meta: { filterVariant: 'select', hideBelow: 'lg' } } as const]
       : []),
     createStatusColumn<AffiliationRow>((r) => r.statusKind, C.status),
   ] as DataGridColumn<AffiliationRow>[];

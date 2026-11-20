@@ -12,6 +12,8 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // API calls go to the local backend (ams-backend). 127.0.0.1, not localhost: Node may resolve that to IPv6.
+    proxy: { '/api': process.env.API_PROXY_TARGET ?? 'http://127.0.0.1:8020' },
   },
   // Pre-bundle every runtime dependency up front. Avoids mid-session re-optimisation,
   // which can fail on Windows with EBUSY file locks and leave modules unloadable.

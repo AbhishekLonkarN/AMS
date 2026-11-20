@@ -21,3 +21,13 @@ export const DATA_GRID_LABELS = {
   emptyDescription: 'Try clearing the search or filters.',
   status: 'Status',
 } as const;
+
+/**
+ * `hideBelow` -> classes. Written out in full so Tailwind can see them.
+ * The column is hidden below the breakpoint and shown as a table cell from it.
+ */
+export const HIDE_BELOW_CLASS = {
+  sm: 'hidden sm:table-cell',
+  md: 'hidden md:table-cell',
+  lg: 'hidden lg:table-cell',
+} as const;

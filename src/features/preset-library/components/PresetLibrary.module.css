@@ -1,0 +1,170 @@
+@reference "@/styles/index.css";
+
+/* ---- list ---------------------------------------------------------------- */
+
+.titleCell {
+  @apply flex min-w-0 flex-col items-start text-left;
+}
+
+.titleLink {
+  @apply max-w-full truncate font-semibold text-action underline-offset-2 hover:underline focus-visible:underline;
+}
+
+.titleSub {
+  @apply max-w-full truncate text-label text-ink-500;
+}
+
+.typeChip {
+  @apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-pill bg-accent-100 px-2.5 py-0.5 text-label font-medium text-accent-700;
+}
+
+.chips {
+  @apply flex flex-wrap gap-1;
+}
+
+.chip {
+  @apply whitespace-nowrap rounded-pill border border-base-300 bg-base-100 px-2 py-0.5 text-caption text-ink-700;
+}
+
+.chipMuted {
+  @apply text-ink-400;
+}
+
+/* ---- form layout: settings on the left, sticky preview on the right ---------- */
+
+.layout {
+  @apply grid shrink-0 grid-cols-1 gap-gutter lg:grid-cols-[minmax(0,1fr)_22rem];
+}
+
+.formColumn {
+  @apply flex min-w-0 flex-col gap-gutter;
+}
+
+.previewColumn {
+  @apply min-w-0 lg:sticky lg:top-0 lg:self-start;
+}
+
+.notice {
+  @apply flex shrink-0 items-start gap-2.5 rounded-card border border-status-info bg-status-info-soft px-4 py-3 text-label text-ink-700;
+}
+
+/* ---- type picker ------------------------------------------------------------ */
+
+.typeGrid {
+  @apply grid grid-cols-2 gap-2 sm:grid-cols-4;
+}
+
+.typeCard {
+  @apply flex cursor-pointer flex-col items-start gap-1 rounded-card border border-base-300 bg-base-100 p-3 text-left transition-colors;
+  @apply hover:border-brand-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500;
+}
+
+.typeCardActive {
+  @apply border-brand-600 bg-brand-50 ring-1 ring-brand-600;
+}
+
+.typeIcon {
+  @apply size-5 text-brand-600;
+}
+
+.typeName {
+  @apply text-body font-semibold text-ink-800;
+}
+
+.typeHint {
+  @apply text-caption text-ink-500;
+}
+
+/* ---- segmented control (allowed characters) ------------------------------- */
+
+.segmented {
+  @apply inline-flex flex-wrap gap-1 rounded-control border border-base-300 bg-base-100 p-1;
+}
+
+.segment {
+  @apply rounded-control px-3 py-1 text-label font-medium text-ink-600 transition-colors hover:bg-ink-100;
+}
+
+.segmentActive {
+  @apply bg-brand-600 text-white hover:bg-brand-600;
+}
+
+/* ---- toggle pills (multi-value defaults and the multi-select preview) ------ */
+
+.pills {
+  @apply flex flex-wrap gap-1.5;
+}
+
+.pill {
+  @apply rounded-pill border border-base-300 bg-base-100 px-3 py-1 text-label text-ink-700 transition-colors hover:border-brand-400;
+}
+
+.pillActive {
+  @apply border-brand-600 bg-brand-600 text-white hover:border-brand-600;
+}
+
+/* ---- preview ------------------------------------------------------------------ */
+
+.preview {
+  @apply flex flex-col gap-4 rounded-card border border-base-300 bg-base-100 p-4 shadow-card;
+}
+
+.previewHeader {
+  @apply flex items-center justify-between gap-2;
+}
+
+.previewTitle {
+  @apply flex items-center gap-1.5 text-label font-semibold uppercase tracking-wide text-ink-500;
+}
+
+.previewBody {
+  @apply flex flex-col gap-1.5 rounded-control border border-dashed border-base-300 bg-ink-50 p-3;
+}
+
+.previewLabel {
+  @apply text-label font-medium text-ink-800;
+}
+
+.previewInstructions {
+  @apply text-caption text-ink-500;
+}
+
+.inputWithUnit {
+  @apply flex items-center gap-2;
+}
+
+.unit {
+  @apply shrink-0 text-body font-medium text-ink-600;
+}
+
+.choiceList {
+  @apply flex flex-col gap-1.5;
+}
+
+.choice {
+  @apply flex items-center gap-2 text-body text-ink-700;
+}
+
+.emptyChoices {
+  @apply text-label italic text-ink-400;
+}
+
+.status {
+  @apply flex items-start gap-1.5 text-label;
+}
+
+.statusOk {
+  @apply text-tone-green;
+}
+
+.statusError {
+  @apply text-error;
+}
+
+.statusIdle {
+  @apply text-ink-500;
+}
+
+.statusIcon {
+  @apply mt-0.5 size-4 shrink-0;
+}

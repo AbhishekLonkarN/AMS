@@ -27,8 +27,9 @@ export function useLogin() {
   // Return to the page that bounced us to login, else the role's home (via "/").
   const redirectTo = (location.state as { from?: string } | null)?.from ?? ROUTES.root;
 
-  const handleSubmit = form.handleSubmit(({ email }) => {
-    const result = login(email);
+  const handleSubmit = form.handleSubmit(async ({ email, password }) => {
+    setLoginError(null);
+    const result = await login(email, password);
     if (!result.isSuccess) {
       setLoginError(LOGIN_ERRORS[result.error]);
       return;

@@ -17,7 +17,7 @@ import { EmptyState } from '@/components/feedback';
 import { Tooltip } from '@/components/overlay';
 import type { DataGridColumn, DataGridProps, ToolbarSelectFilter } from './data-grid.types';
 import { Pagination, DEFAULT_PAGE_SIZE } from '@/components/pagination';
-import { DATA_GRID_LABELS, MAX_VISIBLE_ROWS } from './data-grid.constants';
+import { DATA_GRID_LABELS, HIDE_BELOW_CLASS, MAX_VISIBLE_ROWS } from './data-grid.constants';
 import { DataGridToolbar } from './DataGridToolbar';
 import { TruncatedCell } from './TruncatedCell';
 import styles from './DataGrid.module.css';
@@ -69,7 +69,7 @@ export function DataGrid<T>({
         enableSorting: false,
         enableColumnFilter: false,
         enableGlobalFilter: false,
-        meta: { filterVariant: 'none', className: 'w-px text-right' },
+        meta: { filterVariant: 'none', className: 'w-px text-right', isPinnedEnd: true },
         cell: ({ row }) => (
           <div className={styles.rowActions}>
             {rowActions(row.original).map((action) => {
@@ -188,7 +188,14 @@ export function DataGrid<T>({
                   const sortHint = nextSort === 'asc' ? DATA_GRID_LABELS.sortAsc : nextSort === 'desc' ? DATA_GRID_LABELS.sortDesc : DATA_GRID_LABELS.sortClear;
                   const content = header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext());
                   const isGroup = header.subHeaders.length > 0;
-                  const thClassName = clsx(styles.th, isGroup && styles.groupTh, header.column.columnDef.meta?.className);
+                  const headMeta = header.column.columnDef.meta;
+                  const thClassName = clsx(
+                    styles.th,
+                    isGroup && styles.groupTh,
+                    headMeta?.className,
+                    headMeta?.hideBelow && HIDE_BELOW_CLASS[headMeta.hideBelow],
+                    headMeta?.isPinnedEnd && styles.pinnedEndTh,
+                  );
                   return (
                     <th
                       key={header.id}
@@ -228,7 +235,15 @@ export function DataGrid<T>({
             {rows.map((row) => (
               <tr key={row.id} className={clsx(styles.row, isRowMuted?.(row.original) && styles.mutedRow)}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className={clsx(styles.td, cell.column.columnDef.meta?.className)}>
+                  <td
+                    key={cell.id}
+                    className={clsx(
+                      styles.td,
+                      cell.column.columnDef.meta?.className,
+                      cell.column.columnDef.meta?.hideBelow && HIDE_BELOW_CLASS[cell.column.columnDef.meta.hideBelow],
+                      cell.column.columnDef.meta?.isPinnedEnd && styles.pinnedEndTd,
+                    )}
+                  >
                     {cell.column.columnDef.meta?.isTruncated ? (
                       <TruncatedCell text={String(cell.getValue() ?? '')}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}

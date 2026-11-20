@@ -1,44 +1,47 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Ban, Eye, Pencil, RotateCcw } from 'lucide-react';
-import type { AccessRightsTemplate } from '@/types';
+import type { AccessRightsSet } from '@/types';
 import { createSrNoColumn, createStatusColumn, type DataGridColumn, type RowAction } from '@/components/data-grid';
-import { notify, useAccessRightsStore, useUsersStore } from '@/store';
+import { notify, useAccessRightsSetsStore } from '@/store';
 import { usePermissionChecker } from '@/rbac';
 import { ROUTES, paths } from '@/app/router/route-paths.constants';
 import { USER_TYPE_LABELS } from '@/constants/user.constants';
-import { userNameById } from '@/features/user-common';
 import { ACCESS_RIGHTS_COLUMN_LABELS as C, ACCESS_RIGHTS_LABELS as L } from '../constants/access-rights.constants';
+import { saveErrorMessage } from '../utils/access-rights.utils';
 
 export function useTemplateList() {
   const navigate = useNavigate();
-  const templates = useAccessRightsStore((s) => s.templates);
-  const toggleTemplateStatus = useAccessRightsStore((s) => s.toggleTemplateStatus);
-  const users = useUsersStore((s) => s.users);
+  const { sets, loadState, loadError, load, setActive } = useAccessRightsSetsStore();
   const can = usePermissionChecker();
-  const [pending, setPending] = useState<AccessRightsTemplate | null>(null);
+  const [pending, setPending] = useState<AccessRightsSet | null>(null);
+
+  // Fetch on every visit so the list shows changes made elsewhere.
+  useEffect(() => {
+    void load();
+  }, [load]);
 
   const canCreate = can('masterDefaultAccessRights.new');
   const canEdit = can('masterDefaultAccessRights.edit');
   const canToggle = can('masterDefaultAccessRights.delete');
 
-  const columns = useMemo<DataGridColumn<AccessRightsTemplate>[]>(
+  const columns = useMemo<DataGridColumn<AccessRightsSet>[]>(
     () => [
-      createSrNoColumn<AccessRightsTemplate>(),
-      { id: 'name', header: C.name, accessorKey: 'name', meta: { className: 'font-medium' } },
+      createSrNoColumn<AccessRightsSet>(),
+      { id: 'name', header: C.name, accessorKey: 'name', meta: { className: 'font-medium sm:min-w-36' } },
       {
         id: 'userType',
         header: C.userType,
         accessorFn: (t) => USER_TYPE_LABELS[t.userType],
-        meta: { filterVariant: 'select' },
+        meta: { filterVariant: 'select', hideBelow: 'sm' },
       },
-      { id: 'createdBy', header: C.createdBy, accessorFn: (t) => userNameById(users, t.createdBy) },
-      createStatusColumn<AccessRightsTemplate>((t) => t.status, C.status),
+      { id: 'createdBy', header: C.createdBy, accessorKey: 'createdByName', meta: { hideBelow: 'lg' } },
+      createStatusColumn<AccessRightsSet>((t) => t.status, C.status),
     ],
-    [users],
+    [],
   );
 
-  const rowActions = (template: AccessRightsTemplate): RowAction[] => {
+  const rowActions = (template: AccessRightsSet): RowAction[] => {
     const actions: RowAction[] = [
       { key: 'view', label: L.view, icon: Eye, onClick: () => navigate(paths.accessRightsView(template.id)) },
     ];
@@ -67,22 +70,30 @@ export function useTemplateList() {
     createLabel: canCreate ? L.addButton : undefined,
     createTo: canCreate ? ROUTES.accessRightsNew : undefined,
     columns,
-    data: templates,
-    getRowId: (t: AccessRightsTemplate) => t.id,
+    data: sets,
+    getRowId: (t: AccessRightsSet) => t.id,
     rowActions,
-    isRowMuted: (t: AccessRightsTemplate) => t.status !== 'active',
+    isRowMuted: (t: AccessRightsSet) => t.status !== 'active',
     searchPlaceholder: L.searchPlaceholder,
+    emptyTitle: loadState === 'loading' ? L.loading : loadState === 'failed' ? L.loadFailed : undefined,
+    emptyDescription: loadState === 'failed' ? (loadError ?? undefined) : undefined,
     confirm: {
       isOpen: !!pending,
       title: isDeactivating ? L.confirmDeactivateTitle : L.confirmReactivateTitle,
       message: isDeactivating ? L.confirmDeactivate(name) : L.confirmReactivate(name),
       confirmLabel: isDeactivating ? L.deactivate : L.reactivate,
       tone: isDeactivating ? ('danger' as const) : ('primary' as const),
-      onConfirm: () => {
-        if (!pending) {return;}
-        toggleTemplateStatus(pending.id);
-        notify.success(isDeactivating ? L.deactivated(name) : L.reactivated(name));
+      onConfirm: async () => {
+        if (!pending) {
+          return;
+        }
         setPending(null);
+        try {
+          await setActive(pending.id, !isDeactivating);
+          notify.success(isDeactivating ? L.deactivated(name) : L.reactivated(name));
+        } catch (error) {
+          notify.error(saveErrorMessage(error));
+        }
       },
       onCancel: () => setPending(null),
     },

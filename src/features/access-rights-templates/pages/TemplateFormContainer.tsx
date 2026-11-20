@@ -1,4 +1,5 @@
 import { NotFoundPage } from '@/features/shell';
+import { useAccessRightsSetsStore } from '@/store';
 import { TemplateFormView } from '../components/TemplateFormView';
 import { useTemplateForm, type FormMode } from '../hooks/useTemplateForm';
 
@@ -8,9 +9,20 @@ interface TemplateFormContainerProps {
   onDone: () => void;
 }
 
-/** Drawer content container: wires the form hook to the drawer form view. */
-export function TemplateFormContainer({ mode, templateId, onDone }: TemplateFormContainerProps) {
+/** Drawer content container. Edit waits for the sets to load: the form reads its values once. */
+export function TemplateFormContainer(props: TemplateFormContainerProps) {
+  const isLoaded = useAccessRightsSetsStore((s) => s.loadState === 'loaded');
+  const hasTemplate = useAccessRightsSetsStore((s) => s.sets.some((t) => t.id === props.templateId));
+  if (props.mode === 'edit' && !hasTemplate) {
+    return isLoaded ? <NotFoundPage /> : null;
+  }
+  return <TemplateForm {...props} />;
+}
+
+function TemplateForm({ mode, templateId, onDone }: TemplateFormContainerProps) {
   const { isNotFound, ...model } = useTemplateForm({ mode, templateId, onDone });
-  if (isNotFound) {return <NotFoundPage />;}
+  if (isNotFound) {
+    return <NotFoundPage />;
+  }
   return <TemplateFormView {...model} />;
 }
