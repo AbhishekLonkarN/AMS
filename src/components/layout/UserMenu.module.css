@@ -56,5 +56,5 @@
 }
 
 :global([data-shell-variant='admin']) .trigger .name {
-  color: #005872;
+  color: var(--color-brand-700);
 }

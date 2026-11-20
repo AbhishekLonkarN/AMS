@@ -3,6 +3,7 @@ import {
   Building2,
   ClipboardList,
   Contact,
+  DatabaseBackup,
   FileArchive,
   FileDown,
   FileStack,
@@ -115,7 +116,6 @@ export const MASTER_VIEW_PERMISSIONS = MASTER_ITEMS.map((i) => i.permission as P
 
 export const NAV_SECTIONS: NavSectionConfig[] = [
   // ---------------- Admin portal ----------------
-  // Sidebar: Dashboard · Company Profile · Users · Project Export · Audit Trail
   {
     key: 'admin',
     audiences: ['admin'],
@@ -153,6 +153,20 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         icon: FileDown,
         to: fixed(ROUTES.projectExport),
         permission: 'projectDatabase.export',
+      },
+      {
+        key: 'credential-settings',
+        label: 'Login Credential Settings',
+        icon: ShieldCheck,
+        to: fixed(ROUTES.cloudSettings),
+        permission: 'cloudSettings.view',
+      },
+      {
+        key: 'backup',
+        label: 'Back-up and Restore',
+        icon: DatabaseBackup,
+        to: fixed(ROUTES.backup),
+        permission: 'cloudSettings.edit',
       },
       {
         key: 'admin-audit',

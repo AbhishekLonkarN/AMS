@@ -1,5 +1,6 @@
+import { isEnrolled } from '@/utils/participant.utils';
 import { useParams } from 'react-router-dom';
-import { useProjectsStore, useSitesStore, useUsersStore } from '@/store';
+import { useParticipantsStore, useProjectsStore, useSitesStore, useUsersStore } from '@/store';
 import { usePermission } from '@/rbac';
 import { paths } from '@/app/router/route-paths.constants';
 import { useHubTiles } from '@/features/shell';
@@ -14,6 +15,7 @@ export function useProjectHub() {
   const project = useProjectsStore((s) => s.projects.find((p) => p.id === projectId));
   const sites = useSitesStore((s) => s.sites);
   const users = useUsersStore((s) => s.users);
+  const participants = useParticipantsStore((state) => state.participants);
   const masterLabel = useMasterLabel();
   const tiles = useHubTiles('project');
   const canEdit = usePermission('project.edit');
@@ -23,7 +25,7 @@ export function useProjectHub() {
   if (!project) {return null;}
 
   const projectSites = sites.filter((s) => s.projectId === project.id);
-  const enrolled = projectSites.reduce((sum, s) => sum + s.actualRecruitment, 0);
+  const enrolled = participants.filter((participant) => participant.projectId === project.id && isEnrolled(participant)).length;
   const croTeam = [project.croName, userNameById(users, project.croProjectManagerId), userNameById(users, project.croAssistantPmId)]
     .filter(Boolean)
     .join(' · ');

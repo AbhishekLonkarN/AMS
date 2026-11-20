@@ -1,3 +1,6 @@
+import { SiteContactsPage, SupportContactsPage } from '@/features/contacts';
+import { BackupPage, CredentialSettingsPage } from '@/features/admin-settings';
+import { ProjectSettingsPage } from '@/features/project-workflows/ProjectSettingsPage';
 import { ProjectEcrfPage } from '@/features/project-workflows/ProjectEcrfPage';
 import { ProjectDashboardPage } from '@/features/project-workflows/ProjectDashboardPage';
 import { ProjectQueriesPage } from '@/features/project-workflows/ProjectQueriesPage';
@@ -11,7 +14,6 @@ import type { ReactNode } from 'react';
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
 import type { PermissionKey } from '@/types';
 import { RequirePermission } from '@/rbac';
-import { PAGE_TITLES } from '@/constants/page-titles.constants';
 import {
   CheckEmailPage,
   ContextPickerPage,
@@ -27,7 +29,6 @@ import {
   MASTER_VIEW_PERMISSIONS,
   MastersIndexPage,
   NotFoundPage,
-  PlaceholderPage,
   ShellLayoutPage,
 } from '@/features/shell';
 import { UiKitPage } from '@/features/ui-kit';
@@ -56,9 +57,6 @@ import { RouteErrorPage } from './RouteErrorPage';
 const guard = (permission: PermissionKey | PermissionKey[], element: ReactNode) => (
   <RequirePermission permission={permission}>{element}</RequirePermission>
 );
-
-/** Phase-2 module placeholder. */
-const phase2 = (title: string) => <PlaceholderPage title={title} />;
 
 const page = (
   path: string,
@@ -99,8 +97,8 @@ const adminRoutes: RouteObject[] = [
   ]),
   page(ROUTES.projectExport, 'projectDatabase.export', <ProjectExportPage />),
   // Not in the Admin sidebar for now (routes kept; add a tab or move them inside one later).
-  page(ROUTES.cloudSettings, 'cloudSettings.view', phase2(PAGE_TITLES.cloudSettings)),
-  page(ROUTES.backup, 'cloudSettings.view', phase2(PAGE_TITLES.backup)),
+  page(ROUTES.cloudSettings, 'cloudSettings.view', <CredentialSettingsPage />),
+  page(ROUTES.backup, 'cloudSettings.edit', <BackupPage />),
 ];
 
 const sponsorRoutes: RouteObject[] = [
@@ -151,8 +149,8 @@ const siteRoutes: RouteObject = {
     ]),
     page(ROUTES.siteEtmf, 'etmfSite.view', <EtmfListPage scope="site" />),
     page(ROUTES.siteEtmfProject, 'etmfProject.view', <EtmfListPage scope="project" />),
-    page(ROUTES.siteSupportContacts, 'supportContacts.view', phase2(PAGE_TITLES.supportContacts)),
-    page(ROUTES.siteContacts, 'siteContacts.view', phase2(PAGE_TITLES.siteContacts)),
+    page(ROUTES.siteSupportContacts, 'supportContacts.view', <SupportContactsPage />),
+    page(ROUTES.siteContacts, 'siteContacts.view', <SiteContactsPage />),
   ],
 };
 
@@ -183,8 +181,8 @@ const projectRoutes: RouteObject = {
     page(ROUTES.projectEtmf, 'etmfProject.view', <EtmfListPage scope="project" />),
     page(ROUTES.projectDatabaseLock, 'projectDatabase.lock', <ProjectCloseoutPage />),
     page(ROUTES.projectSelectiveExport, 'selectiveParticipantData.export', <SelectiveExportPage />),
-    page(ROUTES.projectSupportContacts, 'supportContacts.view', phase2(PAGE_TITLES.supportContacts)),
-    page(ROUTES.projectSettings, 'settings.view', phase2(PAGE_TITLES.projectSettings)),
+    page(ROUTES.projectSupportContacts, 'supportContacts.view', <SupportContactsPage />),
+    page(ROUTES.projectSettings, 'settings.view', <ProjectSettingsPage />),
     siteRoutes,
   ],
 };

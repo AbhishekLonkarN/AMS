@@ -27,3 +27,4 @@ export type {
 export { useParticipantsStore } from './participants.store';
 export { useQueriesStore } from './queries.store';
 export { useEtmfStore } from './etmf.store';
+export { useContactsStore } from './contacts.store';

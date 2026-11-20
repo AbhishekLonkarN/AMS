@@ -1,3 +1,4 @@
+import { isEnrolled } from '@/utils/participant.utils';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useParticipantsStore, useQueriesStore, useSitesStore } from '@/store';
@@ -19,15 +20,16 @@ export function useSiteDashboard() {
     if (!site) {return null;}
 
     const own = participants.filter((p) => p.siteId === site.id);
-    const enrolled = own.filter((p) => p.enrolledAt && !(L.notEnrolledStatusIds as readonly string[]).includes(p.statusId));
+    const enrolled = own.filter(isEnrolled);
     const firstScreened = own.length ? Math.min(...own.map((p) => new Date(p.screenedAt).getTime())) : 0;
-    const lastEnrolled = enrolled.length ? Math.max(...enrolled.map((p) => new Date(p.enrolledAt!).getTime())) : 0;
+    const enrolmentTimes = enrolled.map((p) => Date.parse(p.enrolledAt ?? p.screenedAt));
+    const lastEnrolled = enrolmentTimes.length ? Math.max(...enrolmentTimes) : 0;
 
     const weeks = firstScreened && lastEnrolled ? Math.ceil((lastEnrolled - firstScreened) / DAY_MS / L.weekDays) : 0;
     const enrolment: DayPoint[] = Array.from({ length: weeks + 1 }, (_, week) => {
       const day = week * L.weekDays;
       const until = firstScreened + day * DAY_MS;
-      const count = enrolled.filter((p) => new Date(p.enrolledAt!).getTime() <= until).length;
+      const count = enrolmentTimes.filter((at) => at <= until).length;
       return { key: `d${day}`, label: `D${day}`, title: `Day ${day}: ${count} enrolled`, count };
     });
 
@@ -43,7 +45,7 @@ export function useSiteDashboard() {
       status: masterLabel(site.statusId),
       recruitment: [
         { id: 'expected', label: L.enrolmentStatus.expected, count: site.expectedRecruitment },
-        { id: 'actual', label: L.enrolmentStatus.actual, count: site.actualRecruitment },
+        { id: 'actual', label: L.enrolmentStatus.actual, count: enrolled.length },
       ],
       enrolment,
       hasEnrolment: enrolled.length > 0,

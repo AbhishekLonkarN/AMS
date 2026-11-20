@@ -93,23 +93,20 @@
   @apply rotate-180;
 }
 
-/*
- * ---------- Admin look (the teal admin dashboard wireframe) ----------
- * Sidebar in the action colour (#00465B, the same as every button), menu text #B3CDD5, hover #005872 with white text, active tab mint mist #D9EFEB with teal text and icon.
- */
+/* AMS shell palette shared by all demo roles. */
 :global([data-shell-variant='admin']) .sidebar {
   background: var(--color-action);
-  color: #b3cdd5;
+  color: var(--color-brand-200);
 }
 
 /* same height as the top bar, so the logo row and the bar sit on one line */
 :global([data-shell-variant='admin']) .brand {
   height: 56px;
-  border-bottom-color: rgba(255, 255, 255, 0.12);
+  border-bottom: 2px solid var(--color-ams-red);
 }
 
 :global([data-shell-variant='admin']) .sectionTitle {
-  color: #99bcc7;
+  color: var(--color-brand-300);
 }
 
 /* the Admin sidebar shows the product name only, without the organisation line under it */
@@ -119,7 +116,7 @@
 
 /* the logo tile shows the cross only: the "ClinTech" text under it in the picture is cropped away (the name sits beside the tile) */
 :global([data-shell-variant='admin']) .brandMark:has(.brandLogo) {
-  background: #d9efeb; /* the same mint as the active tab */
+  background: var(--color-brand-50);
   align-items: flex-start;
   justify-content: flex-start;
   overflow: hidden;
@@ -146,22 +143,23 @@
   padding-block: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #b3cdd5;
+  color: var(--color-brand-200);
   border-radius: 4px;
 }
 
 :global([data-shell-variant='admin']) .link:hover {
   color: #fff;
-  background: #005872;
+  background: var(--color-brand-700);
 }
 
 :global([data-shell-variant='admin']) .link:global(.menu-active) {
-  color: #005872;
-  background: #d9efeb; /* mint mist */
+  color: var(--color-brand-700);
+  background: var(--color-brand-50);
+  box-shadow: inset 3px 0 var(--color-ams-red);
 }
 
 :global([data-shell-variant='admin']) .link:global(.menu-active) .icon {
-  color: #005872;
+  color: var(--color-brand-700);
 }
 
 :global([data-shell-variant='admin']) .link:focus-visible {

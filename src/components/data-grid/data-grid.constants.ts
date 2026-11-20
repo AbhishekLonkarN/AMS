@@ -10,6 +10,7 @@ export const DATA_GRID_LABELS = {
   done: 'Done',
   removeFilter: (label: string) => `Remove ${label} filter`,
   filterAll: 'All',
+  exportCsv: 'CSV',
   exportExcel: 'Excel',
   exportPdf: 'PDF',
   actions: 'Actions',

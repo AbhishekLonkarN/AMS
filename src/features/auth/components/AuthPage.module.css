@@ -8,10 +8,10 @@
  */
 
 .page {
-  --text: #005872;
+  --text: var(--color-brand-700);
   --muted: #859aa0;
   --panel: #e6eef1; /* soft tint behind the login box */
-  --accent: #005872; /* primary teal, the same as the sidebar and buttons in the app */
+  --accent: var(--color-brand-700);
   --accent-soft: #d9e9dc;
 
   /* desktop unit: limited by width (card must fit its column) and by height (card must fit the screen) */
@@ -35,10 +35,19 @@
   z-index: 0;
   margin-right: -5em; /* runs 5em under the panel so the panel's rounded top-left corner reveals it */
   overflow: hidden;
-  background-color: #005872;
+  background-color: var(--color-brand-700);
 }
 
-/* the photo is turned greyscale, then tinted with the teal palette so it matches the app colours */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background: var(--color-ams-red);
+  z-index: 3;
+}
+
+/* Tint the background photo with the AMS blue palette. */
 .heroPhoto {
   position: absolute;
   inset: 0;
@@ -53,7 +62,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(160deg, #33798e 0%, #16667e 55%, #005872 100%);
+  background: linear-gradient(160deg, var(--color-brand-500) 0%, var(--color-brand-600) 55%, var(--color-brand-700) 100%);
   mix-blend-mode: color;
   opacity: 0.8;
 }
@@ -62,12 +71,12 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, rgba(160, 201, 167, 0.14) 0%, rgba(0, 88, 114, 0) 60%);
+  background: linear-gradient(160deg, rgba(160, 201, 167, 0.14) 0%, transparent 60%);
   mix-blend-mode: soft-light;
 }
 
 
-/* the bottom ends in a deeper shade of the Login button teal (#00465B) and gives the copy a calm ground */
+/* A dark blue overlay keeps the text legible against the photo. */
 .hero::before {
   content: '';
   position: absolute;
@@ -79,10 +88,10 @@
   pointer-events: none;
   background: linear-gradient(
     0deg,
-    rgba(0, 70, 91, 1) 0%,
-    rgba(0, 70, 91, 0.92) 42%,
-    rgba(0, 76, 98, 0.5) 74%,
-    rgba(0, 88, 114, 0) 100%
+    var(--color-brand-900) 0%,
+    rgb(0 34 102 / 92%) 42%,
+    rgb(0 44 126 / 50%) 74%,
+    transparent 100%
   );
   -webkit-mask-image: linear-gradient(90deg, #000 55%, transparent 100%);
   mask-image: linear-gradient(90deg, #000 55%, transparent 100%);
@@ -212,7 +221,7 @@
   margin: 0.33em 0 0;
   font-size: 1em;
   font-weight: 600;
-  color: #005872;
+  color: var(--color-brand-700);
 }
 
 .desc {
@@ -238,7 +247,7 @@
   margin: 0 0 0.5em;
   font-size: 1em;
   font-weight: 600;
-  color: #005872;
+  color: var(--color-brand-700);
 }
 
 /* red star on required fields */
@@ -284,7 +293,7 @@
 }
 
 .input::placeholder {
-  color: #99bcc7;
+  color: var(--color-brand-300);
 }
 
 /* hover and focus only darken the border, with no shadow */
@@ -341,11 +350,11 @@
 .eye .ico {
   position: static;
   transform: none;
-  stroke: #005872;
+  stroke: var(--color-brand-700);
 }
 
 .eye:hover .ico {
-  stroke: #16667e;
+  stroke: var(--color-brand-600);
 }
 
 .btn {
@@ -440,7 +449,7 @@
 
   .hero::before {
     height: 100%;
-    background: linear-gradient(0deg, rgba(0, 70, 91, 0.94) 0%, rgba(0, 76, 98, 0.58) 55%, rgba(0, 88, 114, 0) 100%);
+    background: linear-gradient(0deg, rgba(0, 70, 91, 0.94) 0%, rgba(0, 76, 98, 0.58) 55%, transparent 100%);
     -webkit-mask-image: none;
     mask-image: none;
   }
@@ -607,8 +616,8 @@
   place-items: center;
   width: 4.25em;
   height: 4.25em;
-  color: #005872;
-  background: #d9efeb;
+  color: var(--color-brand-700);
+  background: var(--color-brand-50);
   border-radius: 50%;
 }
 
@@ -623,7 +632,7 @@
   place-items: center;
   width: 5.25em;
   height: 5.25em;
-  background: #d9efeb;
+  background: var(--color-brand-50);
   border-radius: 50%;
 }
 
@@ -633,7 +642,7 @@
   width: 3.5em;
   height: 3.5em;
   color: #fff;
-  background: #005872;
+  background: var(--color-brand-700);
   border-radius: 50%;
 }
 
@@ -648,7 +657,7 @@
   font-size: 1.75em;
   font-weight: 700;
   line-height: 1.2;
-  color: #005872;
+  color: var(--color-brand-700);
 }
 
 .stateText {
@@ -664,7 +673,7 @@
   padding: 0.5em 1em;
   font-size: 1em;
   font-weight: 600;
-  color: #005872;
+  color: var(--color-brand-700);
   background: #f8fafb;
   border: 1px solid #e6eef1;
   border-radius: 999px;
@@ -687,7 +696,7 @@
   margin-top: 0.75em;
   font-size: 1.0625em;
   font-weight: 600;
-  color: #005872;
+  color: var(--color-brand-700);
   text-decoration: none;
   background: #fff;
   border: 1px solid #cbdce2;
@@ -711,7 +720,7 @@
   margin: 0 0 0.5em;
   font-size: 0.9em;
   font-weight: 600;
-  color: #005872;
+  color: var(--color-brand-700);
 }
 
 .helpList {
@@ -768,7 +777,7 @@
   width: 1.25em;
   height: 1.25em;
   margin-top: 0.05em;
-  color: #005872;
+  color: var(--color-brand-700);
   stroke-width: 1.8;
 }
 
@@ -819,14 +828,14 @@
 }
 
 .strengthBarOn {
-  background: #005872;
+  background: var(--color-brand-700);
 }
 
 .strengthLabel {
   min-width: 3.5em;
   font-size: 0.875em;
   font-weight: 600;
-  color: #005872;
+  color: var(--color-brand-700);
   text-align: right;
 }
 
@@ -858,7 +867,7 @@
   width: 1.125em;
   height: 1.125em;
   color: #fff;
-  border: 1.5px solid #99bcc7;
+  border: 1.5px solid var(--color-brand-300);
   border-radius: 50%;
 }
 
@@ -869,12 +878,12 @@
 }
 
 .ruleMet {
-  color: #005872;
+  color: var(--color-brand-700);
 }
 
 .ruleMet .ruleMark {
-  background: #005872;
-  border-color: #005872;
+  background: var(--color-brand-700);
+  border-color: var(--color-brand-700);
 }
 
 /* the line of explanation under a header title (forgot password) */

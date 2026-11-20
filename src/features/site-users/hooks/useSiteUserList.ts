@@ -1,6 +1,8 @@
+import { AUDIT_PAGES } from '@/constants/audit.constants';
+import { downloadCsv } from '@/utils/download.utils';
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { notify, useAffiliationsStore, useSitesStore, useUsersStore } from '@/store';
+import { notify, recordAudit, useAffiliationsStore, useSitesStore, useUsersStore } from '@/store';
 import { usePermissionChecker } from '@/rbac';
 import { paths } from '@/app/router/route-paths.constants';
 import { affiliationStatusKind, displayName, useAffiliationList, type AffiliationRow } from '@/features/user-common';
@@ -53,6 +55,17 @@ export function useSiteUserList() {
     onEdit: (id) => navigate(paths.siteUserEdit(projectId, siteId, id)),
   });
 
+  const exportUsers = async () => {
+    if (!can('siteUserManagement.export')) {return;}
+    const saved = await downloadCsv(`site-users-${site?.siteCode ?? 'site'}.csv`, [
+      ['Name', 'Email', 'Designation', 'Status'],
+      ...rows.map((row) => [row.name, row.email, row.designation, row.statusKind]),
+    ]);
+    if (!saved) {return;}
+    recordAudit({ page: AUDIT_PAGES.siteUsers, event: 'Exported site users (CSV)', changedTo: `${rows.length} users`, projectId, siteId });
+    notify.success('Site users exported.');
+  };
+
   return {
     title: L.listTitle,
     description: L.listDescription(site?.siteCode ?? ''),
@@ -60,7 +73,7 @@ export function useSiteUserList() {
     createLabel: canCreate ? L.createButton : undefined,
     createTo: canCreate ? paths.siteUserNew(projectId, siteId) : undefined,
     exportActions: can('siteUserManagement.export')
-      ? { onExcel: () => notify.phase2(L.exportName), onPdf: () => notify.phase2(L.exportName) }
+      ? { onCsv: exportUsers }
       : undefined,
     searchPlaceholder: L.searchPlaceholder,
     ...list,
