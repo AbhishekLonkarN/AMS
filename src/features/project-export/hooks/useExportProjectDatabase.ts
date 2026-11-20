@@ -1,3 +1,4 @@
+import { countSiteEnrolment } from '@/utils/participant.utils';
 import { useMemo } from 'react';
 import type { Project } from '@/types';
 import { notify, recordAudit, useParticipantsStore, useQueriesStore, useSitesStore, useUsersStore } from '@/store';
@@ -21,9 +22,10 @@ export function useExportProjectDatabase() {
 
   // "Exported" is shown (and logged) only after the file is actually saved, not when the button is clicked.
   const exportProject = async (project: Project) => {
-    if (!can(principal, 'projectDatabase.export', { type: 'project', projectId: project.id })) return;
-    const projectSites = sites.filter((s) => s.projectId === project.id);
+    if (!can(principal, 'projectDatabase.export', { type: 'project', projectId: project.id })) {return;}
     const participants = useParticipantsStore.getState().participants.filter((item) => item.projectId === project.id);
+    const projectSites = sites.filter((s) => s.projectId === project.id)
+      .map((site) => ({ ...site, actualRecruitment: countSiteEnrolment(participants, site.id) }));
     const queries = useQueriesStore.getState().queries.filter((item) => item.projectId === project.id);
     const clinicalRows = clinicalExportRows(participants, queries);
     const isSaved = await downloadCsv(

@@ -1,3 +1,4 @@
+import { closeoutReadiness } from './closeout.utils';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TextAreaField, TextField } from '@/components/form';
@@ -7,7 +8,7 @@ import { notify, useParticipantsStore, useProjectsStore, useQueriesStore } from 
 import { formatDate, formatTime } from '@/utils/date.utils';
 
 const EMPTY_REASON = 'Enter a reason for the audit trail.';
-const LOCK_STATEMENT = 'I confirm that enrolment and follow-up are complete, adverse events are resolved, all required data has been reviewed, and site close-out is complete.';
+const LOCK_STATEMENT = 'I confirm that the enrolment target is met, follow-up is complete for all enrolled participants, adverse events and queries are resolved, all required data is complete and reviewed, and site close-out is complete.';
 const UNLOCK_STATEMENT = 'I confirm that I have obtained the required approvals to unlock this project database.';
 
 export function ProjectCloseoutPage() {
@@ -21,24 +22,16 @@ export function ProjectCloseoutPage() {
   const [reason, setReason] = useState('');
   const [approval, setApproval] = useState('');
   const [error, setError] = useState('');
-  if (!project) return null;
+  if (!project) {return null;}
   const lock = project.databaseLock;
-  const openQueries = queries.filter((query) => query.projectId === projectId && query.status !== 'resolved').length;
-  const pendingForms = participants.filter((participant) => participant.projectId === projectId)
-    .flatMap((participant) => participant.forms)
-    .filter((form) => form.progress === 'draft' || form.progress === 'softSubmitted').length;
-  const blocked = openQueries + pendingForms > 0;
+  const { participantCount, openQueries, incompleteForms, blocked } = closeoutReadiness(projectId, participants, queries);
   const close = () => { setOpen(false); setReason(''); setApproval(''); setError(''); setAttested(false); };
   const action = lock ? 'Unlock database' : 'Lock database';
   const save = () => {
     if (!reason.trim()) { setError(EMPTY_REASON); return; }
-    if (!attested || (!lock && blocked)) return;
-    if (!lock && (
-      useQueriesStore.getState().queries.some((query) => query.projectId === projectId && query.status !== 'resolved') ||
-      useParticipantsStore.getState().participants.some((participant) => participant.projectId === projectId &&
-        participant.forms.some((form) => form.progress === 'draft' || form.progress === 'softSubmitted'))
-    )) {
-      setError('Resolve any queries and submit outstanding drafts before locking.');
+    if (!attested || (!lock && blocked)) {return;}
+    if (!lock && closeoutReadiness(projectId, useParticipantsStore.getState().participants, useQueriesStore.getState().queries).blocked) {
+      setError('Close-out readiness changed. Review the participant, query and form counts.');
       return;
     }
     const comment = lock && approval.trim() ? `${reason.trim()} (approval: ${approval.trim()})` : reason;
@@ -58,11 +51,12 @@ export function ProjectCloseoutPage() {
       <section className="section-card space-y-3">
         <h2 className="text-lg font-semibold">Close-out readiness</h2>
         <dl className="grid grid-cols-[1fr_auto] gap-2">
+          <dt>Participants</dt><dd>{participantCount}</dd>
           <dt>Unresolved queries</dt><dd>{openQueries}</dd>
-          <dt>Draft or soft-submitted forms</dt><dd>{pendingForms}</dd>
+          <dt>Incomplete required or started forms</dt><dd>{incompleteForms}</dd>
         </dl>
         {lock && <p>Locked on {formatDate(lock.at)} at {formatTime(lock.at)}. {lock.reason}</p>}
-        {!lock && blocked && <p role="status">Resolve the open queries and submit outstanding drafts before locking.</p>}
+        {!lock && blocked && <p role="status">{participantCount === 0 ? 'Register a participant before locking an empty project.' : 'Resolve open queries and submit incomplete forms before locking.'}</p>}
         <button className="btn btn-primary" type="button" disabled={!lock && blocked} onClick={() => setOpen(true)}>{action}</button>
       </section>
       <Modal isOpen={open} title={action} onClose={close} footer={

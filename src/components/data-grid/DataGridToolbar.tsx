@@ -57,12 +57,21 @@ export function DataGridToolbar({
       <div className={styles.toolbarEnd}>
         {exportActions && (
           <div className="join">
-            <button type="button" className="btn btn-secondary btn-sm join-item" onClick={exportActions.onExcel}>
-              <FileSpreadsheet className="size-4 text-success" aria-hidden /> {DATA_GRID_LABELS.exportExcel}
-            </button>
-            <button type="button" className="btn btn-secondary btn-sm join-item" onClick={exportActions.onPdf}>
-              <FileText className="size-4 text-error" aria-hidden /> {DATA_GRID_LABELS.exportPdf}
-            </button>
+            {exportActions.onCsv && (
+              <button type="button" className="btn btn-secondary btn-sm join-item" onClick={exportActions.onCsv}>
+                <FileSpreadsheet className="size-4 text-success" aria-hidden /> {DATA_GRID_LABELS.exportCsv}
+              </button>
+            )}
+            {exportActions.onExcel && (
+              <button type="button" className="btn btn-secondary btn-sm join-item" onClick={exportActions.onExcel}>
+                <FileSpreadsheet className="size-4 text-success" aria-hidden /> {DATA_GRID_LABELS.exportExcel}
+              </button>
+            )}
+            {exportActions.onPdf && (
+              <button type="button" className="btn btn-secondary btn-sm join-item" onClick={exportActions.onPdf}>
+                <FileText className="size-4 text-error" aria-hidden /> {DATA_GRID_LABELS.exportPdf}
+              </button>
+            )}
           </div>
         )}
         {actions}

@@ -90,7 +90,7 @@
 /* Thin scrollbar for the table's horizontal (and vertical) scroll. */
 .scroll {
   scrollbar-width: thin;
-  scrollbar-color: #b3cdd5 transparent;
+  scrollbar-color: var(--color-brand-200) transparent;
 }
 
 .scroll::-webkit-scrollbar {
@@ -103,12 +103,12 @@
 }
 
 .scroll::-webkit-scrollbar-thumb {
-  background: #b3cdd5;
+  background: var(--color-brand-200);
   border-radius: 9999px;
 }
 
 .scroll::-webkit-scrollbar-thumb:hover {
-  background: #99bcc7;
+  background: var(--color-brand-300);
 }
 
 .table {

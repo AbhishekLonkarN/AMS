@@ -3,6 +3,7 @@ import type { ContextChipView } from '@/components/layout';
 import { useCompanyProfileStore, useSessionStore } from '@/store';
 import { ROUTES, paths } from '@/app/router/route-paths.constants';
 import { useDemoUsers } from '@/features/auth';
+import { homePathForUserType } from '@/features/auth/hooks/useHomePath';
 import clintechLogo from '@/assets/clintech-logo.png';
 import { fullName, initials } from '@/utils/string.utils';
 import { PLATFORM_BRAND_NAME } from '../constants/shell.constants';
@@ -39,7 +40,8 @@ export function useShellLayout() {
   };
 
   const handleSwitchUser = (userId: string) => {
-    if (switchUser(userId).isSuccess) {navigate(ROUTES.root);}
+    const result = switchUser(userId);
+    if (result.isSuccess) {navigate(homePathForUserType(result.user.userType), { replace: true, flushSync: true });}
   };
 
   const handleLogout = () => {
@@ -48,7 +50,7 @@ export function useShellLayout() {
   };
 
   return {
-    // All four user types (Admin, Sponsor, CO, Site) share the same teal look and the ClinTech logo.
+    // All four user types (Admin, Sponsor, CO, Site) share the same AMS palette and the ClinTech logo.
     variant: 'admin' as const,
     brand: { name: PLATFORM_BRAND_NAME, subtitle: profile.ownerDisplayName, logo: clintechLogo },
     sections,

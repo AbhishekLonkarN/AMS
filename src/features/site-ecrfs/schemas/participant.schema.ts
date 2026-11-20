@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { validateParticipantStatus } from '@/utils/participant.utils';
 import { PARTICIPANT_VALIDATION as V } from '../constants/site-ecrfs.constants';
 
 interface ParticipantChecks {
@@ -43,6 +44,9 @@ export function buildParticipantSchema({
       }),
     initials: z.string().trim().min(1, V.required).regex(/^[A-Za-z]{2,5}$/, V.initials),
     statusId: z.string().min(1, V.required),
+  }).superRefine(({ statusId, participantNo }, ctx) => {
+    const message = validateParticipantStatus(statusId, participantNo);
+    if (message) {ctx.addIssue({ code: 'custom', path: ['participantNo'], message });}
   });
 }
 

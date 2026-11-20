@@ -80,6 +80,6 @@ export function useSiteQueryList() {
     description: L.description(site?.siteCode ?? ''),
     rows,
     columns,
-    exportActions: canExport ? { onExcel: handleExport, onPdf: () => notify.phase2(L.exportName) } : undefined,
+    exportActions: canExport ? { onCsv: handleExport } : undefined,
   };
 }

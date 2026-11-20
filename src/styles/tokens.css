@@ -11,22 +11,23 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
 
-  /* ---- Brand (teal family, from the MindAI palette; --color-brand-700 is the primary #005872) ---- */
-  --color-brand-50: #e6eef1;
-  --color-brand-100: #ccdee4;
-  --color-brand-200: #b3cdd5;
-  --color-brand-300: #99bcc7;
-  --color-brand-400: #669baa;
-  --color-brand-500: #33798e;
-  --color-brand-600: #16667e;
-  --color-brand-700: #005872;
-  --color-brand-800: #00526a;
-  --color-brand-900: #003e50;
-  --color-brand-950: #00303d;
+  /* ---- AMS blue and red ---- */
+  --color-brand-50: #edf3ff;
+  --color-brand-100: #dce8ff;
+  --color-brand-200: #c6d8fa;
+  --color-brand-300: #aec6f2;
+  --color-brand-400: #809fdf;
+  --color-brand-500: #547dca;
+  --color-brand-600: #2b5db4;
+  --color-brand-700: #003594;
+  --color-brand-800: #002c7e;
+  --color-brand-900: #002266;
+  --color-brand-950: #00194c;
 
   /* ---- Action colour: the sidebar, every button and the profile avatar (hover is one step darker) ---- */
-  --color-action: #00465b;
-  --color-action-hover: #003e50;
+  --color-action: #003594;
+  --color-action-hover: #002266;
+  --color-ams-red: #e01f26;
 
   /* ---- Sage green (the palette's secondary; button hover, soft success fills) ---- */
   --color-sage-100: #d9e9dc;

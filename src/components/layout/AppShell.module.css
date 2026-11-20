@@ -32,7 +32,7 @@
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #b3cdd5 transparent;
+  scrollbar-color: var(--color-brand-200) transparent;
 }
 
 :global([data-shell-variant='admin']) .main::-webkit-scrollbar {
@@ -44,12 +44,12 @@
 }
 
 :global([data-shell-variant='admin']) .main::-webkit-scrollbar-thumb {
-  background: #b3cdd5;
+  background: var(--color-brand-200);
   border-radius: 9999px;
 }
 
 :global([data-shell-variant='admin']) .main::-webkit-scrollbar-thumb:hover {
-  background: #99bcc7;
+  background: var(--color-brand-300);
 }
 
 /*
@@ -109,12 +109,12 @@
 :global([data-shell-variant='admin']),
 :global([data-shell-variant='admin']) * {
   scrollbar-width: thin;
-  scrollbar-color: #b3cdd5 transparent;
+  scrollbar-color: var(--color-brand-200) transparent;
 }
 
 :global(html):has(:global([data-shell-variant='admin'])) {
   scrollbar-width: thin;
-  scrollbar-color: #b3cdd5 transparent;
+  scrollbar-color: var(--color-brand-200) transparent;
 }
 
 /* Admin: status pills (Active / In-active ...) show the text only, without the small icon. */

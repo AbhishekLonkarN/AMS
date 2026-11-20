@@ -1,3 +1,5 @@
+import { useParticipantsStore } from '@/store';
+import { countSiteEnrolment } from '@/utils/participant.utils';
 import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Hospital, Pencil } from 'lucide-react';
@@ -13,6 +15,7 @@ export function useSiteList() {
   const navigate = useNavigate();
   const { projectId = '' } = useParams();
   const sites = useAccessibleSites(projectId);
+  const participants = useParticipantsStore((state) => state.participants);
   const masterLabel = useMasterLabel();
   const canCreate = usePermission('investigatorSite.new');
   const canEdit = usePermission('investigatorSite.edit');
@@ -37,7 +40,7 @@ export function useSiteList() {
     createTo: canCreate ? paths.projectSiteNew(projectId) : undefined,
     columns,
     // Newest first, as in the PDF lists.
-    data: [...sites].reverse(),
+    data: sites.map((site) => ({ ...site, actualRecruitment: countSiteEnrolment(participants, site.id) })).reverse(),
     getRowId: (s: Site) => s.id,
     rowActions,
     searchPlaceholder: L.searchPlaceholder,

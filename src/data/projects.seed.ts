@@ -1,6 +1,14 @@
 import type { Project } from '@/types';
+import { SYSTEM_DEFAULT_ECRF } from './ecrf-templates.seed';
 
 const CREATED_AT = '2026-09-05T09:00:00.000Z';
+
+export const RESTORE_DEMO_ECRF: NonNullable<Project['ecrf']>['config'] = {
+  sections: SYSTEM_DEFAULT_ECRF.sections.slice(0, 3).map((section) => ({
+    ...section,
+    fields: section.fields.filter((field) => field.type !== 'auto'),
+  })),
+};
 
 export const PROJECTS_SEED: Project[] = [
   {
@@ -8,6 +16,9 @@ export const PROJECTS_SEED: Project[] = [
     name: 'RESTORE',
     cipNo: 'CSPL/PL/2023/004',
     testProduct: 'AdvaPro',
+    productGroupId: 'ms-pg-ic',
+    studyType: 'Clinical investigation',
+    ecrf: { config: RESTORE_DEMO_ECRF, publishedAt: CREATED_AT },
     description:
       'A EU submission clinical investigation of AdvaPro Sirolimus Eluting Coronary Stent System for CE mark. ' +
       'Total 120 patients will be recruited and for the same, approx. 10-15 sites from India will be participating ' +
@@ -27,6 +38,8 @@ export const PROJECTS_SEED: Project[] = [
     name: 'ABCD',
     cipNo: 'AMS/ABCD/2025/002',
     testProduct: 'AdvaAce',
+    productGroupId: 'ms-pg-ic',
+    studyType: 'Pilot investigation',
     description: 'For EU-CE Mark. Pilot investigation of the AdvaAce balloon catheter.',
     sponsor: 'AMS Ltd.',
     projectManagerId: 'usr-jpatel',
