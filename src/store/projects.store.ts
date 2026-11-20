@@ -8,22 +8,27 @@ import { recordAudit, recordFieldChanges, type AuditField } from './audit.store'
 import { useSessionStore } from './session.store';
 import { useUsersStore } from './users.store';
 import { useMastersStore } from './masters.store';
+import { useProductGroupsStore } from './product-groups.store';
 
-export type ProjectInput = Omit<Project, 'id' | 'createdAt' | 'createdBy'>;
+export type ProjectInput = Omit<Project, 'id' | 'createdAt' | 'createdBy' | 'ecrf' | 'databaseLock'>;
 
 interface ProjectsState {
   projects: Project[];
   addProject: (input: ProjectInput) => Project;
   updateProject: (id: Id, input: ProjectInput) => void;
+  saveEcrf: (id: Id, config: NonNullable<Project['ecrf']>['config'], sourceTemplateId?: Id, publish?: boolean) => boolean;
+  setDatabaseLock: (id: Id, locked: boolean, reason: string) => boolean;
 }
 
 const userName = (id?: Id) => useUsersStore.getState().users.find((u) => u.id === id)?.name ?? '—';
-const masterLabel = (id?: Id) => useMastersStore.getState().items.find((i) => i.id === id)?.label ?? '—';
+const masterLabel = (id?: Id) => (useMastersStore.getState().items.find((item) => item.id === id) ?? useProductGroupsStore.getState().groups.find((item) => item.id === id))?.label ?? '—';
 
 const PROJECT_AUDIT_FIELDS: AuditField<Project>[] = [
   { key: 'name', label: 'Project Name' },
   { key: 'cipNo', label: 'CIP No.' },
   { key: 'testProduct', label: 'Test Product' },
+  { key: 'productGroupId', label: 'Product Group', format: masterLabel },
+  { key: 'studyType', label: 'Study Type' },
   { key: 'description', label: 'Project Description' },
   { key: 'sponsor', label: 'Sponsor' },
   { key: 'projectManagerId', label: 'Project Manager', format: userName },
@@ -53,6 +58,34 @@ export const useProjectsStore = createAppStore<ProjectsState>('projects', (set, 
       projectId: project.id,
     });
     return project;
+  },
+
+  saveEcrf: (id, config, sourceTemplateId, publish = false) => {
+    const project = get().projects.find((item) => item.id === id);
+    if (!project || project.databaseLock || project.ecrf?.publishedAt) return false;
+    const ecrf = { config: structuredClone(config), sourceTemplateId, publishedAt: publish ? nowIso() : undefined };
+    set((state) => ({ projects: state.projects.map((item) => item.id === id ? { ...item, ecrf } : item) }));
+    recordAudit({
+      page: AUDIT_PAGES.projects, projectId: id,
+      event: publish ? 'Published project eCRF' : 'Saved project eCRF draft',
+      changedTo: publish ? 'Published v1' : 'Draft',
+    });
+    return true;
+  },
+
+  setDatabaseLock: (id, locked, reason) => {
+    const project = get().projects.find((item) => item.id === id);
+    const byUserId = useSessionStore.getState().currentUserId;
+    const comment = reason.trim();
+    if (!project || !byUserId || !comment || !!project.databaseLock === locked) return false;
+    const databaseLock = locked ? { at: nowIso(), byUserId, reason: comment } : undefined;
+    set((state) => ({ projects: state.projects.map((item) => item.id === id ? { ...item, databaseLock } : item) }));
+    recordAudit({
+      page: AUDIT_PAGES.projects, projectId: id,
+      event: `${locked ? 'Locked' : 'Unlocked'} project database: ${comment}`,
+      originalValue: locked ? 'Open' : 'Locked', changedTo: locked ? 'Locked' : 'Open',
+    });
+    return true;
   },
 
   updateProject: (id, input) => {

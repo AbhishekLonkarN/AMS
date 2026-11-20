@@ -1,3 +1,4 @@
+import type { FormBuilderConfig } from '@/components/dynamic-form';
 import type { Id, IsoDateTime } from './common.types';
 
 export interface Project {
@@ -5,6 +6,14 @@ export interface Project {
   name: string;
   cipNo: string;
   testProduct: string;
+  productGroupId?: Id;
+  studyType?: string;
+  ecrf?: {
+    config: FormBuilderConfig;
+    sourceTemplateId?: Id;
+    publishedAt?: IsoDateTime;
+  };
+  databaseLock?: { at: IsoDateTime; byUserId: Id; reason: string };
   description: string;
   sponsor: string;
   /** Sponsor-type account. */

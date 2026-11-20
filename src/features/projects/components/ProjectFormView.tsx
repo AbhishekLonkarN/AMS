@@ -47,6 +47,14 @@ export function ProjectFormView({
               {...register('cipNo')}
             />
             <TextField label={F.testProduct} isRequired error={errors.testProduct?.message} {...register('testProduct')} />
+            <SelectField
+              label={F.productGroupId}
+              isRequired
+              options={options.productGroups}
+              error={errors.productGroupId?.message}
+              {...register('productGroupId')}
+            />
+            <TextField label={F.studyType} isRequired error={errors.studyType?.message} {...register('studyType')} />
             <TextField label={F.sponsor} isRequired error={errors.sponsor?.message} {...register('sponsor')} />
             <TextAreaField
               label={F.description}

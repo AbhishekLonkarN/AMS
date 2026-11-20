@@ -11,6 +11,8 @@ export const buildProjectColumns = ({ statusLabel, userName }: ProjectColumnLook
   createSrNoColumn<Project>(),
   { id: 'name', header: F.name, accessorKey: 'name', meta: { className: 'font-semibold sm:min-w-28' } },
   { id: 'testProduct', header: F.testProduct, accessorKey: 'testProduct', meta: { hideBelow: 'sm' } },
+  { id: 'productGroup', header: F.productGroupId, accessorFn: (p) => statusLabel(p.productGroupId), meta: { hideBelow: 'md' } },
+  { id: 'studyType', header: F.studyType, accessorKey: 'studyType', meta: { hideBelow: 'md' } },
   { id: 'description', header: F.description, accessorKey: 'description', meta: { isTruncated: true, hideBelow: 'lg' } },
   { id: 'sponsor', header: F.sponsor, accessorKey: 'sponsor', meta: { filterVariant: 'select', hideBelow: 'md' } },
   {

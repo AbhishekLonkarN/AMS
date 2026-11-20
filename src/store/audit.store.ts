@@ -54,6 +54,7 @@ export function recordAudit(input: AuditInput) {
     id: createId('aud'),
     timestamp: nowIso(),
     timeZone: formatTimeZone(guessTimeZone()),
+    projectId: project?.id,
     projectName: project?.name,
     investigator: site?.investigatorName,
     ...rest,

@@ -11,3 +11,4 @@ export * from './company-profile.types';
 export * from './auth.types';
 export * from './ecrf-template.types';
 export * from './preset.types';
+export * from './site-data.types';
