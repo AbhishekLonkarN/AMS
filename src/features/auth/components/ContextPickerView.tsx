@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, FolderKanban, Hospital } from 'lucide-react';
+import { paths } from '@/app/router/route-paths.constants';
+import { useCurrentPrincipal } from '@/rbac';
 import { PageHeader } from '@/components/layout';
 import { PICKER_LABELS } from '../constants/auth.constants';
 import type { ContextGroup } from '../hooks/useContextPicker';
@@ -10,6 +12,7 @@ interface ContextPickerViewProps {
 }
 
 export function ContextPickerView({ groups }: ContextPickerViewProps) {
+  const isCo = useCurrentPrincipal()?.user.userType === 'co';
   return (
     <div className="page-container">
       <PageHeader title={PICKER_LABELS.title} description={PICKER_LABELS.description} />
@@ -21,6 +24,11 @@ export function ContextPickerView({ groups }: ContextPickerViewProps) {
           <h2 className={styles.projectTitle}>
             <FolderKanban className="size-4 text-primary" aria-hidden /> {group.projectName}
           </h2>
+          {isCo && (
+            <Link className="btn btn-secondary btn-sm self-start" to={paths.projectDashboard(group.projectId)}>
+              Project dashboard
+            </Link>
+          )}
           <ul className={styles.grid}>
             {group.options.map((option) => (
               <li key={option.siteId}>

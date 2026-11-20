@@ -7,6 +7,7 @@ export interface AuditEntry {
   timestamp: IsoDateTime;
   timeZone: string;
   // Where
+  projectId?: Id;
   projectName?: string;
   investigator?: string;
   participantId?: string;

@@ -10,13 +10,17 @@ interface FileFieldProps extends FieldChromeProps {
   isDisabled?: boolean;
   /** Receives the chosen file name only (no upload in the prototype). */
   onFileNameChange?: (fileName: string) => void;
+  onFileChange?: (file: File) => void;
 }
 
-export function FileField({ fileName, accept, isDisabled, onFileNameChange, hint = FORM_LABELS.fileUiOnly, ...chrome }: FileFieldProps) {
+export function FileField({ fileName, accept, isDisabled, onFileNameChange, onFileChange, hint = FORM_LABELS.fileUiOnly, ...chrome }: FileFieldProps) {
   const inputId = useId();
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.files?.[0]?.name;
-    if (name) {onFileNameChange?.(name);}
+    const file = event.target.files?.[0];
+    if (!file) return;
+    onFileNameChange?.(file.name);
+    onFileChange?.(file);
+    event.target.value = '';
   };
 
   return (

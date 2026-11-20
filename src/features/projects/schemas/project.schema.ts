@@ -10,6 +10,8 @@ export function buildProjectSchema(isNameTaken: (name: string) => boolean) {
     name: required().refine((name) => !isNameTaken(name), V.nameTaken),
     cipNo: required(),
     testProduct: required(),
+    productGroupId: required(),
+    studyType: required(),
     description: required(),
     sponsor: required(),
     projectManagerId: required(),

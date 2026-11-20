@@ -34,6 +34,8 @@ export const PROJECT_LABELS = {
 export const PROJECT_FIELDS = {
   name: 'Project Name',
   cipNo: 'CIP No.',
+  productGroupId: 'Product Group',
+  studyType: 'Study Type',
   testProduct: 'Test Product',
   description: 'Project Description',
   sponsor: 'Sponsor',

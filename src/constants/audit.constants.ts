@@ -11,6 +11,10 @@ export const AUDIT_PAGES = {
   coUsers: 'CO User Management',
   siteUsers: 'Site User Management',
   projectExport: 'Project Database - Export',
+  siteEcrfs: 'eCRFs of Site',
+  siteQueries: 'Queries on eCRFs of Site',
+  etmfProject: 'eTMF Documents-Project',
+  etmfSite: 'eTMF Documents-Site',
   ecrfTemplates: 'eCRF Templates',
 } as const;
 

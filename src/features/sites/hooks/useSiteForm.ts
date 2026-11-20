@@ -2,7 +2,7 @@ import { useId, useMemo } from 'react';
 import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Site } from '@/types';
-import { notify, useSitesStore } from '@/store';
+import { notify, useParticipantsStore, useSitesStore } from '@/store';
 import { isSameText } from '@/utils/string.utils';
 import { useMasterOptions } from '@/features/masters';
 import { SITE_LABELS as L, SITE_VALIDATION } from '../constants/sites.constants';
@@ -38,6 +38,8 @@ export function useSiteForm({ mode, projectId, siteId, onDone }: SiteFormOptions
   const formId = useId();
   const site = sites.find((s) => s.id === siteId && s.projectId === projectId);
 
+  const isSiteCodeLocked = useParticipantsStore((s) => !!site && s.participants.some((p) => p.siteId === site.id));
+
   const resolver = useMemo<Resolver<SiteFormValues>>(() => {
     const others = sites.filter((s) => s.projectId === projectId && s.id !== site?.id);
     const zod = zodResolver(buildSiteSchema((code) => others.some((s) => isSameText(s.siteCode, code))));
@@ -62,7 +64,11 @@ export function useSiteForm({ mode, projectId, siteId, onDone }: SiteFormOptions
   const statusOptions = useMasterOptions('siteStatus', site?.statusId);
 
   const handleSubmit = form.handleSubmit((values) => {
-    const input = { ...values, projectId, siteCode: values.siteCode.trim().toUpperCase() };
+    if (site && values.siteCode !== site.siteCode && useParticipantsStore.getState().participants.some((p) => p.siteId === site.id)) {
+      form.setError('siteCode', { message: 'Site ID is fixed once participant records exist.' });
+      return;
+    }
+    const input = { ...values, projectId, siteCode: isSiteCodeLocked && site ? site.siteCode : values.siteCode.trim().toUpperCase() };
     if (mode === 'create') {
       addSite(input);
       notify.success(L.created(input.siteCode));
@@ -81,6 +87,7 @@ export function useSiteForm({ mode, projectId, siteId, onDone }: SiteFormOptions
     formId,
     form,
     statusOptions,
+    isSiteCodeLocked,
     handleSubmit,
   };
 }

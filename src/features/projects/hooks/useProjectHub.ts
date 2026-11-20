@@ -31,6 +31,8 @@ export function useProjectHub() {
   const facts: DetailField[] = [
     { label: F.cipNo, value: project.cipNo },
     { label: F.testProduct, value: project.testProduct },
+    { label: F.productGroupId, value: masterLabel(project.productGroupId) },
+    { label: F.studyType, value: project.studyType },
     { label: F.sponsor, value: project.sponsor },
     { label: F.projectManagerId, value: userNameById(users, project.projectManagerId) },
     { label: F.croName, value: croTeam },

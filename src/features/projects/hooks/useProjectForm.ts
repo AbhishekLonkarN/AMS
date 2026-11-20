@@ -26,6 +26,8 @@ const toFormValues = (p?: Project) =>
     name: p?.name ?? '',
     cipNo: p?.cipNo ?? '',
     testProduct: p?.testProduct ?? '',
+    productGroupId: p?.productGroupId ?? '',
+    studyType: p?.studyType ?? '',
     description: p?.description ?? '',
     sponsor: p?.sponsor ?? '',
     projectManagerId: p?.projectManagerId ?? '',
@@ -68,6 +70,7 @@ export function useProjectForm({ mode, projectId, onDone }: ProjectFormOptions) 
     croProjectManagers: useAccountOptions('co', project?.croProjectManagerId),
     croAssistantPms: useAccountOptions('co', project?.croAssistantPmId),
     statuses: useMasterOptions('projectStatus', project?.statusId),
+    productGroups: useMasterOptions('productGroup', project?.productGroupId),
   };
 
   /** Creator is auto-affiliated so the new project shows up in their list (prototype assumption). */
@@ -86,6 +89,10 @@ export function useProjectForm({ mode, projectId, onDone }: ProjectFormOptions) 
   };
 
   const handleSubmit = form.handleSubmit((values) => {
+    if (!options.productGroups.some((option) => option.value === values.productGroupId)) {
+      form.setError('productGroupId', { message: 'Select an available Product Group.' });
+      return;
+    }
     const input = toInput(values);
     if (mode === 'create') {
       const created = addProject(input);

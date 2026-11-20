@@ -1,3 +1,12 @@
+import { ProjectEcrfPage } from '@/features/project-workflows/ProjectEcrfPage';
+import { ProjectDashboardPage } from '@/features/project-workflows/ProjectDashboardPage';
+import { ProjectQueriesPage } from '@/features/project-workflows/ProjectQueriesPage';
+import { ProjectCloseoutPage } from '@/features/project-workflows/ProjectCloseoutPage';
+import { SelectiveExportPage } from '@/features/project-workflows/SelectiveExportPage';
+import { ParticipantListPage, ParticipantViewPage } from '@/features/site-ecrfs';
+import { SiteDashboardPage } from '@/features/site-dashboard';
+import { SiteQueryListPage } from '@/features/site-queries';
+import { EtmfListPage } from '@/features/etmf';
 import type { ReactNode } from 'react';
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
 import type { PermissionKey } from '@/types';
@@ -126,9 +135,10 @@ const siteRoutes: RouteObject = {
   children: [
     // The hub stays rendered under its "Edit site" drawer.
     { element: <SiteHubPage />, children: [{ index: true, element: null }, guardOnly(ROUTES.siteEdit, 'investigatorSite.edit')] },
-    page(ROUTES.siteDashboard, null, phase2(PAGE_TITLES.siteDashboard)),
-    page(ROUTES.siteEcrfs, 'siteEcrfs.view', phase2(PAGE_TITLES.siteEcrfs)),
-    page(ROUTES.siteQueries, 'siteEcrfQuery.view', phase2(PAGE_TITLES.siteQueries)),
+    page(ROUTES.siteDashboard, null, <SiteDashboardPage />),
+    page(ROUTES.siteEcrfs, 'siteEcrfs.view', <ParticipantListPage />),
+    page(ROUTES.siteEcrfParticipant, 'siteEcrfs.view', <ParticipantViewPage />),
+    page(ROUTES.siteQueries, 'siteEcrfQuery.view', <SiteQueryListPage />),
     page(ROUTES.siteCoUsers, 'coUserManagement.view', <CoUserListPage />, [
       guardOnly(ROUTES.siteCoUserAffiliate, 'coUserManagement.affiliate'),
       guardOnly(ROUTES.siteCoUserView, 'coUserManagement.view'),
@@ -139,8 +149,8 @@ const siteRoutes: RouteObject = {
       guardOnly(ROUTES.siteUserView, 'siteUserManagement.view'),
       guardOnly(ROUTES.siteUserEdit, 'siteUserManagement.edit'),
     ]),
-    page(ROUTES.siteEtmf, 'etmfSite.view', phase2(PAGE_TITLES.siteEtmf)),
-    page(ROUTES.siteEtmfProject, 'etmfProject.view', phase2(PAGE_TITLES.projectEtmf)),
+    page(ROUTES.siteEtmf, 'etmfSite.view', <EtmfListPage scope="site" />),
+    page(ROUTES.siteEtmfProject, 'etmfProject.view', <EtmfListPage scope="project" />),
     page(ROUTES.siteSupportContacts, 'supportContacts.view', phase2(PAGE_TITLES.supportContacts)),
     page(ROUTES.siteContacts, 'siteContacts.view', phase2(PAGE_TITLES.siteContacts)),
   ],
@@ -157,9 +167,9 @@ const projectRoutes: RouteObject = {
     },
     {
       path: ROUTES.projectDashboard,
-      element: <RequireUserType types={['sponsor']}>{phase2(PAGE_TITLES.projectDashboard)}</RequireUserType>,
+      element: <RequireUserType types={['sponsor']}>{<ProjectDashboardPage />}</RequireUserType>,
     },
-    page(ROUTES.projectEcrf, 'projectEcrf.view', phase2(PAGE_TITLES.projectEcrf)),
+    page(ROUTES.projectEcrf, 'projectEcrf.view', <ProjectEcrfPage />),
     page(ROUTES.projectSponsorUsers, 'sponsorUserManagement.view', <SponsorUserListPage />, [
       guardOnly(ROUTES.projectSponsorUserAffiliate, 'sponsorUserManagement.affiliate'),
       guardOnly(ROUTES.projectSponsorUserView, 'sponsorUserManagement.view'),
@@ -169,10 +179,10 @@ const projectRoutes: RouteObject = {
       guardOnly(ROUTES.projectSiteNew, 'investigatorSite.new'),
       guardOnly(ROUTES.projectSiteListEdit, 'investigatorSite.edit'),
     ]),
-    page(ROUTES.projectQueries, 'projectQueriesAll.export', phase2(PAGE_TITLES.projectQueries)),
-    page(ROUTES.projectEtmf, 'etmfProject.view', phase2(PAGE_TITLES.projectEtmf)),
-    page(ROUTES.projectDatabaseLock, 'projectDatabase.lock', phase2(PAGE_TITLES.projectDatabaseLock)),
-    page(ROUTES.projectSelectiveExport, 'selectiveParticipantData.export', phase2(PAGE_TITLES.selectiveExport)),
+    page(ROUTES.projectQueries, 'projectQueriesAll.export', <ProjectQueriesPage />),
+    page(ROUTES.projectEtmf, 'etmfProject.view', <EtmfListPage scope="project" />),
+    page(ROUTES.projectDatabaseLock, 'projectDatabase.lock', <ProjectCloseoutPage />),
+    page(ROUTES.projectSelectiveExport, 'selectiveParticipantData.export', <SelectiveExportPage />),
     page(ROUTES.projectSupportContacts, 'supportContacts.view', phase2(PAGE_TITLES.supportContacts)),
     page(ROUTES.projectSettings, 'settings.view', phase2(PAGE_TITLES.projectSettings)),
     siteRoutes,

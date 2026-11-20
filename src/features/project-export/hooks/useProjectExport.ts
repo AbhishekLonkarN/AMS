@@ -14,7 +14,7 @@ import { useExportProjectDatabase } from './useExportProjectDatabase';
 export function useProjectExport() {
   const projects = useProjectsStore((s) => s.projects);
   const principal = useCurrentPrincipal();
-  const { exportProject, userName, sites, statusLabel } = useExportProjectDatabase();
+  const { exportProject, userName } = useExportProjectDatabase();
 
   // Newest first, as in the PDF lists.
   const rows = useMemo(
@@ -25,11 +25,7 @@ export function useProjectExport() {
     [projects, principal],
   );
 
-  const columns = useMemo(
-    () => buildProjectExportColumns({ userName, onExport: exportProject }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [userName, sites, statusLabel],
-  );
+  const columns = buildProjectExportColumns({ userName, onExport: exportProject });
 
   return {
     title: L.title,

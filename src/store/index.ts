@@ -24,3 +24,6 @@ export type {
   CoAffiliationInput,
   SiteMembershipInput,
 } from './affiliations.store';
+export { useParticipantsStore } from './participants.store';
+export { useQueriesStore } from './queries.store';
+export { useEtmfStore } from './etmf.store';

@@ -6,7 +6,7 @@ import type { SiteFormModel } from '../hooks/useSiteForm';
 type SiteFormViewProps = Omit<SiteFormModel, 'isNotFound'>;
 
 /** Drawer form: investigator + site sections, Cancel + primary in the footer. */
-export function SiteFormView({ title, subtitle, submitLabel, formId, form, statusOptions, handleSubmit }: SiteFormViewProps) {
+export function SiteFormView({ title, subtitle, submitLabel, formId, form, statusOptions, isSiteCodeLocked, handleSubmit }: SiteFormViewProps) {
   const { register, formState } = form;
   const { errors } = formState;
 
@@ -40,7 +40,8 @@ export function SiteFormView({ title, subtitle, submitLabel, formId, form, statu
             <TextField
               label={F.siteCode}
               isRequired
-              hint={F.siteCodeHint}
+              readOnly={isSiteCodeLocked}
+              hint={isSiteCodeLocked ? 'Site ID is fixed once participant records exist.' : F.siteCodeHint}
               error={errors.siteCode?.message}
               {...register('siteCode')}
             />

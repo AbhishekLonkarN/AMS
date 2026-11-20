@@ -77,6 +77,7 @@ export const ROUTES = {
   siteEdit: '/projects/:projectId/sites/:siteId/edit',
   siteDashboard: '/projects/:projectId/sites/:siteId/dashboard',
   siteEcrfs: '/projects/:projectId/sites/:siteId/ecrfs',
+  siteEcrfParticipant: '/projects/:projectId/sites/:siteId/ecrfs/:participantId',
   siteQueries: '/projects/:projectId/sites/:siteId/queries',
   siteCoUsers: '/projects/:projectId/sites/:siteId/co-users',
   siteCoUserAffiliate: '/projects/:projectId/sites/:siteId/co-users/affiliate',
@@ -139,6 +140,8 @@ export const paths = {
   siteEdit: site(ROUTES.siteEdit),
   siteDashboard: site(ROUTES.siteDashboard),
   siteEcrfs: site(ROUTES.siteEcrfs),
+  siteEcrfParticipant: (projectId: string, siteId: string, participantId: string) =>
+    generatePath(ROUTES.siteEcrfParticipant, { projectId, siteId, participantId }),
   siteQueries: site(ROUTES.siteQueries),
   siteCoUsers: site(ROUTES.siteCoUsers),
   siteCoUserAffiliate: site(ROUTES.siteCoUserAffiliate),
