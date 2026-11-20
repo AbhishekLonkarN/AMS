@@ -1,18 +1,15 @@
+import { ApiError } from './api.error';
+
+export { ApiError };
+
 /** Backend origin. Empty in development: Vite proxies `/api` to the local backend. */
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? '';
 
-/** Non-2xx response or network failure. `code` is the backend error code, when there is one. */
-export class ApiError extends Error {
-  constructor(
-    readonly status: number,
-    readonly code: string | null,
-    message: string,
-    /** Other keys of the backend error body, e.g. `field` or `invalid`. */
-    readonly details: Record<string, unknown> = {},
-  ) {
-    super(message);
-  }
-}
+/**
+ * Demo mode: every request is answered from in-memory mock data (see `./mock`), so the app runs
+ * without a backend. On unless `VITE_USE_MOCK_DATA=false`.
+ */
+export const USE_MOCK_DATA: boolean = import.meta.env.VITE_USE_MOCK_DATA !== 'false';
 
 type HeadersProvider = () => Record<string, string>;
 
@@ -27,6 +24,11 @@ export function setRequestHeaders(provider: HeadersProvider) {
 }
 
 async function requestJson<T>(method: string, path: string, body?: unknown): Promise<T> {
+  if (USE_MOCK_DATA) {
+    // Loaded on first use; it imports this file, so a static import would be circular.
+    const { handleMockRequest } = await import('./mock/mock-backend');
+    return handleMockRequest<T>(method, path, body, extraHeaders());
+  }
   const headers: Record<string, string> = { ...extraHeaders() };
   if (body !== undefined) {
     headers['Content-Type'] = 'application/json';
