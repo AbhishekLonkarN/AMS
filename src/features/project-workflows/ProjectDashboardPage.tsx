@@ -1,3 +1,4 @@
+import { isEnrolled } from '@/utils/participant.utils';
 import { Link, useParams } from 'react-router-dom';
 import { ROUTES, paths } from '@/app/router/route-paths.constants';
 import { PageHeader } from '@/components/layout';
@@ -19,7 +20,7 @@ export function ProjectDashboardPage() {
   const canSeeDocuments = usePermission('etmfProject.view');
   const canSeeContacts = usePermission('supportContacts.view');
   const label = useMasterLabel();
-  if (!project) return null;
+  if (!project) {return null;}
 
   const siteIds = new Set(sites.map((site) => site.id));
   const participants = participantRecords.filter((item) => item.projectId === projectId && siteIds.has(item.siteId));
@@ -31,7 +32,7 @@ export function ProjectDashboardPage() {
   const sections = [
     { title: 'Enrolment status', items: [
       { id: 'target', label: 'Target', count: target },
-      { id: 'enrolled', label: 'Enrolled', count: participants.filter((item) => !!item.participantNo).length },
+      { id: 'enrolled', label: 'Enrolled', count: participants.filter(isEnrolled).length },
     ] },
     { title: 'Site status', items: siteStatuses.map((id) => ({ id, label: label(id), count: sites.filter((site) => site.statusId === id).length })),
       link: canSeeSites ? { title: 'Open sites', to: paths.projectSites(projectId) } : undefined },

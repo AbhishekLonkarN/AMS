@@ -47,8 +47,9 @@ export interface RowAction {
 }
 
 export interface DataGridExport {
-  onExcel: () => void;
-  onPdf: () => void;
+  onCsv?: () => void;
+  onExcel?: () => void;
+  onPdf?: () => void;
 }
 
 export interface DataGridProps<T> {

@@ -5,6 +5,7 @@ import { canOpenClinicalForm, clinicalForms, validateClinicalValue } from '@/fea
 import { useProjectsStore } from './projects.store';
 import { createId } from '@/utils/id.utils';
 import { nowIso } from '@/utils/date.utils';
+import { validateParticipantStatus } from '@/utils/participant.utils';
 import { createAppStore } from './store.config';
 import { recordAudit, recordFieldChanges } from './audit.store';
 import { useSessionStore } from './session.store';
@@ -48,7 +49,7 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
     const userId = useSessionStore.getState().currentUserId;
     if (!participant || !form || !userId || !!form.lock === isLocked ||
       useProjectsStore.getState().projects.find((item) => item.id === participant.projectId)?.databaseLock ||
-      (isLocked && form.progress !== 'submitted')) return false;
+      (isLocked && form.progress !== 'submitted')) {return false;}
 
     set((s) => ({
       participants: s.participants.map((p) =>
@@ -84,7 +85,8 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
     addParticipant: (siteId, input) => {
       const site = useSitesStore.getState().sites.find((s) => s.id === siteId);
       const project = useProjectsStore.getState().projects.find((item) => item.id === site?.projectId);
-      if (!site || !project?.ecrf?.publishedAt || project.databaseLock) return null;
+      if (!site || !project?.ecrf?.publishedAt || project.databaseLock || validateParticipantStatus(input.statusId, input.participantNo)) {return null;}
+      const at = nowIso();
       const ecrfDesign = structuredClone(project.ecrf.config);
       const participant: Participant = {
         id: createId('pt'),
@@ -94,7 +96,8 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
         participantNo: input.participantNo?.trim() || undefined,
         initials: input.initials.trim().toUpperCase(),
         statusId: input.statusId,
-        screenedAt: nowIso(),
+        screenedAt: at,
+        enrolledAt: input.participantNo?.trim() ? at : undefined,
         forms: clinicalForms(ecrfDesign).map((f) => ({ formKey: f.key, progress: 'notStarted' as const, values: {} })),
         ecrfDesign,
       };
@@ -111,9 +114,10 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
 
     updateParticipant: (participantId, input) => {
       const before = get().participants.find((p) => p.id === participantId);
-      if (!before || useProjectsStore.getState().projects.find((item) => item.id === before.projectId)?.databaseLock) return false;
+      if (!before || validateParticipantStatus(input.statusId, input.participantNo) || useProjectsStore.getState().projects.find((item) => item.id === before.projectId)?.databaseLock) {return false;}
       const after: Participant = {
         ...before,
+        enrolledAt: before.enrolledAt ?? (input.participantNo?.trim() ? nowIso() : undefined),
         participantNo: input.participantNo?.trim() || undefined,
         initials: input.initials.trim().toUpperCase(),
         statusId: input.statusId,
@@ -141,11 +145,11 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
       const def = definitions.find((item) => item.key === formKey);
       if (!participant || !form || !def || form.lock || !canOpenClinicalForm(participant, formKey) ||
         useProjectsStore.getState().projects.find((item) => item.id === participant.projectId)?.databaseLock ||
-        (progress === 'submitted' && def.fields.some((field) => validateClinicalValue(field, values[field.key])))) return false;
+        (progress === 'submitted' && def.fields.some((field) => validateClinicalValue(field, values[field.key])))) {return false;}
       const previousSubmission = form.submittedValues ?? (form.progress === 'submitted' ? form.values : undefined);
       const isCorrection = progress === 'submitted' && !!previousSubmission &&
         def.fields.some((field) => (previousSubmission[field.key] ?? '') !== (values[field.key] ?? ''));
-      if (isCorrection && !correctionReason?.trim()) return false;
+      if (isCorrection && !correctionReason?.trim()) {return false;}
       const submittedValues = progress === 'submitted' ? { ...values } :
         form.submittedValues ?? (form.progress === 'submitted' ? { ...form.values } : undefined);
 

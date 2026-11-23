@@ -1,3 +1,6 @@
+import { closeoutReadiness } from '@/features/project-workflows/closeout.utils';
+import { useParticipantsStore } from './participants.store';
+import { useQueriesStore } from './queries.store';
 import type { Id, Project } from '@/types';
 import { PROJECTS_SEED } from '@/data/projects.seed';
 import { AUDIT_PAGES } from '@/constants/audit.constants';
@@ -62,7 +65,7 @@ export const useProjectsStore = createAppStore<ProjectsState>('projects', (set, 
 
   saveEcrf: (id, config, sourceTemplateId, publish = false) => {
     const project = get().projects.find((item) => item.id === id);
-    if (!project || project.databaseLock || project.ecrf?.publishedAt) return false;
+    if (!project || project.databaseLock || project.ecrf?.publishedAt) {return false;}
     const ecrf = { config: structuredClone(config), sourceTemplateId, publishedAt: publish ? nowIso() : undefined };
     set((state) => ({ projects: state.projects.map((item) => item.id === id ? { ...item, ecrf } : item) }));
     recordAudit({
@@ -77,7 +80,8 @@ export const useProjectsStore = createAppStore<ProjectsState>('projects', (set, 
     const project = get().projects.find((item) => item.id === id);
     const byUserId = useSessionStore.getState().currentUserId;
     const comment = reason.trim();
-    if (!project || !byUserId || !comment || !!project.databaseLock === locked) return false;
+    if (!project || !byUserId || !comment || !!project.databaseLock === locked) {return false;}
+    if (locked && closeoutReadiness(id, useParticipantsStore.getState().participants, useQueriesStore.getState().queries).blocked) {return false;}
     const databaseLock = locked ? { at: nowIso(), byUserId, reason: comment } : undefined;
     set((state) => ({ projects: state.projects.map((item) => item.id === id ? { ...item, databaseLock } : item) }));
     recordAudit({

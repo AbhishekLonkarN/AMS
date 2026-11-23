@@ -42,7 +42,7 @@ a.chip {
 }
 
 :global([data-shell-variant='admin']) .header :global(.btn-square) {
-  color: #005872;
+  color: var(--color-brand-700);
   border-radius: 12px;
 }
 

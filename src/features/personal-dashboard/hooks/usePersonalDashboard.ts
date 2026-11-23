@@ -1,6 +1,7 @@
+import { isEnrolled } from '@/utils/participant.utils';
 import { useMemo } from 'react';
 import { Activity, Building, CheckCircle2, FolderKanban, Target, UserRoundCheck } from 'lucide-react';
-import { useAuditStore, useMastersStore } from '@/store';
+import { useAuditStore, useMastersStore, useParticipantsStore } from '@/store';
 import { useAccessibleProjects, useAccessibleSites, useCurrentPrincipal } from '@/rbac';
 import {
   ACTIVITY_DAYS,
@@ -23,6 +24,7 @@ export function usePersonalDashboard() {
   const sites = useAccessibleSites();
   const masters = useMastersStore((s) => s.items);
   const entries = useAuditStore((s) => s.entries);
+  const participants = useParticipantsStore((state) => state.participants);
   const email = principal?.user.email;
 
   return useMemo(() => {
@@ -32,7 +34,8 @@ export function usePersonalDashboard() {
       ACTIVITY_DAYS,
     );
 
-    const enrolled = sites.reduce((sum, s) => sum + s.actualRecruitment, 0);
+    const siteIds = new Set(sites.map((site) => site.id));
+    const enrolled = participants.filter((participant) => siteIds.has(participant.siteId) && isEnrolled(participant));
     const target = projects.reduce((sum, p) => sum + p.enrolmentTarget, 0);
     const ongoing = projects.filter((p) => label(p.statusId) === ONGOING_STATUS_LABEL).length;
 
@@ -40,7 +43,7 @@ export function usePersonalDashboard() {
       { key: 'projects', label: L.kpis.projects, value: projects.length, icon: FolderKanban, tone: 'brand' },
       { key: 'ongoing', label: L.kpis.ongoing, value: ongoing, icon: CheckCircle2, tone: 'green' },
       { key: 'sites', label: L.kpis.sites, value: sites.length, icon: Building, tone: 'orange' },
-      { key: 'enrolled', label: L.kpis.enrolled, value: enrolled, icon: UserRoundCheck, tone: 'violet' },
+      { key: 'enrolled', label: L.kpis.enrolled, value: enrolled.length, icon: UserRoundCheck, tone: 'violet' },
       { key: 'target', label: L.kpis.target, value: target, icon: Target, tone: 'red' },
       { key: 'actions', label: L.kpis.actions, value: countRecentEvents(activity), icon: Activity, tone: 'sky' },
     ];
@@ -56,7 +59,7 @@ export function usePersonalDashboard() {
       .map((p) => ({
         id: p.id,
         label: p.name,
-        count: sites.filter((s) => s.projectId === p.id).reduce((sum, s) => sum + s.actualRecruitment, 0),
+        count: enrolled.filter((participant) => participant.projectId === p.id).length,
       }))
       .filter((p) => p.count > 0)
       .sort((a, b) => b.count - a.count);
@@ -69,7 +72,7 @@ export function usePersonalDashboard() {
       enrolmentByProject,
       activity,
     };
-  }, [projects, sites, masters, entries, email]);
+  }, [projects, sites, masters, entries, email, participants]);
 }
 
 export type PersonalDashboardModel = ReturnType<typeof usePersonalDashboard>;

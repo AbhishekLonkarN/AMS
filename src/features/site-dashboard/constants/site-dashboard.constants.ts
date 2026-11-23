@@ -7,5 +7,4 @@ export const SITE_DASHBOARD_LABELS = {
   /** One point per week on the enrolment line. */
   weekDays: 7,
   /** Participant statuses that count as enrolled (everything after Screen Pass). */
-  notEnrolledStatusIds: ['ms-pt-screen-failed', 'ms-pt-screen-pass'],
 } as const;

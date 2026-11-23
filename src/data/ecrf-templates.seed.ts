@@ -1,8 +1,10 @@
+import type { FormBuilderConfig } from '@/components/dynamic-form';
+
 /**
  * The system default eCRF: the least specific layer of the key catalog. Templates reuse its
  * section and field keys so answers line up across studies.
  */
-export const SYSTEM_DEFAULT_ECRF = {
+export const SYSTEM_DEFAULT_ECRF: FormBuilderConfig = {
   sections: [
     {
       key: 'visit',
