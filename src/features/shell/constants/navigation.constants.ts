@@ -228,6 +228,14 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         isEnd: true,
       },
       {
+        key: 'sponsor-site-registry',
+        label: 'Site Management',
+        description: 'Create Sites and assign them to Projects.',
+        icon: Hospital,
+        to: fixed(ROUTES.sponsorSites),
+        permission: 'project.view',
+      },
+      {
         key: 'sponsor-audit',
         label: PAGE_TITLES.auditTrail,
         description: PAGE_DESCRIPTIONS.auditTrail,

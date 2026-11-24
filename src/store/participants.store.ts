@@ -10,6 +10,7 @@ import { createAppStore } from './store.config';
 import { recordAudit, recordFieldChanges } from './audit.store';
 import { useSessionStore } from './session.store';
 import { useSitesStore } from './sites.store';
+import { linkedSiteIsActive } from '@/features/sponsor-sites/site-registry.store';
 import { useMastersStore } from './masters.store';
 
 export interface ParticipantDetailsInput {
@@ -47,7 +48,7 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
     const participant = get().participants.find((p) => p.id === participantId);
     const form = participant?.forms.find((f) => f.formKey === formKey);
     const userId = useSessionStore.getState().currentUserId;
-    if (!participant || !form || !userId || !!form.lock === isLocked ||
+    if (!participant || !form || !userId || !linkedSiteIsActive(participant.siteId) || !!form.lock === isLocked ||
       useProjectsStore.getState().projects.find((item) => item.id === participant.projectId)?.databaseLock ||
       (isLocked && form.progress !== 'submitted')) {return false;}
 
@@ -85,7 +86,7 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
     addParticipant: (siteId, input) => {
       const site = useSitesStore.getState().sites.find((s) => s.id === siteId);
       const project = useProjectsStore.getState().projects.find((item) => item.id === site?.projectId);
-      if (!site || !project?.ecrf?.publishedAt || project.databaseLock || validateParticipantStatus(input.statusId, input.participantNo)) {return null;}
+      if (!site || !linkedSiteIsActive(site.id) || !project?.ecrf?.publishedAt || project.databaseLock || validateParticipantStatus(input.statusId, input.participantNo)) {return null;}
       const at = nowIso();
       const ecrfDesign = structuredClone(project.ecrf.config);
       const participant: Participant = {
@@ -114,7 +115,7 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
 
     updateParticipant: (participantId, input) => {
       const before = get().participants.find((p) => p.id === participantId);
-      if (!before || validateParticipantStatus(input.statusId, input.participantNo) || useProjectsStore.getState().projects.find((item) => item.id === before.projectId)?.databaseLock) {return false;}
+      if (!before || !linkedSiteIsActive(before.siteId) || validateParticipantStatus(input.statusId, input.participantNo) || useProjectsStore.getState().projects.find((item) => item.id === before.projectId)?.databaseLock) {return false;}
       const after: Participant = {
         ...before,
         enrolledAt: before.enrolledAt ?? (input.participantNo?.trim() ? nowIso() : undefined),
@@ -143,7 +144,7 @@ export const useParticipantsStore = createAppStore<ParticipantsState>('participa
       const form = participant?.forms.find((f) => f.formKey === formKey);
       const definitions = clinicalForms(participant?.ecrfDesign);
       const def = definitions.find((item) => item.key === formKey);
-      if (!participant || !form || !def || form.lock || !canOpenClinicalForm(participant, formKey) ||
+      if (!participant || !linkedSiteIsActive(participant.siteId) || !form || !def || form.lock || !canOpenClinicalForm(participant, formKey) ||
         useProjectsStore.getState().projects.find((item) => item.id === participant.projectId)?.databaseLock ||
         (progress === 'submitted' && def.fields.some((field) => validateClinicalValue(field, values[field.key])))) {return false;}
       const previousSubmission = form.submittedValues ?? (form.progress === 'submitted' ? form.values : undefined);

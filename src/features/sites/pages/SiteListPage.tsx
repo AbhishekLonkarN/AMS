@@ -4,6 +4,7 @@ import { ROUTES, paths } from '@/app/router/route-paths.constants';
 import { UserListView, useRouteDrawer } from '@/features/user-common';
 import { useSiteList } from '../hooks/useSiteList';
 import { SiteFormContainer } from './SiteFormContainer';
+import { ProjectSiteAssignment } from '@/features/sponsor-sites/ProjectSiteAssignment';
 
 /** List + right-hand drawer for add / edit (driven by the URL). */
 export function SiteListPage() {
@@ -18,6 +19,7 @@ export function SiteListPage() {
 
   return (
     <>
+      <ProjectSiteAssignment projectId={projectId} />
       <UserListView {...list} />
       <Drawer isOpen={drawer.isOpen} onClose={drawer.close}>
         {(drawer.mode === 'create' || drawer.mode === 'edit') && (
