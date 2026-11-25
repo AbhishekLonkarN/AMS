@@ -1,3 +1,4 @@
+import { linkedSiteIsActive } from '@/features/sponsor-sites/site-registry.store';
 import type { DataQuery, Id, Participant } from '@/types';
 import { QUERIES_SEED } from '@/data/participants.seed';
 import { AUDIT_PAGES } from '@/constants/audit.constants';
@@ -34,7 +35,7 @@ const definitionOf = (participant: Participant | undefined, formKey: string) =>
 const fieldLabel = (participant: Participant | undefined, formKey: string, fieldKey: string) =>
   definitionOf(participant, formKey)?.fields.find((f) => f.key === fieldKey)?.label ?? fieldKey;
 const projectLocked = (id: Id) => !!useProjectsStore.getState().projects.find((project) => project.id === id)?.databaseLock;
-const queryLocked = (query: DataQuery) => projectLocked(query.projectId) ||
+const queryLocked = (query: DataQuery) => !linkedSiteIsActive(query.siteId) || projectLocked(query.projectId) ||
   !!useParticipantsStore.getState().participants.find((p) => p.id === query.participantId)?.forms.find((f) => f.formKey === query.formKey)?.lock;
 
 export const useQueriesStore = createAppStore<QueriesState>('queries', (set, get) => ({
@@ -44,7 +45,7 @@ export const useQueriesStore = createAppStore<QueriesState>('queries', (set, get
     const participant = useParticipantsStore.getState().participants.find((p) => p.id === input.participantId);
     const userId = useSessionStore.getState().currentUserId;
     const form = participant?.forms.find((item) => item.formKey === input.formKey);
-    if (!participant || !userId || !input.text.trim() || projectLocked(participant.projectId) ||
+    if (!participant || !linkedSiteIsActive(participant.siteId) || !userId || !input.text.trim() || projectLocked(participant.projectId) ||
         !form || (form.progress !== 'submitted' && !form.submittedValues) || form.lock ||
         !definitionOf(participant, input.formKey)?.fields.some((field) => field.key === input.fieldKey) ||
         get().queries.some((query) => query.participantId === input.participantId && query.formKey === input.formKey &&

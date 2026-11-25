@@ -17,7 +17,6 @@ export function useSiteList() {
   const sites = useAccessibleSites(projectId);
   const participants = useParticipantsStore((state) => state.participants);
   const masterLabel = useMasterLabel();
-  const canCreate = usePermission('investigatorSite.new');
   const canEdit = usePermission('investigatorSite.edit');
 
   const columns = useMemo(() => buildSiteColumns(masterLabel), [masterLabel]);
@@ -36,8 +35,8 @@ export function useSiteList() {
     title: L.listTitle,
     description: L.listDescription,
     backTo: paths.projectHub(projectId),
-    createLabel: canCreate ? L.addButton : undefined,
-    createTo: canCreate ? paths.projectSiteNew(projectId) : undefined,
+    createLabel: undefined,
+    createTo: undefined,
     columns,
     // Newest first, as in the PDF lists.
     data: sites.map((site) => ({ ...site, actualRecruitment: countSiteEnrolment(participants, site.id) })).reverse(),

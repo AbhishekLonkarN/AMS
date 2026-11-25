@@ -4,6 +4,8 @@ import type { Id, IsoDateTime } from './common.types';
 export interface Site {
   id: Id;
   projectId: Id;
+  /** Link to Sponsor-owned Site registry; clinical data stays project-specific. */
+  sponsorSiteId?: Id;
   /** "Site ID" in the PDFs, e.g. FR-006. Unique within the project. */
   siteCode: string;
   siteName: string;

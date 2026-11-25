@@ -49,6 +49,7 @@ export const ROUTES = {
   presetNew: '/preset-library/new',
   presetView: '/preset-library/:presetId',
   presetEdit: '/preset-library/:presetId/edit',
+  sponsorSites: '/sponsor/sites',
   projects: '/projects',
   projectNew: '/projects/new',
   projectListEdit: '/projects/edit/:projectId',

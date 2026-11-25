@@ -41,6 +41,7 @@ import { TemplateListPage } from '@/features/access-rights-templates';
 import { MasterListPage } from '@/features/masters';
 import { ProjectHubPage, ProjectListPage } from '@/features/projects';
 import { SiteHubPage, SiteListPage } from '@/features/sites';
+import { SponsorSitesPage } from '@/features/sponsor-sites/SponsorSitesPage';
 import { SponsorUserListPage } from '@/features/project-sponsor-users';
 import { CoUserListPage } from '@/features/site-co-users';
 import { SiteUserListPage } from '@/features/site-users';
@@ -121,6 +122,7 @@ const sponsorRoutes: RouteObject[] = [
     guardOnly(ROUTES.presetView, 'ecrfTemplate.view'),
     guardOnly(ROUTES.presetEdit, 'ecrfTemplate.edit'),
   ]),
+  { path: ROUTES.sponsorSites, element: <RequireUserType types={['sponsor']}><SponsorSitesPage /></RequireUserType> },
   page(ROUTES.projects, 'project.view', <ProjectListPage />, [
     guardOnly(ROUTES.projectNew, 'project.new'),
     guardOnly(ROUTES.projectListEdit, 'project.edit'),
@@ -174,7 +176,7 @@ const projectRoutes: RouteObject = {
       guardOnly(ROUTES.projectSponsorUserEdit, 'sponsorUserManagement.edit'),
     ]),
     page(ROUTES.projectSites, 'investigatorSite.view', <SiteListPage />, [
-      guardOnly(ROUTES.projectSiteNew, 'investigatorSite.new'),
+      { path: ROUTES.projectSiteNew, element: <Navigate to={ROUTES.sponsorSites} replace /> },
       guardOnly(ROUTES.projectSiteListEdit, 'investigatorSite.edit'),
     ]),
     page(ROUTES.projectQueries, 'projectQueriesAll.export', <ProjectQueriesPage />),

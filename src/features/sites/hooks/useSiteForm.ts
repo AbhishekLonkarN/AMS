@@ -38,7 +38,7 @@ export function useSiteForm({ mode, projectId, siteId, onDone }: SiteFormOptions
   const formId = useId();
   const site = sites.find((s) => s.id === siteId && s.projectId === projectId);
 
-  const isSiteCodeLocked = useParticipantsStore((s) => !!site && s.participants.some((p) => p.siteId === site.id));
+  const isSiteCodeLocked = true; // IDs are immutable from the moment of Site creation.
 
   const resolver = useMemo<Resolver<SiteFormValues>>(() => {
     const others = sites.filter((s) => s.projectId === projectId && s.id !== site?.id);
@@ -68,9 +68,11 @@ export function useSiteForm({ mode, projectId, siteId, onDone }: SiteFormOptions
       form.setError('siteCode', { message: 'Site ID is fixed once participant records exist.' });
       return;
     }
-    const input = { ...values, projectId, siteCode: isSiteCodeLocked && site ? site.siteCode : values.siteCode.trim().toUpperCase() };
+    const input = { ...values, projectId, siteCode: site ? site.siteCode : values.siteCode.trim().toUpperCase() };
     if (mode === 'create') {
-      addSite(input);
+      // Creation is Sponsor-scoped; new Sites are linked from the Site registry, not this editor.
+      notify.error('Create Sites in Sponsor Site Management.');
+      return;
       notify.success(L.created(input.siteCode));
     } else if (site) {
       updateSite(site.id, input);
